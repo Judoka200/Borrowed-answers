@@ -1,14 +1,13 @@
 #include "funcs.h"
 
-//initialise size of dungeon
+//initialise size of dungeon (set the width and height)
 const int dungeonRowSize = 5;
-const int dungeonColSize = 5;
+const int dungeonColSize = 10;
   int dungeonlayout[dungeonRowSize][dungeonColSize];
 
 using namespace std;
 
 void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
-// void outputARY(int array[dungeonRowSize][dungeonColSize]);
 
 int main(){
     int stepsRemaining = -1;  // setup  
@@ -29,15 +28,4 @@ void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize])
 }
 
 
-// void outputARY(int array[dungeonRowSize][dungeonColSize])
-// {
-//      for(int row = 0; row < dungeonRowSize; row++){
-//         for(int col = 0; col < dungeonColSize; col++){
-//             cout << setw(3) << dungeonlayout[row][col] << " ";
-//         }
-//         cout << endl;
-//     }
-
-
-// }
 
