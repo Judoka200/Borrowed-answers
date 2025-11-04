@@ -1,43 +1,42 @@
 #include "funcs.h"
+#include "dialogue.h"
 
-//initialise size of dungeon
-const int dungeonRowSize = 5;
-const int dungeonColSize = 5;
-  int dungeonlayout[dungeonRowSize][dungeonColSize];
+
+
+
 
 using namespace std;
 
-void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
-// void outputARY(int array[dungeonRowSize][dungeonColSize]);
+//initialise size of dungeon (set the width and height)
+const int dungeonRowSize =5;
+const int dungeonColSize = 3;
+int dungeonlayout[dungeonRowSize][dungeonColSize]; //initialise the array for the board
+
+
+//Function Calls
+    void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
+
+
 
 int main(){
-    int stepsRemaining = -1;  // setup  
+
+
+
+    int stepsRemaining = -1;  // setup 
 
 dungeonSetup(dungeonlayout);
-outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);}
+outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
+
+timeDelay(4.7);
+cout <<"HI";
+}
 
 
 void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize])
 {
-    int value = 0;  // or start with 1 if you prefer
-    for(int row = 0; row < dungeonRowSize; row++){
-        for(int col = 0; col < dungeonColSize; col++){
-            dungeonlayout[row][col] = value;
-            value++;
-        }
-    }
+    fillARY<dungeonRowSize,dungeonColSize>(dungeonlayout);
+   
 }
 
 
-// void outputARY(int array[dungeonRowSize][dungeonColSize])
-// {
-//      for(int row = 0; row < dungeonRowSize; row++){
-//         for(int col = 0; col < dungeonColSize; col++){
-//             cout << setw(3) << dungeonlayout[row][col] << " ";
-//         }
-//         cout << endl;
-//     }
-
-
-// }
 
