@@ -1,3 +1,0 @@
-/mnt/c/Users/Isaac/projects/Term-1-Uni-project/build/CMakeFiles/main.dir
-/mnt/c/Users/Isaac/projects/Term-1-Uni-project/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/Isaac/projects/Term-1-Uni-project/build/CMakeFiles/rebuild_cache.dir
