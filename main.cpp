@@ -1,4 +1,7 @@
 #include "funcs.h"
+#include <windows.h> //for sleep() function, used to for delay between text outputs
+#include "dialogue.h"
+
 using namespace std;
 
 //initialise size of dungeon (set the width and height)
@@ -8,9 +11,7 @@ int dungeonlayout[dungeonRowSize][dungeonColSize]; //initialise the array for th
 
 
 //Function Calls
-void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
-
-
+    void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
 
 
 
@@ -20,10 +21,8 @@ int main(){
 dungeonSetup(dungeonlayout);
 outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
 
-
-cout << endl<<endl<<dungeonlayout[1][0]<< endl<<endl;
-
-
+Sleep(13500);
+cout <<"HI";
 }
 
 
