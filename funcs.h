@@ -3,6 +3,14 @@
 #include <ctime>
 #include <iomanip>
 
+#ifdef _WIN32
+#include <windows.h> //for sleep() function, used to for delay between text outputs
+#endif
+
+#ifdef linux
+#include <unistd.h> //for usleep() function, used to for delay between text outputs
+#endif
+
 
 template <int ROWS, int COLS>
 void outputARY(int array[ROWS][COLS])
@@ -58,3 +66,12 @@ void fillARY(int array[ROWS][COLS],int reset = 0)
 
 
 
+void timeDelay(float duration_inSeconds){
+    #ifdef _WIN32
+        Sleep(duration_inSeconds*1000); //Sleep() takes an intager in milli-seconds so we muultiply by 1,000
+    #endif
+
+    #ifdef linux
+        usleep(duration_inSeconds*1000000); //usleep() takes an intager in micro-seconds so we muultiply by 1,000,000
+    #endif
+}

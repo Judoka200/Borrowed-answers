@@ -1,6 +1,9 @@
 #include "funcs.h"
-#include <windows.h> //for sleep() function, used to for delay between text outputs
 #include "dialogue.h"
+
+
+
+
 
 using namespace std;
 
@@ -16,12 +19,15 @@ int dungeonlayout[dungeonRowSize][dungeonColSize]; //initialise the array for th
 
 
 int main(){
+
+
+
     int stepsRemaining = -1;  // setup 
 
 dungeonSetup(dungeonlayout);
 outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
 
-Sleep(13500);
+timeDelay(4.7);
 cout <<"HI";
 }
 
