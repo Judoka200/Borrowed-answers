@@ -14,9 +14,7 @@ int dungeonlayout[dungeonRowSize][dungeonColSize]; //initialise the array for th
 
 
 //Function Calls
-    void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
-
-
+void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
 
 int main(){
 
@@ -27,8 +25,7 @@ int main(){
 dungeonSetup(dungeonlayout);
 outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
 
-timeDelay(4.7);
-cout <<"HI";
+outputDialogue();
 }
 
 

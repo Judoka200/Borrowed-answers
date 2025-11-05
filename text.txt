@@ -1,0 +1,3 @@
+introduction | you wake up in a dark damp room
+
+descText | you look around and don't see much, apart from a kitchen sized table at the edge, the room is empty
