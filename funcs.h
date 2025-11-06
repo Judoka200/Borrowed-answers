@@ -67,6 +67,10 @@ void fillARY(int array[ROWS][COLS],int reset = 0)
 
 
 void timeDelay(float duration_inSeconds){
+/* 
+    Windows and Linux/Unix have differing ways of a sleep function
+*/
+
     #ifdef _WIN32
         Sleep(duration_inSeconds*1000); //Sleep() takes an intager in milli-seconds so we muultiply by 1,000
     #endif
