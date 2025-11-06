@@ -66,7 +66,7 @@ void fillARY(int array[ROWS][COLS],int reset = 0)
 
 
 
-void timeDelay(float duration_inSeconds){
+void timeDelay(double duration_inSeconds){
 /* 
     Windows and Linux/Unix have differing ways of a sleep function
 */

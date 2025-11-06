@@ -15,21 +15,30 @@ void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
 
 int main(){
 
-
     int stepsRemaining = -1;  // setup 
 
 //dungeonSetup(dungeonlayout);
 //outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
-outputDialogue();
 
-// outputDialogue();
-cout<< col(blue, blue)<<"black texrt red bakcgz"<<col()<<endl;
 
-cout<< "\033[35;44m black texrt red bakcgz"<<col();
-cout << "\033[35;44mmagenta on blue\033[0m\n";
+typeWrite("introduction");
+cout << "\033[3 q";
+cin.ignore(1);
+typeWrite("intro");
+cin.ignore(1);
 
-cin.ignore(2);
+typeWrite("introduction",red,0.1);
+cout << "\033[3 q";
+cin.ignore(1);
+typeWrite("intro",green);
+cin.ignore(1);
+
+
+
+
 }
+
+
 
 
 void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize])
