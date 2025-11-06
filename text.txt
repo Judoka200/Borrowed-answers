@@ -1,4 +1,4 @@
-introduction | You wake up in a dark damp room
+introduction | You wake up in a dark damp room 
 more text here 
 
 descText | you look around and don't see much, apart from a kitchen sized table at the edge, the room is empty

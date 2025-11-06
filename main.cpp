@@ -18,8 +18,9 @@ int main(){
 
     int stepsRemaining = -1;  // setup 
 
-dungeonSetup(dungeonlayout);
-outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
+//dungeonSetup(dungeonlayout);
+//outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
+outputDialogue();
 
 // outputDialogue();
 cout<< col(blue, blue)<<"black texrt red bakcgz"<<col()<<endl;

@@ -3,72 +3,59 @@
 
 #define storyFile "text.txt"
 
-void outputDialogue()
+
+
+std::string display(const std::string &textTitle)
+/*
+    returns string instead of directly outputting 
+*/
 {
-    std::ifstream text_file;
-    text_file.open(storyFile);
-    if(text_file.is_open()){
+    // open the text file
+    std::ifstream textFile("text.txt");
 
-    std::string desc;
-    std::getline(text_file,desc); 
-    std::cout<<desc;
-    
-    }else{
-        std::cout<<"ERROR OPENING "<< storyFile<<std::endl;
+    if (!textFile.is_open())
+    {
+        std::cout << "Error: Could not open textFile" << std::endl;
+        return "There was a problem retrieving this text";
     }
 
-
-}
-
-
-
-
-std::string output(const std::string& textTitle) {
-    // 1. Opens the file using ifstream
-    std::ifstream file("text.txt");
-    
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file" << std::endl;
-        return "";  // Return empty string on error
-    }
-    
     std::string line;
-    // 2. Reads the file line by line with getline()
-    while (std::getline(file, line)) {
-        // 3. For each line, finds the | delimiter using find()
+    while (std::getline(textFile, line))
+    {
+        // checks if the line has the delimiter
         size_t delimPos = line.find('|');
-        // std::cout<<std::endl<<delimPos<<std::endl;
 
-        if (delimPos != std::string::npos) {
-            // 4. Extracts the text before | (the key) and trims whitespace
+        // if delmiter found then execute, but if not found, skip the code, close the file, and return end message
+        if (delimPos != std::string::npos)
+        {
+            // extract the text before the delimiter
             std::string key = line.substr(0, delimPos);
-            
-            // Remove leading/trailing whitespace from key
-            key.erase(0, key.find_first_not_of(" \t"));
-            key.erase(key.find_last_not_of(" \t") + 1);
-            
-            // 5. Compares the key with textTitle
-            if (key == textTitle) {
-                // 6. If matched, extracts and returns the text after |
+
+            key.erase(0, key.find_first_not_of(" \t")); // remove leading whitespace
+            key.erase(key.find_last_not_of(" \t") + 1); // remove trailing whitespace
+
+            // check if the section key is the 'wanted' one inputted as an argument
+            if (key == textTitle)
+            {
+                // extract the text after the delimiter
                 std::string content = line.substr(delimPos + 1);
                 content.erase(0, content.find_first_not_of(" \t"));
                 content.erase(content.find_last_not_of(" \t") + 1);
-                
-                // 7. Closes the file when done
-                file.close();
-                return content;  // Return the content instead of printing
+
+                // Closes the textFile and returns the message
+                textFile.close();
+                return content;
             }
         }
     }
-    
-    // 7. Closes the file when done
-    file.close();
-    return "";  // Return empty string if not found
+
+    textFile.close();
+    return "";
 }
 
-
-
-
+/*
+ ----------------COLOUR FOR TEXT--------------------
+*/
 
 enum class colours{
     Default,
@@ -81,8 +68,6 @@ enum class colours{
     cyan,
     white  
 };
-
-
 
 std::string col(colours forColour  = colours::Default, colours backColour = colours::Default )
 {
