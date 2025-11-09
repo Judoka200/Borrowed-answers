@@ -5,9 +5,23 @@ using enum colours; //used for col() to colour text | prevents having to use col
 using namespace std;
 
 //initialise size of dungeon (set the width and height)
-const int dungeonRowSize =5;
-const int dungeonColSize = 3;
+const int dungeonRowSize =6;
+const int dungeonColSize = 4;
 int dungeonlayout[dungeonRowSize][dungeonColSize]; //initialise the array for the board
+/*
+[0][0] | [0][1] | [0][2]| [0][3]                   | [0][1] |        |       
+-------|--------|-------|-------            -------|--------|--------|-------
+[1][0] | [1][1] | [1][2]| [1][3]            [1][0] | [1][1] | [1][2] | [1][2] 
+-------|--------|-------|-------            -------|--------|--------|-------
+[2][0] | [2][1] | [2][2]| [2][3]                   | [2][1] |        |       
+-------|--------|-------|-------            -------|--------|--------|-------
+[3][0] | [3][1] | [3][2]| [3][3]                   | [3][1] | [3][2] | [3][2]
+-------|--------|-------|-------            -------|--------|--------|-------
+[4][0] | [4][1] | [4][2]| [4][3]                   |        | [4][2] | [4][2]
+-------|--------|-------|-------            -------|--------|--------|-------
+[4][0] | [4][1] | [4][2]| [4][3]                   |        |        |       
+
+*/
 
 
 //Function Calls
@@ -16,25 +30,28 @@ void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize]);
 int main(){
 
 
-    int stepsRemaining = -1;  // setup 
+cout<<col(); //reset all colour formatting
+    int stepsRemaining = 10;  // setup 
 
-//dungeonSetup(dungeonlayout);
-//outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
-outputDialogue();
 
-// outputDialogue();
-cout<< col(blue, blue)<<"black texrt red bakcgz"<<col()<<endl;
 
-cout<< "\033[35;44m black texrt red bakcgz"<<col();
-cout << "\033[35;44mmagenta on blue\033[0m\n";
+// dungeonSetup(dungeonlayout);
+// outputARY<dungeonRowSize, dungeonColSize> (dungeonlayout);
+// auto currentpos = dungeonlayout[1][0];
 
-cin.ignore(2);
+typeWrite("intro[1]");
+cout<<"\033[3 q";
+typeWrite("intro[1]",red,0.25);
+
 }
+
+
+
 
 
 void dungeonSetup(int dungeonlayout[dungeonRowSize][dungeonColSize])
 {
-    fillARY<dungeonRowSize,dungeonColSize>(dungeonlayout);
+    fillARY<dungeonRowSize,dungeonColSize>(dungeonlayout,true);
    
 }
 

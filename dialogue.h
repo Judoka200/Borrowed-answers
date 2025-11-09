@@ -1,13 +1,57 @@
 #include <string>
 #include <fstream>
-
 #define storyFile "text.txt"
 
+enum class colours{
+    Default,
+    black,
+    red,
+    green,
+    yellow,
+    blue,
+    magenta,
+    cyan,
+    white  
+};
 
 
-std::string display(const std::string &textTitle)
+std::string col(colours forColour  , colours backColour );
+
+/*
+   ---------- getting  \n \t and \ for escape codes instead of being interpreted as individual chars----------
+*/
+std::string processEscapes(const std::string& str) {
+    std::string result;
+    for (size_t i = 0; i < str.length(); i++) {
+        if (str[i] == '\\' && i + 1 < str.length()) {
+            // Check what comes after the backslash
+            if (str[i + 1] == 'n') {
+                result += '\n';  // Convert \n to newline
+                i++;  // Skip the 'n'
+            } else if (str[i + 1] == 't') {
+                result += '\t';  // Convert \t to tab
+                i++;  // Skip the 't'
+            } else if (str[i + 1] == '\\') {
+                result += '\\';  // Convert \\ to single backslash
+                i++;  // Skip the second backslash
+            } else {
+                result += str[i];  // Keep the backslash if not recognized
+            }
+        } else {
+            result += str[i];
+        }
+    }
+    return result;
+}
+
+/*
+    --------------------GETTING TEXT FROM .TXT FILE--------------------
+*/
+
+std::string display(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default)
 /*
     returns string instead of directly outputting 
+    allows use of ANSI escape codes 
 */
 {
     // open the text file
@@ -43,31 +87,39 @@ std::string display(const std::string &textTitle)
                 content.erase(content.find_last_not_of(" \t") + 1);
 
                 // Closes the textFile and returns the message
-                textFile.close();
-                return content;
-            }
+                
+
+/*
+ --------------------COLOUR FOR TEXT--------------------
+*/  
+                if (static_cast<int> (forColour) || static_cast<int>(backColour)){
+
+                    
+                    std::string output="";
+                    output += col(forColour,backColour);
+                    output += content;
+                    output += "\033[0m";
+
+                    output = processEscapes(output);
+                    textFile.close();
+                    return output;
+            
+                }else{
+                    content = processEscapes(content);
+
+                    textFile.close();
+                    return content;
+                }
+          
         }
     }
 
-    textFile.close();
-    return "";
+   
+    
 }
-
-/*
- ----------------COLOUR FOR TEXT--------------------
-*/
-
-enum class colours{
-    Default,
-    black,
-    red,
-    green,
-    yellow,
-    blue,
-    magenta,
-    cyan,
-    white  
-};
+textFile.close();
+return "";
+}
 
 std::string col(colours forColour  = colours::Default, colours backColour = colours::Default )
 {
@@ -109,5 +161,24 @@ default:
 
 
 return output;
-}   
+}
 
+void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.035)
+{
+    std::string text = display(textTitle,forcolour);
+    if (text[0] == '\\' && text[1]=='0')
+    { // becuase \ is an escape code, two are needed to check for a single "\"
+        for (int i = 16; i <= text.length(); i++)
+        {
+            std::cout << text[i];
+            timeDelay(delay);
+        }
+    }
+    else{
+        for (int i = 0; i <= text.length(); i++)
+        {
+            std::cout << text[i];
+            timeDelay(delay);
+        }
+    }
+}
