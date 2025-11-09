@@ -22,7 +22,12 @@ void outputARY(int array[ROWS][COLS])
         std::cout << std::endl;
     }
 
-
+    for(int row = 0; row < ROWS; row++){
+        for(int col = 0; col < COLS; col++){
+            std::cout << std::setw(3) <<"["<<row<<"," <<col<<"]";
+        }
+        std::cout << std::endl;
+    }
 }
 
 /* ^

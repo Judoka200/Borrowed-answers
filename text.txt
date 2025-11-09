@@ -1,4 +1,16 @@
-introduction | You wake up in a dark damp room,
-intro | to be continued
+intro[1] | You wake up in a dark damp room,\n\tYou can't see much going on apart from a dimly lit candle 
+intro[3] | 
+intro[4] | 
+intro[5] | 
+intro[6] | 
+intro[7] | 
+intro[8] | 
+intro[9] | 
+intro[10] | 
+intro[11] | 
+intro[12] | 
+intro[13] | 
+intro[14] | 
+intro[15] | 
 
-descText | you look around and don't see much, apart from a kitchen sized table at the edge, the room is empty
+

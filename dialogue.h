@@ -14,8 +14,35 @@ enum class colours{
     white  
 };
 
-std::string col(colours forColour, colours backColour);
 
+std::string col(colours forColour  , colours backColour );
+
+/*
+   ---------- getting  \n \t and \ for escape codes instead of being interpreted as individual chars----------
+*/
+std::string processEscapes(const std::string& str) {
+    std::string result;
+    for (size_t i = 0; i < str.length(); i++) {
+        if (str[i] == '\\' && i + 1 < str.length()) {
+            // Check what comes after the backslash
+            if (str[i + 1] == 'n') {
+                result += '\n';  // Convert \n to newline
+                i++;  // Skip the 'n'
+            } else if (str[i + 1] == 't') {
+                result += '\t';  // Convert \t to tab
+                i++;  // Skip the 't'
+            } else if (str[i + 1] == '\\') {
+                result += '\\';  // Convert \\ to single backslash
+                i++;  // Skip the second backslash
+            } else {
+                result += str[i];  // Keep the backslash if not recognized
+            }
+        } else {
+            result += str[i];
+        }
+    }
+    return result;
+}
 
 /*
     --------------------GETTING TEXT FROM .TXT FILE--------------------
@@ -73,10 +100,13 @@ std::string display(const std::string &textTitle,colours forColour  = colours::D
                     output += content;
                     output += "\033[0m";
 
+                    output = processEscapes(output);
                     textFile.close();
                     return output;
             
                 }else{
+                    content = processEscapes(content);
+
                     textFile.close();
                     return content;
                 }
@@ -87,7 +117,7 @@ std::string display(const std::string &textTitle,colours forColour  = colours::D
    
     
 }
- textFile.close();
+textFile.close();
 return "";
 }
 
