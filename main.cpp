@@ -1,30 +1,20 @@
 #include "funcs.h"
 #include "dialogue.h"
+#include "items.h"
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
 using namespace std;
 
 
-
-/*
-
-
-
-
-
-
-
-*/
-
 //initialise size of dungeon (set the width and height)
 //access the layout by dungeonlayout[ Y POS][X POS]
 const int mapWidth = 4; //X
 const int mapHeight =3;  //Y
 string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL","Dumping_Grounds","WALL"},
-{"Campfire_Room","Hallway","Sentry","Exit"},
-{"WALL","Library_Entrance","Library","WALL"}
+{"WALL","Dumping_Grounds","WALL","WALL"},           // [0][0] | [0][1] | [0][2] | [0][3]
+{"Campfire_Room","Hallway","Sentry","Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
+{"WALL","Library_Entrance","Library","WALL"}        // [2][0] | [2][1] | [2][2] | [2][3]
 };
 
 bool visited[mapHeight][mapWidth] ={false};
@@ -81,9 +71,6 @@ vector<string> getMoves()
     
     return moves;
 }
-
-
-
 
 bool move(string direction)
 {
@@ -191,13 +178,12 @@ void GAME_LOOP()
             if (i < moves.size() - 1) cout << ", "; // seperates each move by , unless there are no more moves
         }
         cout<<endl;
-        
-      
-
-
+        displayMap();
+/*
+---------------------------GET COMMAND--------------------------
+*/
         cout << "Enter command: ";
         getline(cin,command);
-
 
         if (command =="quit"){
             cout << "bye";
@@ -217,14 +203,20 @@ void GAME_LOOP()
             cout<< "Press Enter to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        }else if(moveDirection(command)){
+        }
+        // else if(){}
+        // else if(){}
+        // else if(){}
+        // else if(){}
+
+
+        else if(moveDirection(command)){
                 if(move(command)){
                 cout<< "you moved:" << command<<endl;
                 }
                 cout<<"\n press enter to continure ...";   
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-        else {
+        }else {
             cout << "Invalid command! Use W/A/S/D, 'map', or 'quit'" << endl;
             cout << "Press Enter to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -237,7 +229,7 @@ void GAME_LOOP()
 
 int main(){
 
-
+    generateItems();
     clearScreen()  ;
     cout<<col(); //reset all colour formatting
     int stepsRemaining = 10;  // setup ]
