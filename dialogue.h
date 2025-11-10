@@ -48,7 +48,7 @@ std::string processEscapes(const std::string& str) {
     --------------------GETTING TEXT FROM .TXT FILE--------------------
 */
 
-std::string display(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default)
+std::string output(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default)
 /*
     returns string instead of directly outputting 
     allows use of ANSI escape codes 
@@ -165,7 +165,7 @@ return output;
 
 void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.035)
 {
-    std::string text = display(textTitle,forcolour);
+    std::string text = output(textTitle,forcolour);
     if (text[0] == '\\' && text[1]=='0')
     { // becuase \ is an escape code, two are needed to check for a single "\"
         for (int i = 16; i <= text.length(); i++)
