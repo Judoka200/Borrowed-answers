@@ -1,28 +1,18 @@
 #include "funcs.h"
 #include "dialogue.h"
+#include "items.h"
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
 using namespace std;
 
 
-
-/*
-
-
-
-
-
-
-
-*/
-
 //initialise size of dungeon (set the width and height)
 //access the layout by dungeonlayout[ Y POS][X POS]
 const int mapWidth = 4; //X
 const int mapHeight =3;  //Y
 string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL","Dumping_Grounds","WALL"},
+{"WALL","Dumping_Grounds","WALL","WALL"},
 {"Campfire_Room","Hallway","Sentry","Exit"},
 {"WALL","Library_Entrance","Library","WALL"}
 };
@@ -55,7 +45,7 @@ bool isValid(int X, int Y)
 
 }
 
-void revealAdjcent(){
+void revealAdjcent(){ //shows all adjacent rooms to be visible on map
       if (playerY > 0) visited[playerY - 1][playerX] = true;
     if (playerY < mapHeight ) visited[playerY + 1][playerX] = true;
     if (playerX > 0) visited[playerY][playerX - 1] = true;
@@ -66,7 +56,7 @@ void revealAdjcent(){
 //using vector becuase size of list will change depending on postition 
 vector<string> getMoves()
 {
-    vector<string> moves;
+    vector<string> moves; //temp storage
     if (playerY > 0 && isValid(playerX, playerY - 1))
     { moves.push_back("Up (w)"); }
     
@@ -165,9 +155,11 @@ void displayMap(bool dev = false)
 
 void GAME_LOOP()
 {
-    string command;
+    string command;const int mapWidth = 4; //X
+const int mapHeight =3;  //Y
     visited[playerY][playerX] = true;
     revealAdjcent();
+    
     
 
     // typeWrite("Campfire_room_opening",green);
@@ -193,8 +185,6 @@ void GAME_LOOP()
         cout<<endl;
         
       
-
-
         cout << "Enter command: ";
         getline(cin,command);
 
@@ -223,8 +213,17 @@ void GAME_LOOP()
                 }
                 cout<<"\n press enter to continure ...";   
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-        else {
+        }else if(command =="inv"){
+            viewInventory();
+
+        }else if(command.substr(0,7) == "pickup "){
+            string item = command.substr(7);
+            pickupItem(item,playerY,playerX);
+            cout<< "Press Enter to continue...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        
+        }else {
             cout << "Invalid command! Use W/A/S/D, 'map', or 'quit'" << endl;
             cout << "Press Enter to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -237,8 +236,8 @@ void GAME_LOOP()
 
 int main(){
 
-
-    clearScreen()  ;
+    generateItems();
+    clearScreen();
     cout<<col(); //reset all colour formatting
     int stepsRemaining = 10;  // setup ]
     GAME_LOOP();

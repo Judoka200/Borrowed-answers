@@ -11,6 +11,7 @@
 #include <unistd.h> //for usleep() function, used to for delay between text outputs
 #endif
 
+// if any input is one of movement commands 
 bool moveDirection(std::string str){
     if (str == "w"||str == "W"||str == "up"||str == "Up"
       ||str == "a"||str == "A"||str == "left"||str == "Left"

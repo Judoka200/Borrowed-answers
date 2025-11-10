@@ -86,8 +86,6 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
                 std::string content = line.substr(delimPos + 1);
                 content.erase(0, content.find_first_not_of(" \t"));
                 content.erase(content.find_last_not_of(" \t") + 1);
-
-                // Closes the textFile and returns the message
                 
 
 /*
@@ -118,6 +116,8 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
    
     
 }
+
+// Closes the textFile and returns the message
 textFile.close();
 return "";
 }
@@ -166,12 +166,12 @@ return output;
 
 
 
-//CHANGE DEFUALT SPEED TO 0.035
-void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.01)
+//----------------------------------CHANGE DEFUALT SPEED TO 0.035---------------------------------------
+void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.005)
 {
     //if string is a title from text.txt
     std::string text = output(textTitle,forcolour);
-      if (text[0] == '\\' && text[1]=='0')
+      if (text[0] == '\\' & text[1]=='0')
         { // becuase \ is an escape code, two are needed to check for a single "\"
             for (int i = 16; i <= text.length(); i++)
             {
