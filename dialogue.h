@@ -208,5 +208,4 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
             }
             std::cout<<col();
         }
-        
 }

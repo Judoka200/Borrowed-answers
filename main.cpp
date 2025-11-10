@@ -164,6 +164,7 @@ void GAME_LOOP()
     while(true)
     {  
         displayPlrPos();
+        displayMap();
         
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
@@ -178,7 +179,6 @@ void GAME_LOOP()
             if (i < moves.size() - 1) cout << ", "; // seperates each move by , unless there are no more moves
         }
         cout<<endl;
-        displayMap();
 /*
 ---------------------------GET COMMAND--------------------------
 */
