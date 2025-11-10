@@ -213,17 +213,17 @@ const int mapHeight =3;  //Y
                 }
                 cout<<"\n press enter to continure ...";   
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }else if(command =="inv"){
-            viewInventory();
-
-        }else if(command.substr(0,7) == "pickup "){
-            string item = command.substr(7);
-            pickupItem(item,playerY,playerX);
-            cout<< "Press Enter to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        
-        }else {
+        }
+        // else if(command =="inv"){
+        //     viewInventory();
+        // }
+        // else if(command.substr(0,7) == "pickup "){
+        //     string item = command.substr(7);
+        //     // pickupItem(item,playerY,playerX);
+        //     cout<< "Press Enter to continue...";
+        //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        // }
+        else {
             cout << "Invalid command! Use W/A/S/D, 'map', or 'quit'" << endl;
             cout << "Press Enter to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
