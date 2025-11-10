@@ -34,6 +34,7 @@ std::string processEscapes(const std::string& str) {
             } else if (str[i + 1] == '\\') {
                 result += '\\';  // Convert \\ to single backslash
                 i++;  // Skip the second backslash
+
             } else {
                 result += str[i];  // Keep the backslash if not recognized
             }
@@ -163,22 +164,49 @@ default:
 return output;
 }
 
-void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.035)
+
+
+//CHANGE DEFUALT SPEED TO 0.035
+void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.01)
 {
+    //if string is a title from text.txt
     std::string text = output(textTitle,forcolour);
-    if (text[0] == '\\' && text[1]=='0')
-    { // becuase \ is an escape code, two are needed to check for a single "\"
-        for (int i = 16; i <= text.length(); i++)
-        {
-            std::cout << text[i];
-            timeDelay(delay);
+      if (text[0] == '\\' && text[1]=='0')
+        { // becuase \ is an escape code, two are needed to check for a single "\"
+            for (int i = 16; i <= text.length(); i++)
+            {
+                if(text[i] == '\\'){
+                    if (text[i+1] == 'd'){
+                        timeDelay(0.65);
+                        i++;
+                    continue;}}
+                std::cout << text[i];
+                timeDelay(delay);
+                    }
+            }
+        
+        else{
+            for (int i = 0; i <= text.length(); i++)
+            {
+                if(text[i] == '\\'){
+                    if (text[i+1] == 'd'){
+                        timeDelay(0.65);
+                        i++;
+                    continue;}}
+                std::cout << text[i];
+                timeDelay(delay);
+                
+            }
         }
-    }
-    else{
-        for (int i = 0; i <= text.length(); i++)
-        {
-            std::cout << text[i];
-            timeDelay(delay);
+        // if string is just text to be outputted
+        if(text ==""){ 
+            text =textTitle;
+            std::cout<<col(forcolour);
+            for (int i = 0; i <= text.length(); i++){
+                std::cout<<text[i];
+                timeDelay(delay);
+            }
+            std::cout<<col();
         }
-    }
+        
 }

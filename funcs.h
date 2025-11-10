@@ -11,56 +11,15 @@
 #include <unistd.h> //for usleep() function, used to for delay between text outputs
 #endif
 
-template <int X, int Y>
-bool entered(int *array[Y][X]){
-
-
-}
-
-template <int ROWS, int COLS>
-void outputARY(int *array[ROWS][COLS])
-{
-     for(int row = 0; row < ROWS; row++){
-        for(int col = 0; col < COLS; col++){
-            std::cout << std::setw(3) << array[row][col] << " ";
-        }
-        std::cout << std::endl;
+bool moveDirection(std::string str){
+    if (str == "w"||str == "W"||str == "up"||str == "Up"
+      ||str == "a"||str == "A"||str == "left"||str == "Left"
+      ||str == "s"||str == "S"||str == "down"||str == "Down"
+      ||str == "d"||str == "D"||str == "right"||str == "Right")
+      return true;  
+      else return false;
     }
 
-    for(int row = 0; row < ROWS; row++){
-        for(int col = 0; col < COLS; col++){
-            std::cout << std::setw(3) <<"["<<row<<"," <<col<<"]";
-        }
-        std::cout << std::endl;
-    }
-}
-
-/*
-    fill array with increasing values from 0 
-*/
-template <int ROWS, int COLS>
-std::string fillARY(std::string array[ROWS][COLS],int reset = 0)
-//if reset is set to anything other than 0, Set all values in array to 0 
-//reset = 0 therfore argument is optional and will not reset the function by default 
-{
-    //fill with 0 
-    if(reset){
-        for(int row = 0; row < ROWS; row++){
-            for(int col = 0; col < COLS; col++){
-                array[row][col] = "WALL";
-            }
-        }
-    }else{
-    
-    int value = 0; //or start with one for indexing starting at
-    for(int row = 0; row < ROWS; row++){
-        for(int col = 0; col < COLS; col++){
-            array[row][col] = static_cast<int>(value);
-            value++;
-            }
-        }
-    }
-}
 
 
 

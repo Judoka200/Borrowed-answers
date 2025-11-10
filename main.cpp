@@ -5,44 +5,54 @@
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
 using namespace std;
 
-const string moveDirections[] = 
-    {"w","W","up","Up",
-     "a","A","left","Left",
-     "s","s","down","Down",
-     "d","D","right","Right"};
 
-bool moveDirection(string str){
-    if (str == "w"||str == "W"||str == "up"||str == "Up"
-      ||str == "a"||str == "A"||str == "left"||str == "Left"
-      ||str == "s"||str == "S"||str == "down"||str == "Down"
-      ||str == "d"||str == "D"||str == "right"||str == "Right")
-      return true;  
-      else return false;
-    }
+
+/*
+
+
+
+
+
+
+
+*/
 
 //initialise size of dungeon (set the width and height)
 //access the layout by dungeonlayout[ Y POS][X POS]
-const int mapWidth = 5; //X
+const int mapWidth = 4; //X
 const int mapHeight =3;  //Y
 string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL","Campfire Room","WALL"},
-{"Room 2","Room 3","Room 4"},
-{"WALL","WALL","WALL"}
+{"WALL","Dumping_Grounds","WALL"},
+{"Campfire_Room","Hallway","Sentry","Exit"},
+{"WALL","Library_Entrance","Library","WALL"}
 };
 
 bool visited[mapHeight][mapWidth] ={false};
+bool observed[mapHeight][mapWidth] ={false};
 
-int playerX = 1;
+int playerX = 0;
 int playerY = 1;
 
+bool isBlocked(int fromX,int fromY, int ToX, int ToY){
+    string fromRoom = dungeonlayout[fromY][fromX];
+    string toRoom = dungeonlayout[ToY][ToX];
 
+    if(fromRoom =="Sentry" && toRoom =="Library")
+    {return true;}
+
+    else {return false;}
+}
 bool isValid(int X, int Y)
 {
     if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight)
     {
         return false;
     }
+    if(isBlocked(playerX,playerY,X,Y))
+    {return false;}
     return dungeonlayout[Y][X] != "WALL";
+
+
 }
 
 void revealAdjcent(){
@@ -72,6 +82,9 @@ vector<string> getMoves()
     return moves;
 }
 
+
+
+
 bool move(string direction)
 {
     int newX = playerX;
@@ -96,6 +109,8 @@ bool move(string direction)
             }
         return false;
     }
+
+
 
     playerX = newX;
     playerY = newY;
@@ -153,16 +168,33 @@ void GAME_LOOP()
     string command;
     visited[playerY][playerX] = true;
     revealAdjcent();
+    
 
+    // typeWrite("Campfire_room_opening",green);
+    typeWrite("WHY???",red);
+    timeDelay(1.5);
+    
     while(true)
-    {
+    {  
         displayPlrPos();
+        
+        if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
+        {
+            cout<< "You observe the room your in\n";
+            typeWrite(dungeonlayout[playerY][playerX]+"_desc");
+            observed[playerY][playerX] = true;
+            cout<<endl;
+        }
         vector<string> moves = getMoves();
         for (int i =0; i <moves.size(); i++){
             cout<<moves[i];
             if (i < moves.size() - 1) cout << ", "; // seperates each move by , unless there are no more moves
         }
+        cout<<endl;
         
+      
+
+
         cout << "Enter command: ";
         getline(cin,command);
 
@@ -171,7 +203,16 @@ void GAME_LOOP()
             cout << "bye";
             break;
         
-        }else if(command == "map"){
+        }
+        else if((command =="observe"|| command =="o"))
+            {
+             typeWrite(dungeonlayout[playerY][playerX]+"_desc");
+                cout<<endl;
+            cout<< "Press Enter to continue...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        }
+        else if(command == "map"){
             displayMap();
             cout<< "Press Enter to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -203,10 +244,5 @@ int main(){
     GAME_LOOP();
     
 }
-
-
-
-
-
 
 

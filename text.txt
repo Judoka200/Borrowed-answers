@@ -1,32 +1,17 @@
-intro[1] | You wake up in a dark damp room,\n\tYou can't see much going on apart from a dimly lit candle 
-intro[3] | 
-intro[4] | 
-intro[5] | 
-intro[6] | 
-intro[7] | 
-intro[8] | 
-intro[9] | 
-intro[10] | 
-intro[11] | 
-intro[12] | 
-intro[13] | 
-intro[14] | 
-intro[15] | 
+Campfire_room_opening | \tYou wake up in darkness\d\nYou feel the dampness of the floor attacking you from where you lie.\nwhere did you come from\nwhy are you here\n
+in red do 'WHY?'
+
+
+Campfire_Room_desc | Campfire_Room_desc placeholder
+
+Hallway_desc | hallway placeholder
+
+Dumping_Grounds_desc | DG placeholder
+
+Sentry_desc | Sentry placeholder
+
+Library_Entrance_desc | libENT placeholder
+library_desc | Lib placeholder
+
 
 test | The quick brown fox jumped over the fence \n
-
-
-/*
-[0][0] | [0][1] | [0][2]| [0][3]                   | [0][1] |        |       
--------|--------|-------|-------            -------|--------|--------|-------
-[1][0] | [1][1] | [1][2]| [1][3]            [1][0] | [1][1] | [1][2] | [1][2] 
--------|--------|-------|-------            -------|--------|--------|-------
-[2][0] | [2][1] | [2][2]| [2][3]                   | [2][1] |        |       
--------|--------|-------|-------            -------|--------|--------|-------
-[3][0] | [3][1] | [3][2]| [3][3]                   | [3][1] | [3][2] | [3][2]
--------|--------|-------|-------            -------|--------|--------|-------
-[4][0] | [4][1] | [4][2]| [4][3]                   |        | [4][2] | [4][2]
--------|--------|-------|-------            -------|--------|--------|-------
-[4][0] | [4][1] | [4][2]| [4][3]                   |        |        |       
-
-*/
