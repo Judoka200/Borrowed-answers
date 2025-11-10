@@ -35,6 +35,7 @@ bool visited[mapHeight][mapWidth] ={false};
 int playerX = 1;
 int playerY = 1;
 
+
 bool isValid(int X, int Y)
 {
     if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight)
@@ -99,6 +100,7 @@ bool move(string direction)
     playerX = newX;
     playerY = newY;
     visited[playerY][playerX] = true;
+    revealAdjcent();
     return true;
 }
 
@@ -150,6 +152,7 @@ void GAME_LOOP()
 {
     string command;
     visited[playerY][playerX] = true;
+    revealAdjcent();
 
     while(true)
     {
@@ -192,6 +195,9 @@ void GAME_LOOP()
 
 
 int main(){
+
+
+    clearScreen()  ;
     cout<<col(); //reset all colour formatting
     int stepsRemaining = 10;  // setup ]
     GAME_LOOP();
