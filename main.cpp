@@ -1,5 +1,6 @@
 #include "funcs.h"
 #include "dialogue.h"
+#include "items.h"
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
@@ -228,6 +229,7 @@ void GAME_LOOP()
 
 int main(){
 
+    generateItems();
     clearScreen()  ;
     cout<<col(); //reset all colour formatting
     int stepsRemaining = 10;  // setup ]

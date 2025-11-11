@@ -171,25 +171,33 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
 {
     //if string is a title from text.txt
     std::string text = output(textTitle,forcolour);
+        /*      when using ansi escape codes the characters are placed at the front of the string
+            therefore what ouputs as "text" is actually "\033[39mtext".
+             theses characters are processed in the for loop which causes a noticable delay before 
+            the first character is actually outputted. 
+             output() will always lead a string with "\033[39m\033[49m" or the corresponding colour val
+            this is 16 characters long, so if the first two characters are '\0' then assume the whole
+            code is being used and immediatley start printing from the 17th [index 16] character*/
+
       if (text[0] == '\\' && text[1]=='0')
         { // becuase \ is an escape code, two are needed to check for a single "\"
-            for (int i = 16; i <= text.length(); i++)
+            for (int i = 16; i < text.length(); i++)
             {
-                if(text[i] == '\\'){
-                    if (text[i+1] == 'd'){
+                if(text[i] == '\\' && i+1 < text.length() && text[i+1] == 'd'){
+                 
                         timeDelay(0.65);
                         i++;
-                    continue;}}
+                    continue;}
                 std::cout << text[i];
                 timeDelay(delay);
                     }
             }
         
-        else{
-            for (int i = 0; i <= text.length(); i++)
+        else if (!text.empty()){
+            for (int i = 0; i < text.length(); i++)
             {
                 if(text[i] == '\\'){
-                    if (text[i+1] == 'd'){
+                    if (text[i+1] == 'd' && i+1 < text.length()){
                         timeDelay(0.65);
                         i++;
                     continue;}}
@@ -199,10 +207,10 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
             }
         }
         // if string is just text to be outputted
-        if(text ==""){ 
+        else{
             text =textTitle;
             std::cout<<col(forcolour);
-            for (int i = 0; i <= text.length(); i++){
+            for (int i = 0; i < text.length(); i++){
                 std::cout<<text[i];
                 timeDelay(delay);
             }
