@@ -114,6 +114,7 @@ void displayPlrPos()
     cout << col(blue) << "\n+========================================================+\n" << col();
 }
 
+
 void displayMap(bool dev = false)
 {
     cout << col(cyan) << "\n+========================== MAP ===========================+\n" << col();
@@ -150,6 +151,12 @@ void displayMap(bool dev = false)
     cout << col(cyan) << "\n+========================================================+\n" << col();
 }
 
+    
+
+
+
+
+
 void GAME_LOOP()
 {
     string command;
@@ -159,7 +166,7 @@ void GAME_LOOP()
 
     // typeWrite("Campfire_room_opening",green);
     typeWrite("WHY???",red);
-    timeDelay(1.5);
+    timeDelay(0.5);
     
     while(true)
     {  
@@ -185,39 +192,68 @@ void GAME_LOOP()
 */
         cout << "Enter command: ";
         getline(cin,command);
+        lowerCase(command);
 
+        /*------------EXIT LOOP------------*/
         if (command =="quit"){
             cout << "bye";
             break;
         
         }
-        else if((command =="observe"|| command =="o"))
+        
+        /*------------OBSERVE------------*/
+        else if((command =="observe"))
             {
              typeWrite(dungeonlayout[playerY][playerX]+"_desc");
                 cout<<endl;
             cout<< "Press Enter to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
         }
+       
+        /*------------VIEW MAP------------*/
         else if(command == "map"){
             displayMap();
             cout<< "Press Enter to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         }
-        // else if(){}
-        // else if(){}
+       
+        /*------------PICKUP ITEMS------------*/
+        else if(command.substr(0,7) == "pickup "){
+            string item = command.substr(7);
+                             typeWrite(item,green);     
+                             cout<<endl;      
+            if (command.length()>7){
+            pickupItem(item,playerX,playerY);
+            }
+            cout<< "Press Enter to continue...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+  
+        /*------------INVENTORY ------------*/
+        else if(command == "inventory" || command =="inv"){
+            viewInventory();
+            
+            cout<< "Press Enter to continue...";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            
+        }
+        
+        
         // else if(){}
         // else if(){}
 
-
+        /*------------ MOVE ROOM------------*/
         else if(moveDirection(command)){
                 if(move(command)){
                 cout<< "you moved:" << command<<endl;
                 }
                 cout<<"\n press enter to continure ...";   
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }else {
+        }
+          
+        /*------------WRONG INPUT------------*/
+        else {
             cout << "Invalid command! Use W/A/S/D, 'map', or 'quit'" << endl;
             cout << "Press Enter to continue...";
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -229,13 +265,19 @@ void GAME_LOOP()
 
 
 int main(){
-
+    
     generateItems();
     clearScreen()  ;
     cout<<col(); //reset all colour formatting
     int stepsRemaining = 10;  // setup ]
-    GAME_LOOP();
     
+    
+    GAME_LOOP();
+     
+
+    
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
 }
 
 

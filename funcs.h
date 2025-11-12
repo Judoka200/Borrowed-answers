@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
+#include <cctype>  // used for tolower() 
 
 #ifdef _WIN32
 #include <windows.h> //for sleep() function, used to for delay between text outputs
@@ -11,6 +12,7 @@
 #include <unistd.h> //for usleep() function, used to for delay between text outputs
 #endif
 
+// returns true/false if a valid direction input
 bool moveDirection(std::string str){
     if (str == "w"||str == "W"||str == "up"||str == "Up"
       ||str == "a"||str == "A"||str == "left"||str == "Left"
@@ -20,7 +22,25 @@ bool moveDirection(std::string str){
       else return false;
     }
 
+/** reference and return versions
+ * adding a bool value to the function gives reference which will change the actual string
+ * no bool will make a copy
+*/
+void lowerCase(std::string &str, bool){
+for(int i=0; i <str.length();i++)
+    {str[i]= tolower(str[i]);}
+}
 
+/** reference and return versions
+ * adding a bool value to the function gives reference which will change the actual string
+ * no bool will make a copy
+*/
+std::string lowerCase(std::string str){
+    for(int i=0; i <str.length();i++)
+    {str[i]= tolower(str[i]);}
+    // std::cout<< "\n str is:" << str << std::endl<<std::endl;             DEBUG
+    return str;
+}
 
 
 void timeDelay(double duration_inSeconds){
