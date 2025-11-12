@@ -8,6 +8,7 @@ struct item{
     std::string itemTitle;
     std::string itemDesc;
     bool canPickup;
+    bool visible;
 
 };
 
@@ -15,19 +16,23 @@ struct item{
 std::vector<item> roomItems[mapheight][mapwidth];
 std::vector<item> inventory;
 
-item campfire = {"Campfire", "campfireDesc", false};
+item campfire = {"Campfire", "campfireDesc", false,true};
+item testItem = {"test item","desc", true, true};
+item key = {"Rusty Key", "rusty key desc", true, true};
+item cleaver = {"cleaver", "cleaverdesc", true, true};
+item book = {"Old book", "old Book desc", true, false};
 void generateItems()
 {
         //campfire in Campfire_room
-    roomItems[0][1].push_back(campfire);
+    roomItems[1][0].push_back(campfire);
         //key in Dumping_Grounds
-    roomItems[0][1].push_back({"test item","desc", true});
+    roomItems[1][0].push_back(testItem);
 
-    roomItems[1][0].push_back({"Rusty Key", "rusty key desc", true});
+    roomItems[0][1].push_back(key);
         //
-    roomItems[1][2].push_back({"cleaver", "cleaverdesc", true});
+    roomItems[2][1].push_back(cleaver);
         //book in Library 
-    roomItems[2][2].push_back({"Old book", "old Book desc", true});
+    roomItems[2][2].push_back(book);
 }
 
 bool pickupItem(std::string itemName,int pX,int pY) {
@@ -52,6 +57,18 @@ bool pickupItem(std::string itemName,int pX,int pY) {
     }
     std::cout << "Can't pick up that item." << std::endl;
     return false;
+}
+
+void listItems(int pX, int pY,bool viewInvisible = false){
+
+ for (const auto& item : roomItems[pY][pX]) {
+    if(item.visible && !viewInvisible){
+            std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
+        }else{
+            std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
+
+        }
+    }
 }
 
 void viewInventory()

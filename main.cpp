@@ -165,6 +165,7 @@ void GAME_LOOP()
     {  
         displayPlrPos();
         displayMap();
+        listItems(playerX,playerY,true);
         
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
