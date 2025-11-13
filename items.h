@@ -18,15 +18,20 @@ struct item{
 std::vector<item> roomItems[mapheight][mapwidth];
 std::vector<item> inventory;
 
+#pragma region 
 item campfire = {"Campfire", "campfireDesc", false, true, colours::red};
 item testItem = {"test item", "desc", true, true, colours::blue};
 item key =      {"Rusty Key", "rusty key desc", true, true, colours::yellow};
 item cleaver =  {"cleaver", "cleaverdesc", true, true, colours::red};
 item book =     {"book", "old Book desc", true, false, colours::black, colours::white};
+item match =    {"match", "a simple match to light a fire", true,true, colours::yellow};
+#pragma endregion
+
 
 void generateItems()
 {   //roomItems[Y][X]
-    
+    roomItems[1][0].push_back(match);
+
         //campfire in Campfire_room
     roomItems[1][0].push_back(campfire);
         //key in Dumping_Grounds
@@ -73,7 +78,7 @@ void listItems(int pX, int pY,bool viewInvisible = false){
 
  for (const auto& item : roomItems[pY][pX]) {
     if(item.visible && !viewInvisible){
-            std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
+            std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc << std::endl;
         }else{
             // std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
 
@@ -95,6 +100,50 @@ void viewInventory() {
 }
 
 void viewBook(){
-
+// std::cout <<
 }
+/*
+bool lightCampfire(){
 
+    for (auto i : inventory){
+        if (i.itemTitle == "match"){
+        campfire.backgroundColour = colours::red;
+       }
+    }
+
+    return true ;
+}
+*/
+ bool useItem(std::string itemName, bool& effect, int pX, int pY) {
+    // Check if player has the item in inventory
+    bool hasItem = false;
+    for(auto& i : inventory) {
+        if(lowerCase(i.itemTitle) == lowerCase(itemName)) {
+            hasItem = true;
+            break;
+        }
+    }
+    
+    if(!hasItem) {
+        std::cout << "You don't have that item in your inventory." << std::endl;
+        return false;
+    }
+    
+    // Handle specific item uses
+    if(lowerCase(itemName) == "match" && pX == 0 && pY == 1) {
+        campfire.backgroundColour = colours::red;
+        campfire.colour = colours::yellow;
+        effect = true;
+        std::cout << "You light the campfire with the match. The room fills with warmth and light." << std::endl;
+        return true;
+    }
+    
+    if(lowerCase(itemName) == "book") {
+        viewBook();
+        return true;
+    }
+    
+    // Item exists but can't be used here/now
+    std::cout << "You can't use the " << itemName << " right now." << std::endl;
+    return false;
+}

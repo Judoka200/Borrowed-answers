@@ -3,7 +3,6 @@
 #include <ctime>
 #include <iomanip>
 #include <cctype>  // used for tolower() 
-
 #ifdef _WIN32
 #include <windows.h> //for sleep() function, used to for delay between text outputs
 #endif
@@ -11,6 +10,7 @@
 #ifdef linux
 #include <unistd.h> //for usleep() function, used to for delay between text outputs
 #endif
+
 
 // returns true/false if a valid direction input
 bool moveDirection(std::string str){
@@ -22,7 +22,19 @@ bool moveDirection(std::string str){
       else return false;
     }
 
-
+void showCommands(){
+    std::cout << "\033[32m" << "\n========== AVAILABLE COMMANDS ==========" << "\033[0m" << std::endl;
+    std::cout << "  quit/exit/q          - Exit the game" << std::endl;
+    std::cout << "  observe/look         - Examine your surroundings" << std::endl;
+    std::cout << "  map                  - View the dungeon map" << std::endl;
+    std::cout << "  inventory/inv/i      - View your items" << std::endl;
+    std::cout << "  pickup/take <item>   - Pick up an item" << std::endl;
+    std::cout << "  unlock <direction>   - Unlock a door" << std::endl;
+    std::cout << "  w/a/s/d              - Move (or up/down/left/right)" << std::endl;
+    std::cout << "  help/?               - Show this help message" << std::endl;
+    std::cout << "\033[32m" << "========================================" << "\033[0m" << std::endl;
+   
+}
 
 
 /** reference and return versions
@@ -41,7 +53,6 @@ for(int i=0; i <str.length();i++)
 std::string lowerCase(std::string str){
     for(int i=0; i <str.length();i++)
     {str[i]= tolower(str[i]);}
-    // std::cout<< "\n str is:" << str << std::endl<<std::endl;             DEBUG
     return str;
 }
 

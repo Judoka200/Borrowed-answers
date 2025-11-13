@@ -16,7 +16,7 @@ string dungeonlayout[mapHeight][mapWidth] = {
 };
 
 enum commandType {
-    QUIT,    OBSERVE,    MAP,    INVENTORY,    PICKUP,    UNLOCK,    MOVE,    INVALID
+    QUIT,    OBSERVE,    MAP,    INVENTORY,    PICKUP,    UNLOCK,    MOVE,    USE,    INVALID
 };
 
 //initialise size of dungeon (set the width and height)
@@ -26,6 +26,17 @@ bool observed[mapHeight][mapWidth] ={false};
 
 int playerX = 0;
 int playerY = 1;
+/*
+    ============================TUTORIAL================================== 
+*/
+bool tutorialComplete = false;
+bool tutorialViewedInv = false;
+bool tutorialTakenMatch = false;
+bool tutorialUsedMatch = false;
+bool tutorialObserved = false;
+
+
+
 
 bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     string fromRoom = dungeonlayout[fromY][fromX];
@@ -40,6 +51,7 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
 
     else {return false;}
 }
+
 bool isValid(int X, int Y)
 {
     if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight)
@@ -77,19 +89,23 @@ vector<string> getMoves() //using vector becuase size of list will change depend
     
     return moves;
 }
-bool move(string direction)
+bool move(string& direction)
 {
     int newX = playerX;
     int newY = playerY;
 
     if (direction =="w" || direction =="W" || direction =="up" || direction =="Up")
-        {newY -= 1;}
+        {newY -= 1;
+        direction = "up";}
     if (direction =="a" || direction =="A" || direction =="left" || direction =="Left")
-        {newX -= 1;}
+        {newX -= 1;
+        direction = "left";}
     if (direction =="s" || direction =="S" || direction =="down" || direction =="Down")
-        {newY += 1;}
+        {newY += 1;
+        direction = "down";}
     if (direction =="d" || direction =="D" || direction =="right" || direction =="Right")
-        {newX += 1;}
+        {newX += 1;
+        direction = "right";}
 
     if(!isValid(newX,newY))
     {
@@ -171,23 +187,39 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
         argumentsOut = input.substr(spacePosition + 1);
     } else{
         argumentsOut = "";}
+   
+    if(tutorialComplete){        
+        if(cmd == "quit" || cmd == "exit") return {commandType::QUIT};
+        if(cmd == "observe" || cmd == "look") return {commandType::OBSERVE};
+        if(cmd == "map") return {commandType::MAP};
+        if(cmd == "inventory" || cmd == "inv") return {commandType::INVENTORY};
+        if(cmd == "pickup" || cmd == "take") return {commandType::PICKUP};
+        if(cmd == "use") {
+            return{commandType::USE};}
+        if(cmd == "unlock") {
+            argumentsOut = input;
+            return {commandType::UNLOCK};};
+        if(moveDirection(input)) {
+            argumentsOut = input;
+            return {commandType::MOVE};}
+    } 
     
-    if(cmd == "quit" || cmd == "exit") return {commandType::QUIT};
-    if(cmd == "observe" || cmd == "look") return {commandType::OBSERVE};
-    if(cmd == "map") return {commandType::MAP};
-    if(cmd == "inventory" || cmd == "inv") return {commandType::INVENTORY};
-    if(cmd == "pickup" || cmd == "take") return {commandType::PICKUP};
-    if(cmd == "unlock") {
-        argumentsOut = input;
-        return {commandType::UNLOCK};};
-    if(moveDirection(input)) {
-        argumentsOut = input;
-        return {commandType::MOVE};
+    else{
+        if(cmd == "quit" || cmd == "exit") {
+            return {commandType::QUIT};};
+        if(cmd == "inventory" || cmd == "inv") {
+            tutorialViewedInv = true;
+            return {commandType::INVENTORY};};
+        if((cmd == "pickup" || cmd == "take" ) && argumentsOut =="match") {           
+            return {commandType::PICKUP};}
+        if(cmd == "observe" || cmd == "look"){
+            tutorialObserved = true;
+            return {commandType::OBSERVE};}
+        if(cmd == "use") {
+            return{commandType::USE};}
     }
-    return {commandType::INVALID};
+        return {commandType::INVALID};
 }
-
-
 void executeCommand(commandType type,string arguments) {
     // cout<<"args:"<<arguments<<endl<<endl;
 
@@ -196,11 +228,8 @@ void executeCommand(commandType type,string arguments) {
             break;
             
         case commandType::OBSERVE:
-            if(dungeonlayout[playerY][playerX] == "Prison") {
-                cursedNote();
-            } else {
                 typeWrite(dungeonlayout[playerY][playerX] + "_desc");
-            }
+            
             break;
             
         case commandType::MAP:
@@ -220,6 +249,7 @@ void executeCommand(commandType type,string arguments) {
         case commandType::UNLOCK:
             unlockDoor(hallwayDoor,"");
             unlockDoor(exitDoor,"Rusty key");
+            unlockDoor(tutorialDoor,"");
             break;
             
         case commandType::MOVE:
@@ -228,6 +258,19 @@ void executeCommand(commandType type,string arguments) {
             
         case commandType::INVALID:
             cout << "Invalid command!" << endl;
+            break;
+        case commandType::USE:
+            if(!arguments.empty()) {
+                bool effect = false;
+                if(useItem(arguments, effect, playerX, playerY)) {
+                    cout << "You used the " << arguments << endl;
+                    if(effect) {
+                        cout << "Something changed..." << endl;
+                    }
+                }
+            } else {
+                cout << "Use what? Specify an item name." << endl;
+            }
             break;
     }
         cout<< "Press Enter to continue...";
@@ -261,7 +304,11 @@ void GAME_LOOP()
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
             cout<< "You observe the room your in\n";
-            typeWrite(dungeonlayout[playerY][playerX]+"_desc");
+                if(dungeonlayout[playerY][playerX] == "Prison") {
+                cursedNote();
+            } else {
+                typeWrite(dungeonlayout[playerY][playerX] + "_desc");
+            }
             observed[playerY][playerX] = true;
             cout<<endl;
         }
@@ -290,12 +337,54 @@ void GAME_LOOP()
         }
 }
 
-int main(){
+void TUTORIAL_LOOP(){
+    string command;
     
+    
+    while(!tutorialComplete)
+    {  
+/*
+    --------------------------------DISPLAY UI--------------------------------        
+*/  
+        showCommands();
+        displayPlrPos();
+        displayMap();
+        listItems(playerX,playerY);
+
+
+        cout << endl;
+            /*
+            ---------------------------GET COMMAND--------------------------
+            */
+        cout << "Enter command: ";
+        getline(cin, command);
+        lowerCase(command);
+
+        string argument;
+        commandType type = processCommand(command, argument);
+        executeCommand(type,argument);
+            
+        clearScreen();               
+        }
+    
+    
+    }
+
+
+
+int main(){
+    tutorialComplete = true;
+    // typeWrite("notice",green);
+    // typeWrite("warnign",red);
     generateItems();
     clearScreen()  ;
     cout<<col(); //reset all colour formatting
     int stepsRemaining = 10;  // setup ]
+
+    if (!tutorialComplete){
+    TUTORIAL_LOOP();
+    }
+
     
     
     GAME_LOOP();

@@ -13,6 +13,9 @@ struct door{
     std::string key;
 };
 
+
+door tutorialDoor = {0,1,1,1,true,""};
+
 door exitDoor = {2,1,3,1 ,true,"Rusty key"};
 door hallwayDoor = {1,1,2,1,true,""};
 
@@ -25,10 +28,15 @@ bool checkLocked(  int fromX, int fromY, int toX, int toY){
     if(hallwayDoor.fromX == fromX && hallwayDoor.fromY == fromY && hallwayDoor.toX == toX && hallwayDoor.toY == toY){
         return hallwayDoor.locked;
     }
-        return false;    
+   
+    if(tutorialDoor.fromX == fromX && tutorialDoor.fromY == fromY && tutorialDoor.toX == toX && tutorialDoor.toY == toY){
+        return tutorialDoor.locked;
+    }
+    return false;    
+
 }
 
-void unlockDoor(door& gate, std::string key){
+void unlockDoor(door& gate, std::string key = ""){
     if(key == gate.key){
         gate.locked = false;
     }

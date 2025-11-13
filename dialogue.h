@@ -240,8 +240,8 @@ void outputface(std::string faceType = "Default"){
 }
 
 void cursedNote(){
-    typeWrite("You notice something out the corner of your eye\n do you inspect [yes", colours::cyan);
-    std::cout << "/\033[36;9mno]\033[0m\n";
+    typeWrite("You notice something out the corner of your eye\n", colours::cyan);
+    std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
     std::string inspectNote;
     // while(true){
     int round = 1;
@@ -259,6 +259,7 @@ void cursedNote(){
         timeDelay(0.15);
         clearScreen();
         typeWrite("note_observation2");
+        typeWrite("Do you want to look? [yes/no] ");
         getline(std::cin, inspectNote);
         lowerCase(inspectNote,true);
         round = 2;
@@ -272,7 +273,7 @@ void cursedNote(){
                     outputface();
                     timeDelay(0.15);
                     clearScreen();
-                    typeWrite("note_content");
+                    // typeWrite("note_content");
                     break;
                 case 2:
                     typeWrite("\033[9;31mWRONG AGAIN");
