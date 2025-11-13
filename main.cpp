@@ -38,6 +38,7 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
 }
 bool isValid(int X, int Y)
 {
+    
     if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight)
     {
         return false;
