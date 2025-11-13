@@ -75,7 +75,7 @@ void listItems(int pX, int pY,bool viewInvisible = false){
     if(item.visible && !viewInvisible){
             std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
         }else{
-            std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
+            // std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
 
         }
     }
@@ -94,4 +94,7 @@ void viewInventory() {
     }
 }
 
+void viewBook(){
+
+}
 

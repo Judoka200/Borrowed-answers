@@ -70,13 +70,13 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
     while (std::getline(textFile, line))
     {
         // checks if the line has the delimiter
-        size_t delimPos = line.find('|');
+        size_t delimPosition = line.find('|');
 
         // if delmiter found then execute, but if not found, skip the code, close the file, and return end message
-        if (delimPos != std::string::npos)
+        if (delimPosition != std::string::npos)
         {
             // extract the text before the delimiter
-            std::string key = line.substr(0, delimPos);
+            std::string key = line.substr(0, delimPosition);
 
             key.erase(0, key.find_first_not_of(" \t")); // remove leading whitespace
             key.erase(key.find_last_not_of(" \t") + 1); // remove trailing whitespace
@@ -85,7 +85,7 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
             if (key == textTitle)
             {
                 // extract the text after the delimiter
-                std::string content = line.substr(delimPos + 1);
+                std::string content = line.substr(delimPosition + 1);
                 if(!preserveWhitespace){
                     content.erase(0, content.find_first_not_of(" \t"));
                     content.erase(content.find_last_not_of(" \t") + 1);

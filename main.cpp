@@ -1,6 +1,7 @@
 #include "funcs.h"
 #include "dialogue.h"
 #include "items.h"
+#include "doors.h"
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
@@ -11,7 +12,7 @@ using namespace std;
 const int mapWidth = 4; //X
 const int mapHeight =3;  //Y
 string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL","Prison","WALL","WALL"},           // [0][0] | [0][1] | [0][2] | [0][3]
+{"WALL","Prison","WALL","WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
 {"Campfire_Room","Hallway","Sentry","Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
 {"WALL","Library_Entrance","Library","WALL"}        // [2][0] | [2][1] | [2][2] | [2][3]
 };
@@ -26,7 +27,11 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     string fromRoom = dungeonlayout[fromY][fromX];
     string toRoom = dungeonlayout[ToY][ToX];
 
-    if(fromRoom =="Sentry" && toRoom =="Library")
+    if(checkLocked(fromX, fromY, ToX, ToY)){
+        return true;
+    }
+
+    if((fromRoom =="Sentry" && toRoom =="Library")||(fromRoom =="Library" && toRoom =="Sentry"))
     {return true;}
 
     else {return false;}
@@ -90,13 +95,15 @@ bool move(string direction)
         if(newX < 0 || newX >= mapWidth || newY < 0 || newY >= mapHeight)
         {
             cout << "Error";
+        }else if(checkLocked(playerX,playerY,newX,newY)){
+        cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";
+
+
         }else{
             cout<<"theres no way to go this direction \n";
             }
         return false;
     }
-
-
 
     playerX = newX;
     playerY = newY;
@@ -166,7 +173,7 @@ void GAME_LOOP()
     {  
         displayPlrPos();
         displayMap();
-        listItems(playerX,playerY,true);
+        listItems(playerX,playerY);
         
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
@@ -210,9 +217,9 @@ void GAME_LOOP()
                             // }
                         }else{                             
 
-             typeWrite(dungeonlayout[playerY][playerX]+"_desc");
+                typeWrite(dungeonlayout[playerY][playerX]+"_desc");
                 cout<<endl;
-            cout<< "Press Enter to continue...";
+                cout<< "Press Enter to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
         }
