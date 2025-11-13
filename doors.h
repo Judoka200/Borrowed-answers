@@ -36,7 +36,7 @@ bool checkLocked(  int fromX, int fromY, int toX, int toY){
 
 }
 
-void unlockDoor(door& gate, std::string key = ""){
+void unlockDoor(door& gate, std::string key =""){
     if(key == gate.key){
         gate.locked = false;
     }

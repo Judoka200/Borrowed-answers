@@ -19,8 +19,8 @@ std::vector<item> roomItems[mapheight][mapwidth];
 std::vector<item> inventory;
 
 #pragma region 
-item campfire = {"Campfire", "campfireDesc", false, true, colours::red};
-item testItem = {"test item", "desc", true, true, colours::blue};
+item campfire = {"Campfire", "campfireDesc", false, true};
+item testItem = {"test item", "desc", true, true, colours::magenta};
 item key =      {"Rusty Key", "rusty key desc", true, true, colours::yellow};
 item cleaver =  {"cleaver", "cleaverdesc", true, true, colours::red};
 item book =     {"book", "old Book desc", true, false, colours::black, colours::white};
@@ -78,7 +78,7 @@ void listItems(int pX, int pY,bool viewInvisible = false){
 
  for (const auto& item : roomItems[pY][pX]) {
     if(item.visible && !viewInvisible){
-            std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc << std::endl;
+            std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
         }else{
             // std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
 
@@ -131,12 +131,16 @@ bool lightCampfire(){
     
     // Handle specific item uses
     if(lowerCase(itemName) == "match" && pX == 0 && pY == 1) {
-        campfire.backgroundColour = colours::red;
-        campfire.colour = colours::yellow;
-        effect = true;
-        std::cout << "You light the campfire with the match. The room fills with warmth and light." << std::endl;
-        return true;
+       for(auto& item : roomItems[pY][pX]) {
+            if(lowerCase(item.itemTitle) == "campfire") {
+                item.backgroundColour = colours::red;
+                item.colour = colours::yellow;
+                effect = true;
+                std::cout << "You light the campfire with the match. The room fills with warmth and light." << std::endl;
+                return true;
+            }
     }
+}
     
     if(lowerCase(itemName) == "book") {
         viewBook();

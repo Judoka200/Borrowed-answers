@@ -265,8 +265,7 @@ void executeCommand(commandType type,string arguments) {
                 if(useItem(arguments, effect, playerX, playerY)) {
                     cout << "You used the " << arguments << endl;
                     if(effect) {
-                        cout << "Something changed..." << endl;
-                    }
+                        cout << "Something changed..." << endl;}
                 }
             } else {
                 cout << "Use what? Specify an item name." << endl;
