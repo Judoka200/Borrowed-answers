@@ -7,8 +7,6 @@
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
 using namespace std;
 
-//initialise size of dungeon (set the width and height)
-//access the layout by dungeonlayout[ Y POS][X POS]
 const int mapWidth = 4; //X
 const int mapHeight =3;  //Y
 string dungeonlayout[mapHeight][mapWidth] = {  
@@ -17,6 +15,12 @@ string dungeonlayout[mapHeight][mapWidth] = {
 {"WALL","Library_Entrance","Library","WALL"}        // [2][0] | [2][1] | [2][2] | [2][3]
 };
 
+enum commandType {
+    QUIT,    OBSERVE,    MAP,    INVENTORY,    PICKUP,    UNLOCK,    MOVE,    INVALID
+};
+
+//initialise size of dungeon (set the width and height)
+//access the layout by dungeonlayout[ Y POS][X POS]
 bool visited[mapHeight][mapWidth] ={false};
 bool observed[mapHeight][mapWidth] ={false};
 
@@ -28,17 +32,16 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     string toRoom = dungeonlayout[ToY][ToX];
 
     if(checkLocked(fromX, fromY, ToX, ToY)){
-        return true;
+        return true ;
     }
 
-    if((fromRoom =="Sentry" && toRoom =="Library")||(fromRoom =="Library" && toRoom =="Sentry"))
+    if((fromRoom =="Sentry" && toRoom =="Library")||(fromRoom =="Library" && toRoom =="Sentry") )
     {return true;}
 
     else {return false;}
 }
 bool isValid(int X, int Y)
 {
-    
     if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight)
     {
         return false;
@@ -49,7 +52,6 @@ bool isValid(int X, int Y)
 
 
 }
-
 void revealAdjcent(){
       if (playerY > 0) visited[playerY - 1][playerX] = true;
     if (playerY < mapHeight ) visited[playerY + 1][playerX] = true;
@@ -57,9 +59,8 @@ void revealAdjcent(){
     if (playerX < mapWidth ) visited[playerY][playerX + 1] = true;
 
 }
+vector<string> getMoves() //using vector becuase size of list will change depending on postition 
 
-//using vector becuase size of list will change depending on postition 
-vector<string> getMoves()
 {
     vector<string> moves;
     if (playerY > 0 && isValid(playerX, playerY - 1))
@@ -76,7 +77,6 @@ vector<string> getMoves()
     
     return moves;
 }
-
 bool move(string direction)
 {
     int newX = playerX;
@@ -112,7 +112,6 @@ bool move(string direction)
     revealAdjcent();
     return true;
 }
-
 void displayPlrPos()
 {
     cout << col(blue) << "\n+========================================================+\n" << col();
@@ -120,8 +119,6 @@ void displayPlrPos()
     cout << "MAP Position X: " << playerX << "\tY: " << playerY ;
     cout << col(blue) << "\n+========================================================+\n" << col();
 }
-
-
 void displayMap(bool dev = false)
 {
     cout << col(cyan) << "\n+========================== MAP ===========================+\n" << col();
@@ -159,6 +156,84 @@ void displayMap(bool dev = false)
 }
 
 
+
+/*
+    --------------------------------COMMAND--------------------------------
+*/
+commandType processCommand(const string input,string& argumentsOut) {  //return the commandtype of the command 
+    int spacePosition = input.find(' ');
+    string cmd;
+    if (spacePosition != string::npos){
+        cmd = input.substr(0,spacePosition);
+    }else {
+        cmd = input;}
+    if (spacePosition != string::npos){
+        argumentsOut = input.substr(spacePosition + 1);
+    } else{
+        argumentsOut = "";}
+    
+    if(cmd == "quit" || cmd == "exit") return {commandType::QUIT};
+    if(cmd == "observe" || cmd == "look") return {commandType::OBSERVE};
+    if(cmd == "map") return {commandType::MAP};
+    if(cmd == "inventory" || cmd == "inv") return {commandType::INVENTORY};
+    if(cmd == "pickup" || cmd == "take") return {commandType::PICKUP};
+    if(cmd == "unlock") {
+        argumentsOut = input;
+        return {commandType::UNLOCK};};
+    if(moveDirection(input)) {
+        argumentsOut = input;
+        return {commandType::MOVE};
+    }
+    return {commandType::INVALID};
+}
+
+
+void executeCommand(commandType type,string arguments) {
+    // cout<<"args:"<<arguments<<endl<<endl;
+
+    switch(type) {
+        case commandType::QUIT:
+            break;
+            
+        case commandType::OBSERVE:
+            if(dungeonlayout[playerY][playerX] == "Prison") {
+                cursedNote();
+            } else {
+                typeWrite(dungeonlayout[playerY][playerX] + "_desc");
+            }
+            break;
+            
+        case commandType::MAP:
+            displayMap();
+            break;
+            
+        case commandType::INVENTORY:
+            viewInventory();
+            break;
+            
+        case commandType::PICKUP:
+            if(!arguments.empty()) {
+                pickupItem(arguments, playerX, playerY);
+            }
+            break;
+            
+        case commandType::UNLOCK:
+            unlockDoor(hallwayDoor,"");
+            unlockDoor(exitDoor,"Rusty key");
+            break;
+            
+        case commandType::MOVE:
+            if(move(arguments)){cout<< "you moved:"<<arguments<<endl;}
+            break;
+            
+        case commandType::INVALID:
+            cout << "Invalid command!" << endl;
+            break;
+    }
+        cout<< "Press Enter to continue...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
 void GAME_LOOP()
 {
     string command;
@@ -172,108 +247,46 @@ void GAME_LOOP()
     
     while(true)
     {  
+/*
+    --------------------------------DISPLAY UI--------------------------------        
+*/
         displayPlrPos();
         displayMap();
         listItems(playerX,playerY);
         
+/*
+    --------------------------------ROOM DESCRIPTION--------------------------------
+    ----------------------------------upon entering--------------------------------- 
+*/        
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
             cout<< "You observe the room your in\n";
             typeWrite(dungeonlayout[playerY][playerX]+"_desc");
             observed[playerY][playerX] = true;
-            cout<<endl;    
-            }
-        
-     
-
-            vector<string> moves = getMoves();
-            for (int i = 0; i < moves.size(); i++)
-            {
-                cout << moves[i];
-                if (i < moves.size() - 1)
-                    cout << ", "; // seperates each move by , unless there are no more moves
-            }
-            cout << endl;
+            cout<<endl;
+        }
+/*
+    --------------------------------DIPLAY MOVES--------------------------------        
+*/
+        vector<string> moves = getMoves();
+        for (int i = 0; i < moves.size(); i++){
+            cout << moves[i];
+            if (i < moves.size() - 1)
+                cout << ", "; // seperates each move by , unless there are no more moves
+        }
+        cout << endl;
             /*
             ---------------------------GET COMMAND--------------------------
             */
-            cout << "Enter command: ";
-            getline(cin, command);
-            lowerCase(command);
+        cout << "Enter command: ";
+        getline(cin, command);
+        lowerCase(command);
 
-            /*------------EXIT LOOP------------*/
-            if (command == "quit")
-            {
-                cout << "bye";
-                break;
-            }
-
-            /*------------OBSERVE------------*/
-            else if ((command == "observe"))
-            {
-                if(dungeonlayout[playerY][playerX] =="Prison"){
-
-                        cursedNote();
-
-                            // }
-                        }else{                             
-
-                typeWrite(dungeonlayout[playerY][playerX]+"_desc");
-                cout<<endl;
-                cout<< "Press Enter to continue...";
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }
-        }
-        /*------------VIEW MAP------------*/
-        else if(command == "map"){
-            displayMap();
-            cout<< "Press Enter to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        }
-       
-        /*------------PICKUP ITEMS------------*/
-        else if(command.substr(0,7) == "pickup "){
-            string item = command.substr(7);
-                             typeWrite(item,green);     
-                             cout<<endl;      
-            if (command.length()>7){
-            pickupItem(item,playerX,playerY);
-            }
-            cout<< "Press Enter to continue...";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-  
-        /*------------INVENTORY ------------*/
-        else if(command == "inventory" || command =="inv"){
-            viewInventory();
+        string argument;
+        commandType type = processCommand(command, argument);
+        executeCommand(type,argument);
             
-            cout<< "Press Enter to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            
-        }
-        
-        
-
-        // else if(){}
-        // else if(){}
-
-        /*------------ MOVE ROOM------------*/
-        else if(moveDirection(command)){
-                if(move(command)){
-                cout<< "you moved:" << command<<endl;
-                }
-                cout<<"\n press enter to continure ...";   
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-          
-        /*------------WRONG INPUT------------*/
-        else {
-            cout << "Invalid command! Use W/A/S/D, 'map', or 'quit'" << endl;
-            cout << "Press Enter to continue...";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-        clearScreen();
+        clearScreen();               
         }
 }
 

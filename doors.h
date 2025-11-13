@@ -19,11 +19,11 @@ door hallwayDoor = {1,1,2,1,true,""};
 
 bool checkLocked(  int fromX, int fromY, int toX, int toY){
     if(exitDoor.fromX == fromX && exitDoor.fromY == fromY && exitDoor.toX == toX && exitDoor.toY == toY){
-        return true;
+        return exitDoor.locked;
     }
 
     if(hallwayDoor.fromX == fromX && hallwayDoor.fromY == fromY && hallwayDoor.toX == toX && hallwayDoor.toY == toY){
-        return true;
+        return hallwayDoor.locked;
     }
         return false;    
 }
