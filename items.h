@@ -18,11 +18,11 @@ struct item{
 std::vector<item> roomItems[mapheight][mapwidth];
 std::vector<item> inventory;
 
-item campfire = {"Campfire", "campfireDesc", false,true,colours::red};
-item testItem = {"test item","desc", true, true, colours::blue};
-item key = {"Rusty Key", "rusty key desc", true, true, colours::yellow};
-item cleaver = {"cleaver", "cleaverdesc", true, true,colours::red};
-item book = {"Old book", "old Book desc", true, false, colours::black, colours::white };
+item campfire = {"Campfire", "campfireDesc", false, true, colours::red};
+item testItem = {"test item", "desc", true, true, colours::blue};
+item key =      {"Rusty Key", "rusty key desc", true, true, colours::yellow};
+item cleaver =  {"cleaver", "cleaverdesc", true, true, colours::red};
+item book =     {"book", "old Book desc", true, false, colours::black, colours::white};
 
 void generateItems()
 {   //roomItems[Y][X]
@@ -93,3 +93,5 @@ void viewInventory() {
         }
     }
 }
+
+

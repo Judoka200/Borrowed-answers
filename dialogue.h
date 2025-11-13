@@ -1,5 +1,7 @@
 #include <string>
 #include <fstream>
+// #include <cstdlib>
+#include <limits>
 #define storyFile "text.txt"
 
 enum class colours{
@@ -49,7 +51,7 @@ std::string processEscapes(const std::string& str) {
     --------------------GETTING TEXT FROM .TXT FILE--------------------
 */
 
-std::string output(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default)
+std::string output(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default, bool preserveWhitespace = false)
 /*
     returns string instead of directly outputting 
     allows use of ANSI escape codes 
@@ -84,9 +86,10 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
             {
                 // extract the text after the delimiter
                 std::string content = line.substr(delimPos + 1);
-                content.erase(0, content.find_first_not_of(" \t"));
-                content.erase(content.find_last_not_of(" \t") + 1);
-
+                if(!preserveWhitespace){
+                    content.erase(0, content.find_first_not_of(" \t"));
+                    content.erase(content.find_last_not_of(" \t") + 1);
+                }
                 // Closes the textFile and returns the message
                 
 
@@ -217,3 +220,75 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
             std::cout<<col();
         }
 }
+
+void outputface(std::string faceType = "Default"){
+    if(faceType == "Default"){    
+        for (int i = 1; i<17;i++){
+        std::string f = "face["+std::to_string(i) +"]";    
+            std::string line = output(f, colours::red, colours::Default,true);  
+            std::cout << line << std::endl;      
+            }
+        }
+    if(faceType =="angry"){
+        for (int i = 1; i<14; i++){
+            std::string f = "face_angry["+std::to_string(i) +"]";    
+            std::string line = output(f, colours::red, colours::Default,true);  
+            std::cout << line << std::endl;      
+            }
+
+    }    
+}
+
+void cursedNote(){
+    typeWrite("You notice something out the corner of your eye\n do you inspect [yes", colours::cyan);
+    std::cout << "/\033[36;9mno]\033[0m\n";
+    std::string inspectNote;
+    // while(true){
+    int round = 1;
+    getline(std::cin, inspectNote);
+    lowerCase(inspectNote, true);
+    if (inspectNote == "yes"){
+        typeWrite("note_observation1",colours::cyan);
+        round = 2;
+    }
+    else{
+        clearScreen();
+        typeWrite("\033[9;31mWRONG\033[0m");
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        outputface();
+        timeDelay(0.15);
+        clearScreen();
+        typeWrite("note_observation2");
+        getline(std::cin, inspectNote);
+        lowerCase(inspectNote,true);
+        round = 2;
+        if(inspectNote =="yes"){
+            typeWrite("note_content");
+        }else{
+                switch (round){
+                case 1: 
+                    typeWrite("\033[9;31mWRONG\033[0m");
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    outputface();
+                    timeDelay(0.15);
+                    clearScreen();
+                    typeWrite("note_content");
+                    break;
+                case 2:
+                    typeWrite("\033[9;31mWRONG AGAIN");
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    outputface("angry");
+                    timeDelay(0.45);
+                    clearScreen();
+                    typeWrite("etched into the wall by a sharp object are a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n");
+
+                    typeWrite("note_content",colours::Default,0.07);
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    break;
+                }
+            }
+    }
+    typeWrite("note_content",colours::Default,0.07);
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+

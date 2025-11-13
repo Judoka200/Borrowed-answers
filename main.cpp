@@ -6,13 +6,12 @@
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
 using namespace std;
 
-
 //initialise size of dungeon (set the width and height)
 //access the layout by dungeonlayout[ Y POS][X POS]
 const int mapWidth = 4; //X
 const int mapHeight =3;  //Y
 string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL","Dumping_Grounds","WALL","WALL"},           // [0][0] | [0][1] | [0][2] | [0][3]
+{"WALL","Prison","WALL","WALL"},           // [0][0] | [0][1] | [0][2] | [0][3]
 {"Campfire_Room","Hallway","Sentry","Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
 {"WALL","Library_Entrance","Library","WALL"}        // [2][0] | [2][1] | [2][2] | [2][3]
 };
@@ -151,11 +150,6 @@ void displayMap(bool dev = false)
     cout << col(cyan) << "\n+========================================================+\n" << col();
 }
 
-    
-
-
-
-
 
 void GAME_LOOP()
 {
@@ -179,37 +173,49 @@ void GAME_LOOP()
             cout<< "You observe the room your in\n";
             typeWrite(dungeonlayout[playerY][playerX]+"_desc");
             observed[playerY][playerX] = true;
-            cout<<endl;
-        }
-        vector<string> moves = getMoves();
-        for (int i =0; i <moves.size(); i++){
-            cout<<moves[i];
-            if (i < moves.size() - 1) cout << ", "; // seperates each move by , unless there are no more moves
-        }
-        cout<<endl;
-/*
----------------------------GET COMMAND--------------------------
-*/
-        cout << "Enter command: ";
-        getline(cin,command);
-        lowerCase(command);
+            cout<<endl;    
+            }
+        
+     
 
-        /*------------EXIT LOOP------------*/
-        if (command =="quit"){
-            cout << "bye";
-            break;
-        
-        }
-        
-        /*------------OBSERVE------------*/
-        else if((command =="observe"))
+            vector<string> moves = getMoves();
+            for (int i = 0; i < moves.size(); i++)
             {
+                cout << moves[i];
+                if (i < moves.size() - 1)
+                    cout << ", "; // seperates each move by , unless there are no more moves
+            }
+            cout << endl;
+            /*
+            ---------------------------GET COMMAND--------------------------
+            */
+            cout << "Enter command: ";
+            getline(cin, command);
+            lowerCase(command);
+
+            /*------------EXIT LOOP------------*/
+            if (command == "quit")
+            {
+                cout << "bye";
+                break;
+            }
+
+            /*------------OBSERVE------------*/
+            else if ((command == "observe"))
+            {
+                if(dungeonlayout[playerY][playerX] =="Prison"){
+
+                        cursedNote();
+
+                            // }
+                        }else{                             
+
              typeWrite(dungeonlayout[playerY][playerX]+"_desc");
                 cout<<endl;
             cout<< "Press Enter to continue...";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
         }
-       
         /*------------VIEW MAP------------*/
         else if(command == "map"){
             displayMap();
@@ -240,6 +246,7 @@ void GAME_LOOP()
         }
         
         
+
         // else if(){}
         // else if(){}
 
@@ -259,10 +266,8 @@ void GAME_LOOP()
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
         clearScreen();
-    }
+        }
 }
-
-
 
 int main(){
     
@@ -273,8 +278,6 @@ int main(){
     
     
     GAME_LOOP();
-     
-
     
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 

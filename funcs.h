@@ -22,6 +22,9 @@ bool moveDirection(std::string str){
       else return false;
     }
 
+
+
+
 /** reference and return versions
  * adding a bool value to the function gives reference which will change the actual string
  * no bool will make a copy

@@ -1,17 +1,65 @@
 Campfire_room_opening | \tYou wake up in darkness\d\nYou feel the dampness of the floor attacking you from where you lie.\nwhere did you come from\nwhy are you here\n
 in red do 'WHY?'
 
-
 Campfire_Room_desc | Campfire_Room_desc placeholder
-
 Hallway_desc | hallway placeholder
-
-Dumping_Grounds_desc | DG placeholder
-
+Prison_desc | Prison placeholder
 Sentry_desc | Sentry placeholder
-
 Library_Entrance_desc | libENT placeholder
 library_desc | Lib placeholder
 
+note_observation1 | By one of the bodies you see something on the wall\n\dupon looking closer you see a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n
+note_observation2 | By one of the bodies you see some words scratched into the floor\n\dDo you want to look? [yes/no] 
+note_content | libr..y / pi.. up, / old b..k 
 
 test | The quick brown fox jumped over the fence \n
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+face[1]   |           @                           @             
+face[2]   |          @@@@@                     @@@@@            
+face[3]   |          @@|~@@                   @@~|#@            
+face[4]   |          @#~#@@                   @@#~#@            
+face[5]   |          @@@@                       @@@@            
+face[6]   |                                                     
+face[7]   |     +                                       +       
+face[8]   |    @@@                                     @@@      
+face[9]   |   +@@@                                     @@@+     
+face[10]  |    +@@@@                                   @@@@+    
+face[11]  |     @@@@@@                               @@@@@@     
+face[12]  |      @@@@@@@@@                       @@@@@@@@@      
+face[13]  |       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       
+face[14]  |         @@@@@@#####~~~~~~~~~~~####@@@@@@@@          
+face[15]  |            @@@@@@@####~~~~~~####@@@@@               
+face[16]  |                  @@@@@@@@@@@@@@@@                   
+
+
+face_angry[1]   |              ##+                   ##               
+face_angry[2]   |               *##_               _##*               
+face_angry[3]   |                  ##+           ##*                  
+face_angry[4]   |           @@@@    *#          #*   @@@@             
+face_angry[5]   |          @@|~@@                   @@~|#@            
+face_angry[6]   |          @#~#@@                   @@#~#@            
+face_angry[7]   |           @@@                       @@@             
+face_angry[8]   |                                                     
+face_angry[9]   |                  @@@@@@@@@@@@@@@@                   
+face_angry[10]  |             @@@@@@####~~~~~~####@@@@@               
+face_angry[11]  |          @@@@@#####~~~      ~~######@@@@            
+face_angry[12]  |        @@@@@@@@@**              **@@@@@@@@         
+face_angry[13]  |      @@@@@                              @@@@@      
+
+
