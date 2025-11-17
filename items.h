@@ -4,6 +4,7 @@
 const int mapwidth = 4; //X
 const int mapheight =3;  //Y
 
+bool usedMatch = false;
 struct item{
     std::string itemTitle;
     std::string itemDesc;
@@ -55,7 +56,7 @@ bool pickupItem(std::string itemName,int pX,int pY) {
     */
     for (auto it = roomItems[pY][pX].begin(); it != roomItems[pY][pX].end(); ++it) {
                 //std::cout << "Checking: '" << it->itemTitle << "' canPickup=" << it->canPickup << std::endl;
-        if (lowerCase(it->itemTitle) == lowerCase(itemName) && it->canPickup) { //  -> is used to get value of struct 'feature' becuase auto i is a pointer to roomItems[pY][pX] 
+        if (lowercase(it->itemTitle) == lowercase(itemName) && it->canPickup) { //  -> is used to get value of struct 'feature' becuase auto i is a pointer to roomItems[pY][pX] 
                 //add item vec to inventory 
             inventory.push_back(*it);    //  *i derefrences i, refrencing back to roomItems[pY][pX]?
                 //remove item from room
@@ -63,7 +64,7 @@ bool pickupItem(std::string itemName,int pX,int pY) {
             std::cout << "Picked up the: " << col(it->colour,it->backgroundColour)<< it->itemTitle << col() << std::endl;
 
             return true;
-        }else if (lowerCase(it->itemTitle) == lowerCase(itemName) && (it->canPickup == false))
+        }else if (lowercase(it->itemTitle) == lowercase(itemName) && (it->canPickup == false))
         {
                 std::cout << "That item can't be picked up." << std::endl;
                 return false;  
@@ -74,11 +75,27 @@ bool pickupItem(std::string itemName,int pX,int pY) {
     return false;
 }
 
-void listItems(int pX, int pY,bool viewInvisible = false){
+bool hasItem(std::string item){
+    for(auto& i : inventory){
+        if(i.itemTitle == lowercase(item)){
+            return true;
+        }
+    } 
+    return false;
+}
 
+void listItems(int pX, int pY,bool viewInvisible = false){
+std::cout << "\033[38;5;203m" <<"--------Items in room--------\n" <<col() ;
  for (const auto& item : roomItems[pY][pX]) {
     if(item.visible && !viewInvisible){
-            std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
+            if (item.itemTitle =="Campfire" && usedMatch){
+                std::cout << "    - " << item.itemTitle << ":\033[5m " // -->
+                  <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<<"\033[0m" << std::endl;
+                std::cout<<"blinking\n";
+            }else{
+                std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
+
+            }
         }else{
             // std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
 
@@ -118,7 +135,7 @@ bool lightCampfire(){
     // Check if player has the item in inventory
     bool hasItem = false;
     for(auto& i : inventory) {
-        if(lowerCase(i.itemTitle) == lowerCase(itemName)) {
+        if(lowercase(i.itemTitle) == lowercase(itemName)) {
             hasItem = true;
             break;
         }
@@ -129,20 +146,24 @@ bool lightCampfire(){
         return false;
     }
     
-    // Handle specific item uses
-    if(lowerCase(itemName) == "match" && pX == 0 && pY == 1) {
+    // -------------MATCH------------ //
+    if(lowercase(itemName) == "match" && pX == 0 && pY == 1) {
        for(auto& item : roomItems[pY][pX]) {
-            if(lowerCase(item.itemTitle) == "campfire") {
+            if(lowercase(item.itemTitle) == "campfire"&& usedMatch == false) {
+                usedMatch = true;
                 item.backgroundColour = colours::red;
                 item.colour = colours::yellow;
                 effect = true;
                 std::cout << "You light the campfire with the match. The room fills with warmth and light." << std::endl;
                 return true;
+
+                
             }
     }
 }
-    
-    if(lowerCase(itemName) == "book") {
+
+    // -------------BOOK------------ //
+    if(lowercase(itemName) == "book") {
         viewBook();
         return true;
     }

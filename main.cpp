@@ -29,12 +29,13 @@ int playerY = 1;
 /*
     ============================TUTORIAL================================== 
 */
-bool tutorialComplete = false;
-bool tutorialViewedInv = false;
-bool tutorialTakenMatch = false;
-bool tutorialUsedMatch = false;
-bool tutorialObserved = false;
 
+   bool tutorialComplete = false;
+   bool tutorialViewedInv = false;
+   bool tutorialTakenMatch = false;
+   bool tutorialUsedMatch = false;
+   bool tutorialObserved = false;
+//  ====================================================================== 
 
 
 
@@ -210,12 +211,13 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
         if(cmd == "inventory" || cmd == "inv") {
             tutorialViewedInv = true;
             return {commandType::INVENTORY};};
-        if((cmd == "pickup" || cmd == "take" ) && argumentsOut =="match") {           
+        if((cmd == "pickup" || cmd == "take" ) && lowercase(argumentsOut) =="match") {           
+            tutorialTakenMatch = true;
             return {commandType::PICKUP};}
         if(cmd == "observe" || cmd == "look"){
             tutorialObserved = true;
             return {commandType::OBSERVE};}
-        if(cmd == "use") {
+        if(cmd == "use" && lowercase(argumentsOut) == "match") {
             return{commandType::USE};}
     }
         return {commandType::INVALID};
@@ -261,9 +263,12 @@ void executeCommand(commandType type,string arguments) {
             break;
         case commandType::USE:
             if(!arguments.empty()) {
+                // std::cout <<arguments <<endl;            ---DEBUG---
+                if(lowercase(arguments) == "match" && hasItem("match")){tutorialUsedMatch = true;}
                 bool effect = false;
                 if(useItem(arguments, effect, playerX, playerY)) {
                     cout << "You used the " << arguments << endl;
+
                     if(effect) {
                         cout << "Something changed..." << endl;}
                 }
@@ -272,7 +277,7 @@ void executeCommand(commandType type,string arguments) {
             }
             break;
     }
-        cout<< "Press Enter to continue...";
+        cout<< "\033[38;5;245mPress Enter to continue...";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
@@ -326,7 +331,7 @@ void GAME_LOOP()
             */
         cout << "Enter command: ";
         getline(cin, command);
-        lowerCase(command);
+        lowercase(command);
 
         string argument;
         commandType type = processCommand(command, argument);
@@ -346,23 +351,36 @@ void TUTORIAL_LOOP(){
     --------------------------------DISPLAY UI--------------------------------        
 */  
         showCommands();
-        displayPlrPos();
-        displayMap();
+
+        cout<<col(cyan)<< "++++++++++++++++TUTORIAL COMPLETION++++++++++++++++ \n"<<col();
+        cout<< ((tutorialObserved)?    "\033[2;9m - OBSERVE the room your in with:       \033[0m[#]\n":" - \033[4mOBSERVE\033[0m the room your in with:       [ ]\n") ;
+        cout << ((tutorialTakenMatch)? "\033[2;9m - PICKUP and Item within the room with:\033[0m[#]\n":" - \033[4mPICKUP\033[0m and Item within the room with:[ ]\n");
+        cout << ((tutorialViewedInv)?  "\033[2;9m - VIEW your inventory to see the item: \033[0m[#]\n":" - \033[4mVIEW\033[0m your inventory to see the item: [ ]\n");
+        cout << ((tutorialUsedMatch)?  "\033[2;9m - USE the item:                        \033[0m[#]\n":" - \033[4mUSE\033[0m the item:                        [ ]\n") ;
+        cout<< col(cyan)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++\n" <<col();
+
+        cout<<endl;
         listItems(playerX,playerY);
 
-
+        
         cout << endl;
             /*
             ---------------------------GET COMMAND--------------------------
             */
         cout << "Enter command: ";
         getline(cin, command);
-        lowerCase(command);
+        lowercase(command);
 
         string argument;
         commandType type = processCommand(command, argument);
         executeCommand(type,argument);
             
+        
+        
+        if (tutorialObserved&&tutorialTakenMatch&&tutorialUsedMatch&&tutorialViewedInv)
+            {tutorialComplete = true;
+            unlockDoor(tutorialDoor);
+            }
         clearScreen();               
         }
     
@@ -372,7 +390,7 @@ void TUTORIAL_LOOP(){
 
 
 int main(){
-    tutorialComplete = true;
+    // tutorialComplete = true;
     // typeWrite("notice",green);
     // typeWrite("warnign",red);
     generateItems();

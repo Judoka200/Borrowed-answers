@@ -31,8 +31,8 @@ void showCommands(){
     std::cout << "  pickup/take <item>   - Pick up an item" << std::endl;
     std::cout << "  unlock <direction>   - Unlock a door" << std::endl;
     std::cout << "  w/a/s/d              - Move (or up/down/left/right)" << std::endl;
-    std::cout << "  help/?               - Show this help message" << std::endl;
-    std::cout << "\033[32m" << "========================================" << "\033[0m" << std::endl;
+    std::cout << "  help                 - Show this help message" << std::endl;
+    std::cout << "\033[32m" << "========================================\n" << "\033[0m" << std::endl;
    
 }
 
@@ -41,7 +41,7 @@ void showCommands(){
  * adding a bool value to the function gives reference which will change the actual string
  * no bool will make a copy
 */
-void lowerCase(std::string &str, bool){
+void lowercase(std::string &str, bool){
 for(int i=0; i <str.length();i++)
     {str[i]= tolower(str[i]);}
 }
@@ -50,7 +50,7 @@ for(int i=0; i <str.length();i++)
  * adding a bool value to the function gives reference which will change the actual string
  * no bool will make a copy
 */
-std::string lowerCase(std::string str){
+std::string lowercase(std::string str){
     for(int i=0; i <str.length();i++)
     {str[i]= tolower(str[i]);}
     return str;
@@ -79,3 +79,4 @@ void clearScreen()
         system("clear";)
     #endif
 }
+

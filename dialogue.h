@@ -246,7 +246,7 @@ void cursedNote(){
     // while(true){
     int round = 1;
     getline(std::cin, inspectNote);
-    lowerCase(inspectNote, true);
+    lowercase(inspectNote, true);
     if (inspectNote == "yes"){
         typeWrite("note_observation1",colours::cyan);
         round = 2;
@@ -261,7 +261,7 @@ void cursedNote(){
         typeWrite("note_observation2");
         typeWrite("Do you want to look? [yes/no] ");
         getline(std::cin, inspectNote);
-        lowerCase(inspectNote,true);
+        lowercase(inspectNote,true);
         round = 2;
         if(inspectNote =="yes"){
             typeWrite("note_content");
@@ -289,7 +289,7 @@ void cursedNote(){
                 }
             }
     }
-    typeWrite("note_content",colours::Default,0.07);
+    // typeWrite("note_content",colours::Default,0.07);
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
