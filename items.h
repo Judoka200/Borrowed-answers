@@ -85,7 +85,7 @@ bool hasItem(std::string item){
 }
 
 void listItems(int pX, int pY,bool viewInvisible = false){
-std::cout << "\033[38;5;203m" <<"--------Items in room--------\n" <<col() ;
+std::cout << "\033[38;5;203m" <<"----------------Items in room----------------\n" <<col() ;
  for (const auto& item : roomItems[pY][pX]) {
     if(item.visible && !viewInvisible){
             if (item.itemTitle =="Campfire" && usedMatch){
@@ -101,6 +101,8 @@ std::cout << "\033[38;5;203m" <<"--------Items in room--------\n" <<col() ;
 
         }
     }
+std::cout << "\033[38;5;203m" <<"---------------------------------------------\n" <<col() ;
+
 }
 
 

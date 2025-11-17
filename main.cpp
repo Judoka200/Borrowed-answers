@@ -7,8 +7,13 @@
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
 using namespace std;
 
-const int mapWidth = 4; //X
-const int mapHeight =3;  //Y
+#define dev true
+
+const int mapWidth = 4;  // X
+const int mapHeight =3;  // Y
+
+// increasing:          X: →               Y: ↓    
+
 string dungeonlayout[mapHeight][mapWidth] = {  
 {"WALL","Prison","WALL","WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
 {"Campfire_Room","Hallway","Sentry","Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
@@ -21,7 +26,7 @@ enum commandType {
 
 //initialise size of dungeon (set the width and height)
 //access the layout by dungeonlayout[ Y POS][X POS]
-bool visited[mapHeight][mapWidth] ={false};
+bool visible[mapHeight][mapWidth] ={false};
 bool observed[mapHeight][mapWidth] ={false};
 
 int playerX = 0;
@@ -43,10 +48,11 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     string fromRoom = dungeonlayout[fromY][fromX];
     string toRoom = dungeonlayout[ToY][ToX];
 
-    if(checkLocked(fromX, fromY, ToX, ToY)){
-        return true ;
+    if(checkLocked(fromX, fromY, ToX, ToY)){    //returns true if path is locked 
+        return true;
     }
 
+    // remove room transition from Sentry room to Library 
     if((fromRoom =="Sentry" && toRoom =="Library")||(fromRoom =="Library" && toRoom =="Sentry") )
     {return true;}
 
@@ -55,45 +61,50 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
 
 bool isValid(int X, int Y)
 {
-    if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight)
+    if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight) //checks if current position is within a 1-room margin (if there's a room in that)
     {
         return false;
     }
     if(isBlocked(playerX,playerY,X,Y))
     {return false;}
-    return dungeonlayout[Y][X] != "WALL";
+    return dungeonlayout[Y][X] != "WALL";   //returns true if the room isnt a wall
 
 
 }
-void revealAdjcent(){
-      if (playerY > 0) visited[playerY - 1][playerX] = true;
-    if (playerY < mapHeight ) visited[playerY + 1][playerX] = true;
-    if (playerX > 0) visited[playerY][playerX - 1] = true;
-    if (playerX < mapWidth ) visited[playerY][playerX + 1] = true;
+void revealAdjcent(){   //sets all adjacent rooms to visible 
+    if (playerY > 0) visible[playerY - 1][playerX] = true;
+    if (playerY < mapHeight ) visible[playerY + 1][playerX] = true;
+    if (playerX > 0) visible[playerY][playerX - 1] = true;
+    if (playerX < mapWidth ) visible[playerY][playerX + 1] = true;
 
 }
 vector<string> getMoves() //using vector becuase size of list will change depending on postition 
 
 {
-    vector<string> moves;
-    if (playerY > 0 && isValid(playerX, playerY - 1))
+    vector<string> moves; //just a tempory vector to store the possible moves in
+    
+    //if valid room to 'direction' of player then add the corresponding string to the vector
+    if (playerY > 0 && isValid(playerX, playerY - 1))   
     { moves.push_back("Up (w)"); }
-    
-    if (playerY < mapHeight - 1 && isValid(playerX, playerY + 1))
-    { moves.push_back("Down (s)"); }
-    
-    if (playerX > 0 && isValid(playerX - 1, playerY))
+
+    if (playerX > 0 && isValid(playerX - 1, playerY))   
     { moves.push_back("Left (a)"); }
     
-    if (playerX < mapWidth - 1 && isValid(playerX + 1, playerY))
+    if (playerY < mapHeight - 1 && isValid(playerX, playerY + 1))   
+    { moves.push_back("Down (s)"); }
+    
+    if (playerX < mapWidth - 1 && isValid(playerX + 1, playerY))    
     { moves.push_back("Right (d)"); }
     
-    return moves;
+    return moves;   //returns the possible moves which is a vector of strings 
 }
 bool move(string& direction)
 {
     int newX = playerX;
     int newY = playerY;
+/*
+    increasing:         X: →               Y: ↓    
+*/
 
     if (direction =="w" || direction =="W" || direction =="up" || direction =="Up")
         {newY -= 1;
@@ -108,26 +119,26 @@ bool move(string& direction)
         {newX += 1;
         direction = "right";}
 
-    if(!isValid(newX,newY))
+    if(!isValid(newX,newY))     //if the direction isnt valid 
     {
         if(newX < 0 || newX >= mapWidth || newY < 0 || newY >= mapHeight)
         {
-            cout << "Error";
+            cout << "theres no pathway in that direction";      //invalid becuase no room
         }else if(checkLocked(playerX,playerY,newX,newY)){
-        cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";
+        cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";      //invlaid becuase locked path
 
 
         }else{
-            cout<<"theres no way to go this direction \n";
+            cout<<"theres no way to go this direction \n";  //any exceptions e.g. Blocked path between rooms
             }
-        return false;
+        return false;   //move was unsuccesful
     }
-
-    playerX = newX;
+//  set the current player position to the next position 
+    playerX = newX;     
     playerY = newY;
-    visited[playerY][playerX] = true;
-    revealAdjcent();
-    return true;
+    visible[playerY][playerX] = true; //current room to visible 
+    revealAdjcent();        
+    return true;        //move was successful
 }
 void displayPlrPos()
 {
@@ -136,17 +147,18 @@ void displayPlrPos()
     cout << "MAP Position X: " << playerX << "\tY: " << playerY ;
     cout << col(blue) << "\n+========================================================+\n" << col();
 }
-void displayMap(bool dev = false)
+void displayMap()
 {
-    cout << col(cyan) << "\n+========================== MAP ===========================+\n" << col();
-        if(!dev){
+    cout << col(cyan) << "\n+========================== MAP ==========================+\n" << col();
+    #ifndef dev
             for(int Y = 0; Y < mapHeight; Y++){
                 for(int X = 0; X < mapWidth; X++){
                     if(X == playerX && Y == playerY){
                             cout<< col(yellow)<<"[YOU] "<<col();
-                        }else if(!visited[Y][X]){
+                        }else if(!visible[Y][X]){
                             cout << "[~~~] ";
                         }else if(dungeonlayout[Y][X] == "WALL"){
+                            // cout << col(red)<<"[###] " <<col();
                             cout << col(red)<<"[###] " <<col();
                         }else{
                         cout <<col(red) <<"(" << X << "," << Y << ") "<<col();
@@ -154,30 +166,35 @@ void displayMap(bool dev = false)
             }
             cout<<endl;
         }
-    }
-        if(dev){
+    #endif
+    
+    #ifdef dev
             for(int Y = 0; Y < mapHeight; Y++){
                 for(int X = 0; X < mapWidth; X++){
                     if(X == playerX && Y == playerY){
-                        cout<< col(yellow)<<"[YOU] "<<col();
+                        cout<< col(blue)<<"[YOU] "<<col();
                     }else if(dungeonlayout[Y][X] == "WALL"){
-                        cout << col(red)<<"[###] "<<col();
+                        cout << col(green)<<"      "<<col();
                     }else{
-                        cout <<col(red) <<"(" << X << "," << Y << ") "<<col();
+                        cout <<col(green) <<"{" << X << "," << Y << "} "<<col();
                     }
             }
             cout<<endl;
         }
-    }
+    #endif
     cout << col(cyan) << "\n+========================================================+\n" << col();
 }
-
 
 
 /*
     --------------------------------COMMAND--------------------------------
 */
 commandType processCommand(const string input,string& argumentsOut) {  //return the commandtype of the command 
+    
+    #ifdef dev
+        cout<<col(black,red)<< "DEV: input is:"<<input<<col()<<endl;
+    #endif
+    
     int spacePosition = input.find(' ');
     string cmd;
     if (spacePosition != string::npos){
@@ -220,18 +237,18 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
         if(cmd == "use" && lowercase(argumentsOut) == "match") {
             return{commandType::USE};}
     }
-        return {commandType::INVALID};
+
+    return {commandType::INVALID};
+
 }
 void executeCommand(commandType type,string arguments) {
-    // cout<<"args:"<<arguments<<endl<<endl;
 
     switch(type) {
         case commandType::QUIT:
             break;
             
         case commandType::OBSERVE:
-                typeWrite(dungeonlayout[playerY][playerX] + "_desc");
-            
+            typeWrite(dungeonlayout[playerY][playerX] + "_desc");
             break;
             
         case commandType::MAP:
@@ -256,6 +273,7 @@ void executeCommand(commandType type,string arguments) {
             
         case commandType::MOVE:
             if(move(arguments)){cout<< "you moved:"<<arguments<<endl;}
+            else{cout<<"something went wrong and you didnt go anywhere\n";}
             break;
             
         case commandType::INVALID:
@@ -263,8 +281,9 @@ void executeCommand(commandType type,string arguments) {
             break;
         case commandType::USE:
             if(!arguments.empty()) {
-                // std::cout <<arguments <<endl;            ---DEBUG---
-                if(lowercase(arguments) == "match" && hasItem("match")){tutorialUsedMatch = true;}
+                //
+                if(lowercase(arguments) == "match" && hasItem("match"))
+                {tutorialUsedMatch = true;}
                 bool effect = false;
                 if(useItem(arguments, effect, playerX, playerY)) {
                     cout << "You used the " << arguments << endl;
@@ -284,7 +303,7 @@ void executeCommand(commandType type,string arguments) {
 void GAME_LOOP()
 {
     string command;
-    visited[playerY][playerX] = true;
+    visible[playerY][playerX] = true;
     revealAdjcent();
     
 
@@ -390,7 +409,7 @@ void TUTORIAL_LOOP(){
 
 
 int main(){
-    // tutorialComplete = true;
+    tutorialComplete = true;
     // typeWrite("notice",green);
     // typeWrite("warnign",red);
     generateItems();

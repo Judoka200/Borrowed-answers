@@ -27,15 +27,6 @@ test | The quick brown fox jumped over the fence \n
 
 
 
-
-
-
-
-
-
-
-
-
 face[1]   |           @                           @             
 face[2]   |          @@@@@                     @@@@@            
 face[3]   |          @@|~@@                   @@~|#@            

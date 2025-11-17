@@ -56,7 +56,8 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
     returns string instead of directly outputting 
     allows use of ANSI escape codes 
 */
-{
+{   
+    
     // open the text file
     std::ifstream textFile("text.txt");
 
