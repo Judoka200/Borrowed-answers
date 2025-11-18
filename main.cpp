@@ -1,14 +1,12 @@
 #include "funcs.h"
 #include "dialogue.h"
 #include "items.h"
-#include "doors.h"
+// #include "doors.h"
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time 
 using namespace std;
-
-#define dev true
-
+// #define dev true             //FOR DEBUG/DEV UNCOMMENT
 const int mapWidth = 4;  // X
 const int mapHeight =3;  // Y
 
@@ -21,7 +19,7 @@ string dungeonlayout[mapHeight][mapWidth] = {
 };
 
 enum commandType {
-    QUIT,    OBSERVE,    MAP,    INVENTORY,    PICKUP,    UNLOCK,    MOVE,    USE,    INVALID
+    QUIT,    OBSERVE,    MAP,    INVENTORY,    PICKUP,    UNLOCK,    MOVE,    USE,     HELP,    INVALID
 };
 
 //initialise size of dungeon (set the width and height)
@@ -34,12 +32,13 @@ int playerY = 1;
 /*
     ============================TUTORIAL================================== 
 */
-
+#pragma region 
    bool tutorialComplete = false;
    bool tutorialViewedInv = false;
    bool tutorialTakenMatch = false;
    bool tutorialUsedMatch = false;
    bool tutorialObserved = false;
+#pragma endregion
 //  ====================================================================== 
 
 
@@ -172,11 +171,11 @@ void displayMap()
             for(int Y = 0; Y < mapHeight; Y++){
                 for(int X = 0; X < mapWidth; X++){
                     if(X == playerX && Y == playerY){
-                        cout<< col(blue)<<"[YOU] "<<col();
+                        cout<< col(yellow,cyan)<<"[YOU] "<<col();
                     }else if(dungeonlayout[Y][X] == "WALL"){
-                        cout << col(green)<<"      "<<col();
+                        cout << col(red,cyan)<<"[###] " <<col();
                     }else{
-                        cout <<col(green) <<"{" << X << "," << Y << "} "<<col();
+                        cout <<col(red,cyan) <<"{" << X << "," << Y << "} "<<col();
                     }
             }
             cout<<endl;
@@ -192,17 +191,18 @@ void displayMap()
 commandType processCommand(const string input,string& argumentsOut) {  //return the commandtype of the command 
     
     #ifdef dev
-        cout<<col(black,red)<< "DEV: input is:"<<input<<col()<<endl;
+        cout<<col(black,cyan)<< "DEV: input is:"<<input<<col()<<endl;
     #endif
     
-    int spacePosition = input.find(' ');
+    int spacePosition = input.find(' ');   //find the pos of the space which should seperate the command and args
     string cmd;
     if (spacePosition != string::npos){
-        cmd = input.substr(0,spacePosition);
+        cmd = input.substr(0,spacePosition);  // gives cmd the command half
     }else {
         cmd = input;}
     if (spacePosition != string::npos){
         argumentsOut = input.substr(spacePosition + 1);
+        cout<<"pot args:" << argumentsOut<<endl;
     } else{
         argumentsOut = "";}
    
@@ -212,10 +212,12 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
         if(cmd == "map") return {commandType::MAP};
         if(cmd == "inventory" || cmd == "inv") return {commandType::INVENTORY};
         if(cmd == "pickup" || cmd == "take") return {commandType::PICKUP};
+        if(cmd == "help") return {commandType::HELP};
         if(cmd == "use") {
+            // argumentsOut = input;
             return{commandType::USE};}
         if(cmd == "unlock") {
-            argumentsOut = input;
+            // argumentsOut = input;
             return {commandType::UNLOCK};};
         if(moveDirection(input)) {
             argumentsOut = input;
@@ -242,7 +244,9 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
 
 }
 void executeCommand(commandType type,string arguments) {
-
+    #ifdef dev
+    cout << col(black,cyan)<<"argumetns are: "<<arguments<<endl;
+    #endif
     switch(type) {
         case commandType::QUIT:
             break;
@@ -267,7 +271,7 @@ void executeCommand(commandType type,string arguments) {
             
         case commandType::UNLOCK:
             unlockDoor(hallwayDoor,"");
-            unlockDoor(exitDoor,"Rusty key");
+            unlockDoor(exitDoor,"");
             unlockDoor(tutorialDoor,"");
             break;
             
@@ -281,20 +285,24 @@ void executeCommand(commandType type,string arguments) {
             break;
         case commandType::USE:
             if(!arguments.empty()) {
-                //
+                cout << col()<<"DEBUG:argumetns are: "<<arguments<<endl;
+                lowercase(arguments,true);
+                cout << col()<<"DEBUG:lower argumetns are: "<<arguments<<endl;
+                
                 if(lowercase(arguments) == "match" && hasItem("match"))
-                {tutorialUsedMatch = true;}
-                bool effect = false;
-                if(useItem(arguments, effect, playerX, playerY)) {
+                    {tutorialUsedMatch = true;}
+               
+                if(useItem(arguments,  playerX, playerY)) {
                     cout << "You used the " << arguments << endl;
-
-                    if(effect) {
-                        cout << "Something changed..." << endl;}
                 }
             } else {
                 cout << "Use what? Specify an item name." << endl;
             }
             break;
+
+            case commandType::HELP:
+                showCommands();
+                break;
     }
         cout<< "\033[38;5;245mPress Enter to continue...";
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -328,7 +336,7 @@ void GAME_LOOP()
         {
             cout<< "You observe the room your in\n";
                 if(dungeonlayout[playerY][playerX] == "Prison") {
-                cursedNote();
+                // cursedNote();
             } else {
                 typeWrite(dungeonlayout[playerY][playerX] + "_desc");
             }

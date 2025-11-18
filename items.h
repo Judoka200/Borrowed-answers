@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include "doors.h"
 
 const int mapwidth = 4; //X
 const int mapheight =3;  //Y
@@ -22,7 +23,7 @@ std::vector<item> inventory;
 #pragma region 
 item campfire = {"Campfire", "campfireDesc", false, true};
 item testItem = {"test item", "desc", true, true, colours::magenta};
-item key =      {"Rusty Key", "rusty key desc", true, true, colours::yellow};
+item key =      {"Rusty key", "rusty key desc", true, true, colours::yellow};
 item cleaver =  {"cleaver", "cleaverdesc", true, true, colours::red};
 item book =     {"book", "old Book desc", true, false, colours::black, colours::white};
 item match =    {"match", "a simple match to light a fire", true,true, colours::yellow};
@@ -133,7 +134,8 @@ bool lightCampfire(){
     return true ;
 }
 */
- bool useItem(std::string itemName, bool& effect, int pX, int pY) {
+ 
+bool useItem(std::string itemName, int pX, int pY) {
     // Check if player has the item in inventory
     bool hasItem = false;
     for(auto& i : inventory) {
@@ -155,22 +157,35 @@ bool lightCampfire(){
                 usedMatch = true;
                 item.backgroundColour = colours::red;
                 item.colour = colours::yellow;
-                effect = true;
                 std::cout << "You light the campfire with the match. The room fills with warmth and light." << std::endl;
                 return true;
-
-                
             }
     }
-}
+}       
 
+
+    if (lowercase(itemName) == "rusty key" && pX == 1, pY == 1){
+        unlockDoor(hallwayDoor,"");
+        std::cout<<"trying to unlock hallway door\n";
+        for (auto it = inventory.begin(); it != inventory.end(); ++it) {
+             auto a= *it;
+             inventory.erase(it);
+             break;
+        }
+        return true;
+    }  
     // -------------BOOK------------ //
     if(lowercase(itemName) == "book") {
         viewBook();
         return true;
     }
     
+    
     // Item exists but can't be used here/now
     std::cout << "You can't use the " << itemName << " right now." << std::endl;
     return false;
+
+
 }
+
+

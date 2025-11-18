@@ -1,8 +1,7 @@
-#include <iostream>
-#include <string>
-#include <vector>
+// #######################################################################################################
+// #######################################################################################################
 
-
+//                                         DOORS.h
 
 struct door{
     int fromX;
@@ -11,13 +10,15 @@ struct door{
     int toY;
     bool locked;
     std::string key;
+    std::string doorName;
+    
 };
 
 
-door tutorialDoor = {0,1,1,1,true,""};
+door tutorialDoor = {0,1,1,1,false,"",""};
 
-door exitDoor = {2,1,3,1 ,true,"Rusty key"};
-door hallwayDoor = {1,1,2,1,true,""};
+door hallwayDoor = {1,1,2,1,true,"","hallway door"};
+door exitDoor = {2,1,3,1 ,true,"", "exit"};
 
 
 bool checkLocked(  int fromX, int fromY, int toX, int toY){
@@ -39,6 +40,7 @@ bool checkLocked(  int fromX, int fromY, int toX, int toY){
 void unlockDoor(door& gate, std::string key =""){
     if(key == gate.key){
         gate.locked = false;
+        std::cout<<"you unlocked the " << gate.doorName<<std::endl;
     }
 }
 
