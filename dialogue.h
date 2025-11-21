@@ -174,17 +174,18 @@ return output;
 
 //CHANGE DEFUALT SPEED TO 0.035
 void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.01)
-{
-    //if string is a title from text.txt
+{ 
     std::string text = output(textTitle,forcolour);
-        /*      when using ansi escape codes the characters are placed at the front of the string
-            therefore what ouputs as "text" is actually "\033[39mtext".
-             theses characters are processed in the for loop which causes a noticable delay before 
-            the first character is actually outputted. 
-             output() will always lead a string with "\033[39m\033[49m" or the corresponding colour val
-            this is 16 characters long, so if the first two characters are '\0' then assume the whole
-            code is being used and immediatley start printing from the 17th [index 16] character*/
-
+    /*      when using ansi escape codes the characters are placed at the front of the string
+    therefore what ouputs as "text" is actually "\033[39mtext".
+    theses characters are processed in the for loop which causes a noticable delay before 
+    the first character is actually outputted. 
+    output() will always lead a string with "\033[39m\033[49m" or the corresponding colour val
+    this is 16 characters long, so if the first two characters are '\0' then assume the whole
+    code is being used and immediatley start printing from the 17th [index 16] character*/
+    
+    //if string is a title from text.txt
+    
       if (text[0] == '\\' && text[1]=='0')
         { // becuase \ is an escape code, two are needed to check for a single "\"
             for (int i = 16; i < text.length(); i++)
@@ -259,7 +260,7 @@ void outputface(std::string faceType = "Default"){
 
 
 
-void cursedNote(){
+void entityInteraction(){
     typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg 
     // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();      
     

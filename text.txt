@@ -1,7 +1,7 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OPENING SEQUENCE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d a little tip, theres a key in the prison, \done of the prisoners took it\n
-warning | but do not look at anything else\d DONT ANSWER ANYONE and don't enter the prison without a weapon\n \d\d not even to satisfy your curiosity 
+notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d a little tip, theres a key in the Cells, \done of the Cellsers took it\n
+warning | but do not look at anything else\d DONT ANSWER ANYONE and don't enter the Cells without a weapon\n \d\d not even to satisfy your curiosity 
 begone | anyways,\d good luck,\d dont give up\d 
 
 
@@ -15,7 +15,7 @@ in red do 'WHY?'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ROOM DESCRIPTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Campfire_Room_desc | Campfire_Room_desc placeholder
 Hallway_desc | hallway placeholder
-Prison_desc | Prison placeholder
+Cells_desc | Cells placeholder
 Sentry_desc | Sentry placeholder
 Tome_hall_Entrance_desc | libENT placeholder
 Tome_hall_desc | Lib placeholder

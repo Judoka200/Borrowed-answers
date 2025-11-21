@@ -17,7 +17,7 @@ int nextX = -1, nextY = -1;
 
 // increasing:          X: →               Y: ↓    
 string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL", "Prison", "WALL", "WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
+{"WALL", "Cells", "WALL", "WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
 {"Campfire_Room", "Hallway", "Sentry", "Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
 {"WALL", "Tome_hall_Entrance", "Tome_hall", "WALL"}    // [2][0] | [2][1] | [2][2] | [2][3]
 };
@@ -40,6 +40,7 @@ bool observed[mapHeight][mapWidth] ={false};
    bool tutorialObserved = false;
    //  ====================================================================== 
    bool canViewInvisible = false;
+   bool showInventory = false;
 #pragma endregion
 #pragma region functions 
 bool isBlocked(int fromX,int fromY, int ToX, int ToY){
@@ -54,7 +55,10 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     if((fromRoom =="Sentry" && toRoom =="Tome_hall")||(fromRoom =="Tome_hall" && toRoom =="Sentry") )
     {return true;}
 
-    if(toRoom == "Prison"){}
+    if(toRoom == "Cells" && !hasItem("dagger")){
+        return true;
+    }
+
     else {return false;}
 }
 bool isValid(int X, int Y)
@@ -63,9 +67,11 @@ bool isValid(int X, int Y)
     {
         return false;
     }
-    if(isBlocked(playerX,playerY,X,Y))
+    else if(isBlocked(playerX,playerY,X,Y))
     {return false;}
+    
     return dungeonlayout[Y][X] != "WALL";   //returns true if the room isnt a wall
+    
 
 
 }
@@ -99,6 +105,7 @@ vector<string> getMoves() //using vector becuase size of list will change depend
 bool move(string& direction)
 {/*    reference to string 'direction' used to change the input to the direction when printed   */
     int newX = playerX, newY = playerY;
+    
 
 /*
                    increasing:         X: →               Y: ↓    
@@ -122,10 +129,13 @@ bool move(string& direction)
         {
             cout << "theres no pathway in that direction";      
         }else if(checkLocked(playerX,playerY,newX,newY)){//invlaid becuase locked path
-        cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";       //43: yellow background
+            cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";       //43: yellow background
 
-
-        }else{
+        }else if(dungeonlayout[newY][newX] == "Cells" && !hasItem("dagger")){
+            cout << col(red) << "when taking a step towards the doorway, you feel an overwhelming amouunt of dread\n its better to not go unarmed into this place"; 
+            
+        }else
+        {
             cout<<"theres no way to go this direction \n";  //any exceptions e.g. Blocked path between rooms
             }
         return false;   //move was unsuccesful
@@ -269,7 +279,8 @@ void executeCommand(commandType type,string arguments) {
             break;
             
         case commandType::INVENTORY:
-            viewInventory();
+            // viewInventory();
+            showInventory = true;
             break;
             
         case commandType::PICKUP:
@@ -333,7 +344,10 @@ void GAME_LOOP()
 #pragma region          /*    -----------------------------------DISPLAY UI---------------------------------   */
         displayPlrPos();
         displayMap();
-        listItems(playerX,playerY,canViewInvisible);
+                if(!showInventory){
+                listItems(playerX,playerY,canViewInvisible);
+                }else{viewInventory();}
+                showInventory = false;
         cout<<"canViewInvis: "<<canViewInvisible;
         cout<<endl;
 #pragma endregion 
@@ -341,9 +355,9 @@ void GAME_LOOP()
 #pragma region          /*    --------------------------------ROOM DESCRIPTION------------------------------   */
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
-            cout<< "\033[4mYou observe the room your in\n\033[24m";     //4: underline, 24:  revert underline 
-                if(dungeonlayout[playerY][playerX] == "Prison") {
-                // cursedNote();
+            cout<< col(green)<<"\033[1mYou observe the room your in\n\033[0m";     //1: bold , 22:  revert underline 
+                if(dungeonlayout[playerY][playerX] == "Cells") {
+                entityInteraction();
                 canViewInvisible = true;
             } else {
                 typeWrite(dungeonlayout[playerY][playerX] + "_desc");
@@ -351,6 +365,7 @@ void GAME_LOOP()
             observed[playerY][playerX] = true;
             cout<<endl;
         }
+        
 #pragma endregion 
 
 #pragma region          /*    ----------------------------------DIPLAY MOVES--------------------------------   */

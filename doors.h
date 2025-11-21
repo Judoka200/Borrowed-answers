@@ -11,13 +11,11 @@ struct door{
 };
 #ifndef dev
     door tutorialDoor = {0, 1, 1, 1, true, "", ""};
-    door prisonDoor = {1, 1, 1, 0, true, "", "prison door"};
     door hallwayDoor = {1, 1, 2, 1, true, "", "hallway door"};
     door exitDoor = {2, 1, 3, 1, true, "", "exit"};
 #endif
 #ifdef dev
     door tutorialDoor = {0, 1, 1, 1, false, "", ""};
-    door prisonDoor = {1, 1, 1, 0, false, "", "prison door"};
     door hallwayDoor = {1, 1, 2, 1, false, "", "hallway door"};
     door exitDoor = {2, 1, 3, 1, false, "", "exit"};
 #endif
@@ -34,9 +32,7 @@ bool checkLocked(  int fromX, int fromY, int toX, int toY){
     if(tutorialDoor.fromX == fromX && tutorialDoor.fromY == fromY && tutorialDoor.toX == toX && tutorialDoor.toY == toY){
         return tutorialDoor.locked;
     }
-    if(prisonDoor.fromX == fromX && prisonDoor.fromY == fromY && prisonDoor.toX == toX && prisonDoor.toY == toY){
-        return prisonDoor.locked;
-    }
+
 
     return false;    
 

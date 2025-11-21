@@ -24,7 +24,7 @@ std::vector<item> inventory;
 item campfire = {"Campfire", "campfireDesc", false, true};
 item testItem = {"test item", "desc", true, true, colours::magenta};
 item key =      {"Rusty key", "rusty key desc", true, true, colours::yellow};
-item cleaver =  {"cleaver", "cleaverdesc", true, true, colours::red};
+item dagger =  {"dagger", "daggerdesc", true, true, colours::red};
 item book =     {"book", "old Book desc", true, false, colours::black, colours::black};
 item match =    {"match", "a simple match to light a fire", true,true, colours::yellow};
 item entityNote = {"note", "'notice about prisoner-2314 [codename: entity]'\n\t  2314 is now confirmed to have been possesed by something dubed\n\t      The Entity ",false,true, colours::red};
@@ -40,7 +40,7 @@ void generateItems()
     roomItems[0][1].push_back(key);
 
     roomItems[2][1].push_back(entityNote);
-    roomItems[2][1].push_back(cleaver);
+    roomItems[2][1].push_back(dagger);
 
     roomItems[2][2].push_back(book);
 }
@@ -121,14 +121,18 @@ std::cout << "\033[38;5;203m" <<"---------------------------------------------\n
 
 // Display inventory
 void viewInventory() {
+    std::cout << "\033[38;5;202m" << "------------------INVENTORY------------------\n" << col();
     if (inventory.empty()) {
-        std::cout << "Empty" << std::endl;
+        
+        std::cout << "\t\t  Empty" << std::endl;
     } else {
+
         for (const auto& item : inventory) {
             std::cout << "  - " <<col(item.colour,item.backgroundColour)<< item.itemTitle << ": " << item.itemDesc << std::endl;
             std::cout << col();
-        }
+        }    
     }
+    std::cout << "\033[38;5;202m" <<"---------------------------------------------\n" <<col() ;
 }
 
 void viewBook(){
