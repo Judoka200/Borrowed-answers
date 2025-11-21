@@ -25,24 +25,23 @@ item campfire = {"Campfire", "campfireDesc", false, true};
 item testItem = {"test item", "desc", true, true, colours::magenta};
 item key =      {"Rusty key", "rusty key desc", true, true, colours::yellow};
 item cleaver =  {"cleaver", "cleaverdesc", true, true, colours::red};
-item book =     {"book", "old Book desc", true, false, colours::black, colours::white};
+item book =     {"book", "old Book desc", true, false, colours::black, colours::black};
 item match =    {"match", "a simple match to light a fire", true,true, colours::yellow};
+item entityNote = {"note", "'notice about prisoner-2314 [codename: entity]'\n\t  2314 is now confirmed to have been possesed by something dubed\n\t      The Entity ",false,true, colours::red};
 #pragma endregion
 
 
 void generateItems()
 {   //roomItems[Y][X]
     roomItems[1][0].push_back(match);
-
-        //campfire in Campfire_room
     roomItems[1][0].push_back(campfire);
-        //key in Dumping_Grounds
     roomItems[1][0].push_back(testItem);
 
     roomItems[0][1].push_back(key);
-        //
+
+    roomItems[2][1].push_back(entityNote);
     roomItems[2][1].push_back(cleaver);
-        //book in Library 
+
     roomItems[2][2].push_back(book);
 }
 
@@ -90,6 +89,7 @@ std::cout << "\033[38;5;203m" <<"----------------Items in room----------------\n
  for (const auto& item : roomItems[pY][pX]) {
     if(item.visible && !viewInvisible){
             if (item.itemTitle =="Campfire" && usedMatch){
+//                                              5: blinking
                 std::cout << "    - " << item.itemTitle << ":\033[5m " // -->
                   <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<<"\033[0m" << std::endl;
                 std::cout<<"blinking\n";
@@ -99,6 +99,18 @@ std::cout << "\033[38;5;203m" <<"----------------Items in room----------------\n
             }
         }else{
             // std::cout << "  - " << item.itemTitle << ": " << item.itemDesc << std::endl;
+
+        }
+        if(viewInvisible){
+            if (item.itemTitle =="Campfire" && usedMatch){
+//                                              5: blinking
+                std::cout << "    - " << item.itemTitle << ":\033[5m " // -->
+                  <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<<"\033[0m" << std::endl;
+                std::cout<<"blinking\n";
+            }else{
+                std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
+
+            }
 
         }
     }

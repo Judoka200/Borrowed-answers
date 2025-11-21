@@ -56,5 +56,10 @@
         "text_encoding": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp"
-    }
+    },
+    
+    "workbench.colorCustomizations": {
+
+  "editor.foldBackground": "#2b2e2f28"
+}
 }

@@ -168,7 +168,9 @@ default:
 return output;
 }
 
-
+// void col(bool reset = true){
+//     cout <<"\033[0m";
+// }
 
 //CHANGE DEFUALT SPEED TO 0.035
 void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.01)
@@ -220,6 +222,7 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
             }
             std::cout<<col();
         }
+        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');     //UNCOMMENT TO DISCARD INPUT WHEN TYPING
 }
 
 void outputface(std::string faceType = "Default"){
@@ -240,57 +243,51 @@ void outputface(std::string faceType = "Default"){
     }    
 }
 
-void cursedNote(){
-    typeWrite("You notice something out the corner of your eye\n", colours::cyan);
-    std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
-    std::string inspectNote;
-    // while(true){
-    int round = 1;
-    getline(std::cin, inspectNote);
-    lowercase(inspectNote, true);
-    if (inspectNote == "yes"){
-        typeWrite("note_observation1",colours::cyan);
-        round = 2;
-    }
-    else{
-        clearScreen();
-        typeWrite("\033[9;31mWRONG\033[0m");
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        outputface();
-        timeDelay(0.15);
-        clearScreen();
-        typeWrite("note_observation2");
-        typeWrite("Do you want to look? [yes/no] ");
-        getline(std::cin, inspectNote);
-        lowercase(inspectNote,true);
-        round = 2;
-        if(inspectNote =="yes"){
-            typeWrite("note_content");
-        }else{
-                switch (round){
-                case 1: 
-                    typeWrite("\033[9;31mWRONG\033[0m");
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    outputface();
-                    timeDelay(0.15);
-                    clearScreen();
-                    // typeWrite("note_content");
-                    break;
-                case 2:
-                    typeWrite("\033[9;31mWRONG AGAIN");
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    outputface("angry");
-                    timeDelay(0.45);
-                    clearScreen();
-                    typeWrite("etched into the wall by a sharp object are a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n");
 
-                    typeWrite("note_content",colours::Default,0.07);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    break;
-                }
-            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void cursedNote(){
+    typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg 
+    // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();      
+    
+    std::cout <<col(colours::cyan)<< " do you want to INSPECT \033[0m[yes]/no]\n\n"<<col();
+    std::string inspectNote;
+        std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor 
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    
+    typeWrite("towards_note", colours::red);
+system("cls");
+bool choiceMade = false;
+
+
+while(!choiceMade){
+    outputface();
+    
+    for(int i = 1; i<= 3; i++){
+        std::cout<<"\n\n";
+        std::string s = "first_interaction["+std::to_string(i)+"]";
+        typeWrite(s,colours::red);
     }
+    system("cls");
+    
+    
+}
+
+std::cout<<col(colours::cyan)<<"Do you choose to accept?"<<col()<<" [yes/no]";
     // typeWrite("note_content",colours::Default,0.07);
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
+} 
 
