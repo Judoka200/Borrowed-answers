@@ -13,12 +13,12 @@ in red do 'WHY?'
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ROOM DESCRIPTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Campfire_Room_desc | Campfire_Room_desc placeholder
-Hallway_desc | hallway placeholder
-Cells_desc | Cells placeholder
-Sentry_desc | Sentry placeholder
+Campfire_Room_desc      | A dark and damp room,\d only a single \#Ydoor almost expectsantly looking at you\n 
+Hallway_desc            | another plain and empty room, \#Cwater drips from the ceiling into a puddle of \#Csadness and \#Csorrows\n  
+Cells_desc              | The room is filled with rotten, disintegrated flesh that wreaks havoc on your nose,\d\n you can still feel the prescence of the entity presiding over its throne of flesh\d\n you dont want to stay any longer than you have to   
+Sentry_desc             | A much cleaner, well-kempt room,\d 
 Tome_hall_Entrance_desc | libENT placeholder
-Tome_hall_desc | Lib placeholder
+Tome_hall_desc          | Lib placeholder
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 

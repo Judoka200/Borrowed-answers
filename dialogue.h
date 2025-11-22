@@ -36,6 +36,33 @@ std::string processEscapes(const std::string& str) {
             } else if (str[i + 1] == '\\') {
                 result += '\\';  // Convert \\ to single backslash
                 i++;  // Skip the second backslash
+ 
+
+            } else if (str[i + 1] == '#' && str[i+2] == 'R') {
+                result +="\e[31m";      i+=3;
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}       result += "\e[0m";
+                i--;
+            } else if (str[i + 1] == '#' && str[i+2] == 'G') {
+                result +="\e[32m";      i+=3;
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}       result += "\e[0m";
+                i--;
+            } else if (str[i + 1] == '#' && str[i+2] == 'Y') {
+                result +="\e[33m";      i+=3;
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}       result += "\e[0m";
+                i--;
+            } else if (str[i + 1] == '#' && str[i+2] == 'B') {
+                result +="\e[34m";      i+=3;
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}       result += "\e[0m";
+                i--;
+            } else if (str[i + 1] == '#' && str[i+2] == 'C') {
+                result +="\e[36m";      i+=3; 
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}       result += "\e[0m";
+                i--;
 
             } else {
                 result += str[i];  // Keep the backslash if not recognized
@@ -249,17 +276,6 @@ void outputface(std::string faceType = "Default"){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 void entityInteraction(){
     typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg 
     // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();      
@@ -271,10 +287,7 @@ void entityInteraction(){
     
     typeWrite("towards_note", colours::red);
 system("cls");
-bool choiceMade = false;
 
-
-while(!choiceMade){
     outputface();
     
     for(int i = 1; i<= 3; i++){
@@ -282,12 +295,11 @@ while(!choiceMade){
         std::string s = "first_interaction["+std::to_string(i)+"]";
         typeWrite(s,colours::red);
     }
+
     system("cls");
-    
-    
-}
 
 std::cout<<col(colours::cyan)<<"Do you choose to accept?"<<col()<<" [yes/no]";
+        std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor 
     // typeWrite("note_content",colours::Default,0.07);
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 } 

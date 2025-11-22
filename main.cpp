@@ -355,7 +355,7 @@ void GAME_LOOP()
 #pragma region          /*    --------------------------------ROOM DESCRIPTION------------------------------   */
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
-            cout<< col(green)<<"\033[1mYou observe the room your in\n\033[0m";     //1: bold , 22:  revert underline 
+            cout<< col(green)<<"You observe the room your in: \n"<< col();     //1: bold , 22:  revert underline 
                 if(dungeonlayout[playerY][playerX] == "Cells") {
                 entityInteraction();
                 canViewInvisible = true;
