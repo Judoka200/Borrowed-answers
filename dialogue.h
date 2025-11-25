@@ -13,7 +13,8 @@ enum class colours{
     blue,
     magenta,
     cyan,
-    white  
+    white,
+    RESET
 };
 
 
@@ -36,7 +37,7 @@ std::string processEscapes(const std::string& str) {
             } else if (str[i + 1] == '\\') {
                 result += '\\';  // Convert \\ to single backslash
                 i++;  // Skip the second backslash
- 
+
 
             } else if (str[i + 1] == '#' && str[i+2] == 'R') {
                 result +="\e[31m";      i+=3;
@@ -59,7 +60,7 @@ std::string processEscapes(const std::string& str) {
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
             } else if (str[i + 1] == '#' && str[i+2] == 'C') {
-                result +="\e[36m";      i+=3; 
+                result +="\e[36m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
@@ -80,11 +81,11 @@ std::string processEscapes(const std::string& str) {
 
 std::string output(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default, bool preserveWhitespace = false)
 /*
-    returns string instead of directly outputting 
-    allows use of ANSI escape codes 
+    returns string instead of directly outputting
+    allows use of ANSI escape codes
 */
-{   
-    
+{
+
     // open the text file
     std::ifstream textFile("text.txt");
 
@@ -119,14 +120,14 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
                     content.erase(content.find_last_not_of(" \t") + 1);
                 }
                 // Closes the textFile and returns the message
-                
+
 
 /*
  --------------------COLOUR FOR TEXT--------------------
-*/  
+*/
                 if (static_cast<int> (forColour) || static_cast<int>(backColour)){
 
-                    
+
                     std::string output="";
                     output += col(forColour,backColour);
                     output += content;
@@ -135,19 +136,19 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
                     output = processEscapes(output);
                     textFile.close();
                     return output;
-            
+
                 }else{
                     content = processEscapes(content);
 
                     textFile.close();
                     return content;
                 }
-          
+
         }
     }
 
-   
-    
+
+
 }
 textFile.close();
 return "";
@@ -171,7 +172,8 @@ switch (forColour){
     case colours::magenta:  output += "\033[35m"; break;
     case colours::cyan:     output += "\033[36m"; break;
     case colours::white:    output += "\033[37m"; break;
-default:
+    case colours::RESET:    output += " \033[0m"; break;
+    default:
     break;
 }
 
@@ -185,6 +187,7 @@ switch (backColour){
     case colours::magenta:  output += "\033[45m"; break;
     case colours::cyan:     output += "\033[46m"; break;
     case colours::white:    output += "\033[47m"; break;
+    case colours::RESET:    output += " \033[0m"; break;
 
 default:
     break;
@@ -201,24 +204,24 @@ return output;
 
 //CHANGE DEFUALT SPEED TO 0.035
 void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.01)
-{ 
+{
     std::string text = output(textTitle,forcolour);
     /*      when using ansi escape codes the characters are placed at the front of the string
     therefore what ouputs as "text" is actually "\033[39mtext".
-    theses characters are processed in the for loop which causes a noticable delay before 
-    the first character is actually outputted. 
+    theses characters are processed in the for loop which causes a noticable delay before
+    the first character is actually outputted.
     output() will always lead a string with "\033[39m\033[49m" or the corresponding colour val
     this is 16 characters long, so if the first two characters are '\0' then assume the whole
     code is being used and immediatley start printing from the 17th [index 16] character*/
-    
+
     //if string is a title from text.txt
-    
+
       if (text[0] == '\\' && text[1]=='0')
         { // becuase \ is an escape code, two are needed to check for a single "\"
             for (int i = 16; i < text.length(); i++)
             {
                 if(text[i] == '\\' && i+1 < text.length() && text[i+1] == 'd'){
-                 
+
                         timeDelay(0.65);
                         i++;
                     continue;}
@@ -226,7 +229,7 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
                 timeDelay(delay);
                     }
             }
-        
+
         else if (!text.empty()){
             for (int i = 0; i < text.length(); i++)
             {
@@ -237,7 +240,7 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
                     continue;}}
                 std::cout << text[i];
                 timeDelay(delay);
-                
+
             }
         }
         // if string is just text to be outputted
@@ -254,21 +257,21 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
 }
 
 void outputface(std::string faceType = "Default"){
-    if(faceType == "Default"){    
+    if(faceType == "Default"){
         for (int i = 1; i<17;i++){
-        std::string f = "face["+std::to_string(i) +"]";    
-            std::string line = output(f, colours::red, colours::Default,true);  
-            std::cout << line << std::endl;      
+        std::string f = "face["+std::to_string(i) +"]";
+            std::string line = output(f, colours::red, colours::Default,true);
+            std::cout << line << std::endl;
             }
         }
     if(faceType =="angry"){
         for (int i = 1; i<14; i++){
-            std::string f = "face_angry["+std::to_string(i) +"]";    
-            std::string line = output(f, colours::red, colours::Default,true);  
-            std::cout << line << std::endl;      
+            std::string f = "face_angry["+std::to_string(i) +"]";
+            std::string line = output(f, colours::red, colours::Default,true);
+            std::cout << line << std::endl;
             }
 
-    }    
+    }
 }
 
 
@@ -277,30 +280,40 @@ void outputface(std::string faceType = "Default"){
 
 
 void entityInteraction(){
-    typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg 
-    // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();      
-    
-    std::cout <<col(colours::cyan)<< " do you want to INSPECT \033[0m[yes]/no]\n\n"<<col();
-    std::string inspectNote;
-        std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor 
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    
+    typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg
+    // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
+
+    std::cout << col(colours::cyan)<< " do you want to INSPECT "<< col(colours::RESET) <<"yes]/no]\n\n" << col();
+    std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
     typeWrite("towards_note", colours::red);
-system("cls");
-
-    outputface();
-    
-    for(int i = 1; i<= 3; i++){
-        std::cout<<"\n\n";
-        std::string s = "first_interaction["+std::to_string(i)+"]";
-        typeWrite(s,colours::red);
-    }
-
     system("cls");
 
-std::cout<<col(colours::cyan)<<"Do you choose to accept?"<<col()<<" [yes/no]";
-        std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor 
-    // typeWrite("note_content",colours::Default,0.07);
+    outputface();
+
+    for(int i = 1; i<= 4; i++){
+        // std::cout << "\n\n";
+        std::string interactText = "first_interaction["+std::to_string(i)+"]";
+        typeWrite(interactText, colours::red);
+    }
+    std::cout << std::endl;
+    std::cout << col(colours::cyan)<<"Do you choose to accept?"<<col(colours::RESET)<<" [yes/no]\n";
+
+    std::cout << "Enter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);                            // ?25l: hides cursor
+    timeDelay(1);
+//          \r goes back to start of line wihtout new line so text gets replaces            hence the large blank space ↓ to overwrite 
+    std::string entAnswer ="";
+    while(lowercase(entAnswer) !="no"){
+        std::cout << "\rEnter command:" <<col(colours::cyan) << "yes/"<<col(colours::cyan,colours::white)<<"NO\033[0m                             "<<std::endl;
+        std::getline(std::cin,entAnswer);
+
+        if(lowercase(entAnswer) != "no"){
+            std::cout<<col(colours::cyan, colours::white) << "ge";
+        }
+    }
+    
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-} 
+    system("cls");
+}
 

@@ -151,17 +151,18 @@ bool move(string& direction)
 }
 void displayPlrPos()
 {
-    cout << col(blue) << "+========================================================+\n" << col();
+    cout << "\e[38;5;27m" << "+========================== ROOM =========================+\n" << col();
     cout << "ROOM name: " << dungeonlayout[playerY][playerX] << endl;
     cout << "MAP Position X: " << playerX << "\tY: " << playerY;
     cout << "\t| Steps Remaining: "<< stepsRemaining;
-    cout << col(blue) << "\n+========================================================+\n" << col();
+    cout << "\e[38;5;27m" << "\n+=========================================================+\n" << col();
 }
 void displayMap()
-{
-    cout << col(cyan) << "+========================== MAP ==========================+\n" << col();
+{//         a lavender colour
+    cout << "\e[38;5;62m" << "+========================== MAP ==========================+\n" << col();
     #ifndef dev
             for(int Y = 0; Y < mapHeight; Y++){
+                cout<<"\t \t";
                 for(int X = 0; X < mapWidth; X++){
                     if(X == playerX && Y == playerY){
                             cout<< col(yellow)<<"[PLYR] "<<col();
@@ -201,7 +202,7 @@ void displayMap()
             cout<<endl;
         }
     #endif
-    cout << col(cyan) << "\n+========================================================+\n" << col();
+    cout << "\e[38;5;62m" << "\n+=========================================================+\n" << col();
 }
 #pragma endregion
 #pragma endregion
@@ -360,7 +361,7 @@ void GAME_LOOP()
                 entityInteraction();
                 canViewInvisible = true;
             } else {
-                typeWrite(dungeonlayout[playerY][playerX] + "_desc");
+                typeWrite(dungeonlayout[playerY][playerX] + "_desc",Default, 0.0025);
             }
             observed[playerY][playerX] = true;
             cout<<endl;
@@ -403,7 +404,7 @@ void TUTORIAL_LOOP(){
         showCommands();
 #pragma region          /*    -------------------------------TUTORIAL COMPLETION----------------------------    */
         cout<<col(cyan)<< "++++++++++++++++TUTORIAL COMPLETION++++++++++++++++ \n"<<col();
-//                                                      2: dimmed, 4: underline, 9: strikethrough
+//                                                      2: dimmed, 4: underline, 9: strikethrough, 0: RESET
         cout<< ((tutorialObserved)?    "\033[2;9m - OBSERVE the room your in with:       \033[0m[#]\n":" - \033[4mOBSERVE\033[0m the room your in with:       [ ]\n") ;    
         cout << ((tutorialTakenMatch)? "\033[2;9m - PICKUP and Item within the room with:\033[0m[#]\n":" - \033[4mPICKUP\033[0m and Item within the room with:[ ]\n");
         cout << ((tutorialViewedInv)?  "\033[2;9m - VIEW your inventory to see the item: \033[0m[#]\n":" - \033[4mVIEW\033[0m your inventory to see the item: [ ]\n");

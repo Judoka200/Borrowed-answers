@@ -1,38 +1,39 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OPENING SEQUENCE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d a little tip, theres a key in the Cells, \done of the Cellsers took it\n
-warning | but do not look at anything else\d DONT ANSWER ANYONE and don't enter the Cells without a weapon\n \d\d not even to satisfy your curiosity 
-begone | anyways,\d good luck,\d dont give up\d 
+warning | but do not look at anything else\d DONT ANSWER ANYONE and don't enter the Cells without a weapon\n \d\d not even to satisfy your curiosity
+begone | anyways,\d good luck,\d dont give up\d
 
 
 
 
 Campfire_room_opening | \tYou wake up in darkness\d\nYou feel the dampness of the floor attacking you from where you lie.\nwhere did you come from\nwhy are you here\n
-in red do 'WHY?' 
+in red do 'WHY?'
 
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ROOM DESCRIPTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Campfire_Room_desc      | A dark and damp room,\d only a single \#Ydoor almost expectsantly looking at you\n 
-Hallway_desc            | another plain and empty room, \#Cwater drips from the ceiling into a puddle of \#Csadness and \#Csorrows\n  
-Cells_desc              | The room is filled with rotten, disintegrated flesh that wreaks havoc on your nose,\d\n you can still feel the prescence of the entity presiding over its throne of flesh\d\n you dont want to stay any longer than you have to   
-Sentry_desc             | A much cleaner, well-kempt room,\d 
+Campfire_Room_desc      | A dark and damp room,\d only a single \#Ydoor almost expectantly looking at you\n
+Hallway_desc            | another plain and empty room, \#Bwater drips from the ceiling into a puddle of \#Csadness and \#Csorrows \n
+Cells_desc              | The room is filled with rotten, disintegrated flesh that wreaks havoc on your nose,\d\n you can still feel the prescence of the entity presiding over its throne of flesh\d\n you dont want to stay any longer than you have to
+Sentry_desc             | A much cleaner, well-kempt room,\d walls with an \#Cunnerving lack of marks compared to the other rooms
 Tome_hall_Entrance_desc | libENT placeholder
 Tome_hall_desc          | Lib placeholder
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Entity_warning |     'notice about prisoner-2314 [codename: entity]'\n\t   2314 is now confirmed to have been possesed by something dubed\n\t      The Entity 
 
-towards_note | You shuffle closer to the glint\n\dand closer\n\dand closer\n\dCOME CLOSER!!!
-first_interaction | you remember the first thing you heard ""DONT ANSWER ANYONE"" \dbut\d you look anyways\n\d 
-first_interaction[1] | I am but an entity stuck here, I know where the answer that frustrating excuse of a guard want's
+towards_note | You shuffle closer to the glint\n\dand closer\n\dand closer\n\dCOME CLOSER!!!\d
+first_interaction | you remember the first thing you heard ""DONT ANSWER ANYONE"" \dbut\d you look anyways\n\d
+first_interaction[1] | I am but an entity stuck here, I know where the answer that frustrating excuse of a guard want's\n\n
 first_interaction[2] | I know a way to get out of here \tand I know you want to get out\n
-first_interaction[3] | you see, I also want to get out and I want you to help me\n 
-first_interaction[4] | \nlet\d me\d help\d you\n\n and in return\d you \dhelp \dme
+first_interaction[3] | you see, I also want to get out and I want you to help me\n
+first_interaction[4] | \nlet me\d help \#Yyou \n\d\nand in return \#Yyou \dhelp \dme
 
 
 note_observation1 | By one of the bodies you see something on the wall\n\dupon looking closer you see a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n
 note_observation2 | By one of the bodies you see some words scratched into the floor\n\d
-note_content | libr..y / pi.. up, / bo.k 
+note_content | libr..y / pi.. up, / bo.k
 
 test | The quick brown fox jumped over the fence \n
 
@@ -43,37 +44,37 @@ test | The quick brown fox jumped over the fence \n
 
 
 
-face[1]   |           @                           @             
-face[2]   |          @@@@@                     @@@@@            
-face[3]   |          @@|~@@                   @@~|#@            
-face[4]   |          @#~#@@                   @@#~#@            
-face[5]   |          @@@@                       @@@@            
-face[6]   |                                                     
-face[7]   |     +                                       +       
-face[8]   |    @@@                                     @@@      
-face[9]   |   +@@@                                     @@@+     
-face[10]  |    +@@@@                                   @@@@+    
-face[11]  |     @@@@@@                               @@@@@@     
-face[12]  |      @@@@@@@@@                       @@@@@@@@@      
-face[13]  |       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       
-face[14]  |         @@@@@@#####~~~~~~~~~~~####@@@@@@@@          
-face[15]  |            @@@@@@@####~~~~~~####@@@@@               
-face[16]  |                  @@@@@@@@@@@@@@@@                   
+face[1]   |           @                           @
+face[2]   |          @@@@@                     @@@@@
+face[3]   |          @@|~@@                   @@~|#@
+face[4]   |          @#~#@@                   @@#~#@
+face[5]   |          @@@@                       @@@@
+face[6]   |
+face[7]   |     +                                       +
+face[8]   |    @@@                                     @@@
+face[9]   |   +@@@                                     @@@+
+face[10]  |    +@@@@                                   @@@@+
+face[11]  |     @@@@@@                               @@@@@@
+face[12]  |      @@@@@@@@@                       @@@@@@@@@
+face[13]  |       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+face[14]  |         @@@@@@#####~~~~~~~~~~~####@@@@@@@@
+face[15]  |            @@@@@@@####~~~~~~####@@@@@
+face[16]  |                  @@@@@@@@@@@@@@@@
 
 
-face_angry[1]   |              ##+                   ##               
-face_angry[2]   |               *##_               _##*               
-face_angry[3]   |                  ##+           ##*                  
-face_angry[4]   |           @@@@    *#          #*   @@@@             
-face_angry[5]   |          @@|~@@                   @@~|#@            
-face_angry[6]   |          @#~#@@                   @@#~#@            
-face_angry[7]   |           @@@                       @@@             
-face_angry[8]   |                                                     
-face_angry[9]   |                  @@@@@@@@@@@@@@@@                   
-face_angry[10]  |             @@@@@@####~~~~~~####@@@@@               
-face_angry[11]  |          @@@@@#####~~~      ~~######@@@@            
-face_angry[12]  |        @@@@@@@@@**              **@@@@@@@@         
-face_angry[13]  |      @@@@@                              @@@@@      
+face_angry[1]   |              ##+                   ##
+face_angry[2]   |               *##_               _##*
+face_angry[3]   |                  ##+           ##*
+face_angry[4]   |           @@@@    *#          #*   @@@@
+face_angry[5]   |          @@|~@@                   @@~|#@
+face_angry[6]   |          @#~#@@                   @@#~#@
+face_angry[7]   |           @@@                       @@@
+face_angry[8]   |
+face_angry[9]   |                  @@@@@@@@@@@@@@@@
+face_angry[10]  |             @@@@@@####~~~~~~####@@@@@
+face_angry[11]  |          @@@@@#####~~~      ~~######@@@@
+face_angry[12]  |        @@@@@@@@@**              **@@@@@@@@
+face_angry[13]  |      @@@@@                              @@@@@
 
 
 
