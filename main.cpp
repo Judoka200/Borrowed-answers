@@ -1,4 +1,3 @@
-            #pragma region SETUP&MORE
 #include "funcs.h"
 #include "dialogue.h"
 #include "items.h"
@@ -6,11 +5,13 @@
 
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
+
+
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time in main.cpp 
 using namespace std;
 
 #ifndef VARS_H
-#pragma region 
+ 
 
 const int mapWidth = 4;  // X
 const int mapHeight = 3;  // Y
@@ -38,7 +39,7 @@ std::string dungeonlayout[mapHeight][mapWidth] = {
 bool visible[mapHeight][mapWidth] ={false};
 bool observed[mapHeight][mapWidth] ={false};
 
-#pragma endregion
+
 #endif
 
 
@@ -46,11 +47,6 @@ enum commandType {
     QUIT,    OBSERVE,    MAP,    INVENTORY,    PICKUP,
     UNLOCK,    MOVE,    USE,     HELP,    INVALID 
 };
-
-//initialise size of dungeon (set the width and height)
-//access the layout by dungeonlayout[ Y POS][X POS]
-
-
 
 
 #pragma region functions 
@@ -184,7 +180,7 @@ void displayMap()
                             cout << col(red)<<"[####] " <<col();
                         }else{
                             string roomName;
-                            if(dungeonlayout[Y][X].length() >4)
+                            if(dungeonlayout[Y][X].length() >=4)
                             { roomName = dungeonlayout[Y][X].substr(0,4);}
                         // cout <<col(red) <<"(" << X << "," << Y << ") "<<col();
                         cout <<col(red) <<"(" << roomName<< ") "<<col();
@@ -197,17 +193,17 @@ void displayMap()
     #ifdef dev
             for(int Y = 0; Y < mapHeight; Y++){
                 for(int X = 0; X < mapWidth; X++){
-                    if(X==0){cout<<"\t\t"<<setw(4);}
+                    if(X==0){cout<<"\t\t";}
                     if(X == playerX && Y == playerY){
-                        cout<< col(yellow,cyan)<<"[YOU] "<<col();
+                        cout<< col(yellow,cyan)<<"[PLYR] "<<col();
                     }else if(dungeonlayout[Y][X] == "WALL"){
-                        cout << col(red,cyan)<<"[###] " <<col();
+                        cout << col(red,cyan)<<"(####) " <<col();
                     }else{
                         // cout <<col(red,cyan) <<"{" << X << "," << Y << "} "<<col();
                         string roomName;
-                        if(dungeonlayout[Y][X].length() >3)
-                        { roomName = dungeonlayout[Y][X].substr(0,3);}
-                        cout <<col(red,cyan) <<"{" << roomName << "} "<<col();
+                        if(dungeonlayout[Y][X].length() >=4)
+                        { roomName = dungeonlayout[Y][X].substr(0,4);}
+                        cout <<col(red,cyan) <<"(" << roomName << ") "<<col();
                     }
             }
             cout<<endl;
@@ -215,7 +211,6 @@ void displayMap()
     #endif
     cout << "\e[38;5;62m" << "\n+=========================================================+\n" << col();
 }
-#pragma endregion
 #pragma endregion
 
 /*    --------------------------------COMMAND--------------------------------    */
@@ -291,6 +286,10 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
 #ifdef dev
             if(cmd == "unlock") return {commandType::UNLOCK};                    
             if(cmd == "map") return {commandType::MAP};
+            if(moveDirection(input)){
+                argumentsOut = input;
+                return {commandType::MOVE};
+            }
 #endif
     }
 
@@ -377,11 +376,11 @@ void GAME_LOOP()
     typeWrite("#YOU NEED TO GET OUT#",red);
     timeDelay(2.0);
     */
-   #pragma region           LOOP
-   while(true)
+
+   while(!GAME_LOOP_WON)
    {  
        clearScreen();
-       #pragma region          /*    -----------------------------------DISPLAY UI---------------------------------   */
+       #pragma region           /*    -----------------------------------DISPLAY UI---------------------------------   */
 roomHasItem("campfire",playerX,playerY);
        displayPlrPos();
        displayMap();
@@ -393,7 +392,7 @@ roomHasItem("campfire",playerX,playerY);
         cout<<endl;
 #pragma endregion 
         
-#pragma region          /*    --------------------------------ROOM DESCRIPTION------------------------------   */
+#pragma region                  /*    --------------------------------ROOM DESCRIPTION------------------------------   */
         if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
         {
             cout<< col(green)<<"You observe the room your in: \n"<< col();     //1: bold , 22:  revert underline 
@@ -409,7 +408,7 @@ roomHasItem("campfire",playerX,playerY);
         
 #pragma endregion 
 
-#pragma region          /*    ----------------------------------DIPLAY MOVES--------------------------------   */
+#pragma region                  /*    ----------------------------------DIPLAY MOVES--------------------------------   */
         cout<<col(green)<<"possible moves: "<<col();
         vector<string> moves = getMoves();
         for (int i = 0; i < moves.size(); i++){
@@ -420,7 +419,7 @@ roomHasItem("campfire",playerX,playerY);
         cout << endl;
 #pragma endregion
 
-                        /*    ----------------------------------GET COMMAND---------------------------------    */
+#pragma region                  /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
         getline(cin, command);
         lowercase(command, true);
@@ -431,8 +430,8 @@ roomHasItem("campfire",playerX,playerY);
         executeCommand(type,argument);
             
         clearScreen();               
+#pragma endregion
         }
-#pragma endregion 
 }
 
 void TUTORIAL_LOOP(){
@@ -455,7 +454,12 @@ void TUTORIAL_LOOP(){
         cout<<endl;
         #pragma endregion
         
-        listItems();
+        if(!showInventory){
+            listItems();
+        } else {
+            viewInventory();
+        }
+        showInventory = false;
         cout << endl;
 //                      /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
@@ -468,8 +472,8 @@ void TUTORIAL_LOOP(){
         
          if (tutorialObserved&&tutorialTakenMatch&&tutorialUsedMatch&&tutorialViewedInv){
              clearScreen();
-             cout<< col(black,yellow)<<"\n\n\nYou passed the Tutorial\nnow to face reality"<<col();
-             timeDelay(1.5);
+             cout<< col(black,yellow)<<"\n\n\nYou passed the Tutorial\nnow to face reality\n"<<col();
+             typeWrite("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ",colours::green, 0.01);
              tutorialComplete = true;
             }       
         clearScreen();               
@@ -478,7 +482,7 @@ void TUTORIAL_LOOP(){
 
 
 int main(){
-    tutorialComplete = true;
+    tutorialComplete = false;
 
     // cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
@@ -491,9 +495,9 @@ int main(){
    clearScreen()  ;
 
     cout<<col(); //reset all colour formatting
-    // int stepsRemaining = 10;  // setup 
-// entityInteraction();
+#ifndef dev
     if (!tutorialComplete) {TUTORIAL_LOOP();}
+#endif
     unlockDoor(tutorialDoor);  //not placed in TUTORIAL_LOOP, so will be unlocked even if TUT skipped
 
     clearScreen();

@@ -1,10 +1,18 @@
 // # https://www.reddit.com/r/cpp_questions/comments/p6zlqn/why_cant_i_define_global_variables_in_h_files_if/
 
-
-#ifndef VARS_H
+#ifndef VARS_H   
+/*
+    if VARS_H is undefined, define it and set all the variables.
+    will not define the variables if it has already been defined
+    preventing redeclaration errors
+*/
 #define VARS_H
 
-#include <string>
+#include <string>  //just for the dungeon layout array
+
+// #define dev
+bool GAME_LOOP_WON = false;
+//#######################################################################################################################################################################################################
 
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  from main.cpp  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #pragma region      constants and setup values
@@ -28,7 +36,7 @@ bool showInventory = false;
 
 bool isGood ;
 
-
+//access the layout by dungeonlayout[ Y POS][X POS]
 // increasing:          X: →               Y: ↓    
 std::string dungeonlayout[mapHeight][mapWidth] = {  
 {"WALL", "Cells", "WALL", "WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
@@ -46,31 +54,21 @@ bool observed[mapHeight][mapWidth] ={false};
  bool usedMatch = false;
 
 
-
-
-
-
-
-
-
-
-
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  dialouge.h  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- #define normaltext
-// #define quicktext
+#define textFast
 
-#ifdef normaltext
+#ifdef testNorm
 #define descDelay 0.0025   
 #define typeW_delay 0.015  
 #define txtDelay 0.45       
 #endif
 
-#ifdef quicktext
+#ifdef textFast
 #define descDelay 0.00025    //default 0.0025
 #define typeW_delay 0.0005  // 0.015
 #define txtDelay 0.15       // 0.065
 #endif
 
-
+//###################################################################################################################################################################################################
 #endif
