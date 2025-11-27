@@ -1,13 +1,15 @@
 #include <string>
 #include <vector>
 #include "doors.h"
+#include "vars.h"
 
-// #define dev
 
-const int mapwidth = 4; //X
-const int mapheight =3;  //Y
+#ifndef VARS_H
+ bool usedMatch = false;
 
-bool usedMatch = false;
+#endif
+
+
 struct item{
     std::string itemTitle;
     std::string itemDesc;
@@ -20,7 +22,7 @@ struct item{
 
 
 //creates a vector of each room which holds a vector of items 
-std::vector<item> roomItems[mapheight][mapwidth];
+std::vector<item> roomItems[mapHeight][mapWidth];
 std::vector<item> inventory;
 
 #pragma region 
@@ -91,9 +93,9 @@ bool hasItem(std::string item){
     return false;
 }
 
-void listItems(int pX, int pY,bool viewInvisible = false){
+void listItems(bool viewInvisible = false){
 std::cout << "\033[38;5;203m" <<"\t----------------Items in room----------------\n" <<col() ;
- for (const auto& item : roomItems[pY][pX]) {
+ for (const auto& item : roomItems[playerY][playerX]) {
     if(item.visible && !viewInvisible){
             if (item.itemTitle =="campfire" && usedMatch){
 //                                              5: blinking
@@ -161,10 +163,10 @@ void viewInventory() {
 }
 
 // pX & pY used to check current room for campfire 
-void viewBook(int pX, int pY){
+void viewBook(){
     std::string f;
     std::string line;
-    bool lit = roomHasItem("campfire",pX,pY);
+    bool lit = roomHasItem("campfire",playerX,playerY);
     for(int i = 1; i <= 20; i++){
         if(lit){
             f = "book_shown[" + std::to_string(i) + "]";   
@@ -177,7 +179,7 @@ void viewBook(int pX, int pY){
     }
 }
  
-bool useItem(std::string itemName, int pX, int pY) {
+bool useItem(std::string itemName) {
     // Check if player has the item in inventory
     bool hasItem = false;
     for(auto& i : inventory) {
@@ -192,8 +194,8 @@ bool useItem(std::string itemName, int pX, int pY) {
     }
     
     // -------------MATCH------------ //
-    if(lowercase(itemName) == "match" && pX == 0 && pY == 1) {
-       for(auto& item : roomItems[pY][pX]) {
+    if(lowercase(itemName) == "match" && playerX == 0 && playerY == 1) {
+       for(auto& item : roomItems[playerY][playerX]) {
             if(lowercase(item.itemTitle) == "campfire"&& usedMatch == false) {
                 usedMatch = true;
                 item.backgroundColour = colours::red;
@@ -205,7 +207,7 @@ bool useItem(std::string itemName, int pX, int pY) {
     }       
 
 
-    if (lowercase(itemName) == "rusty key" && pX == 1 && pY == 1){
+    if (lowercase(itemName) == "rusty key" && playerX == 1 && playerY == 1){
         unlockDoor(hallwayDoor,"");
         #ifdef dev
         std::cout<<"trying to unlock hallway door\n";
@@ -219,7 +221,7 @@ bool useItem(std::string itemName, int pX, int pY) {
     }  
     // -------------BOOK------------ //
     if(lowercase(itemName) == "book") {
-        viewBook(pX,pY);
+        viewBook();
         return true;
     }
     

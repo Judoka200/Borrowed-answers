@@ -8,22 +8,40 @@
 #include <limits> // needed for numeric_limits<streamsize>::max()
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time in main.cpp 
 using namespace std;
-// #define dev true             //FOR DEBUG/DEV UNCOMMENT
-#pragma region      constants and setup values
-constexpr int mapWidth = 4;  // X
-const int mapHeight =3;  // Y
+
+#ifndef VARS_H
+#pragma region 
+
+const int mapWidth = 4;  // X
+const int mapHeight = 3;  // Y
 int stepsRemaining = 10;
 int playerX = 0, playerY = 1; //    player starting position
 int nextX = -1, nextY = -1;
-#pragma endregion
-
+/*    ============================TUTORIAL================================== */
+bool tutorialComplete = false;
+bool tutorialViewedInv = false;
+bool tutorialTakenMatch = false;
+bool tutorialUsedMatch = false;
+bool tutorialObserved = false;
+//  ====================================================================== 
+bool canViewInvisible = false;
+bool showInventory = false;
+bool isGood ;
 
 // increasing:          X: →               Y: ↓    
-string dungeonlayout[mapHeight][mapWidth] = {  
+std::string dungeonlayout[mapHeight][mapWidth] = {  
 {"WALL", "Cells", "WALL", "WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
 {"Campfire_Room", "Hallway", "Sentry", "Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
 {"WALL", "Tome_hall_Entrance", "Tome_hall", "WALL"}    // [2][0] | [2][1] | [2][2] | [2][3]
 };
+
+bool visible[mapHeight][mapWidth] ={false};
+bool observed[mapHeight][mapWidth] ={false};
+
+#pragma endregion
+#endif
+
+
 enum commandType {
     QUIT,    OBSERVE,    MAP,    INVENTORY,    PICKUP,
     UNLOCK,    MOVE,    USE,     HELP,    INVALID 
@@ -31,22 +49,9 @@ enum commandType {
 
 //initialise size of dungeon (set the width and height)
 //access the layout by dungeonlayout[ Y POS][X POS]
-bool visible[mapHeight][mapWidth] ={false};
-bool observed[mapHeight][mapWidth] ={false};
 
-#pragma region BOOLS
-/*    ============================TUTORIAL================================== */
-   bool tutorialComplete = false;
-   bool tutorialViewedInv = false;
-   bool tutorialTakenMatch = false;
-   bool tutorialUsedMatch = false;
-   bool tutorialObserved = false;
-   //  ====================================================================== 
-   bool canViewInvisible = false;
-   bool showInventory = false;
 
-   bool isGood ;
-#pragma endregion
+
 
 #pragma region functions 
 bool isBlocked(int fromX,int fromY, int ToX, int ToY){
@@ -336,7 +341,7 @@ void executeCommand(commandType type,string arguments) {
                 if(arguments == "match" && hasItem("match"))
                     {tutorialUsedMatch = true;}
                 
-                if(useItem(arguments,  playerX, playerY)) {
+                if(useItem(arguments)) {
                     if(arguments== "book"){
                         cout << "You read the " << arguments << endl;
                     }else{
@@ -381,7 +386,7 @@ roomHasItem("campfire",playerX,playerY);
        displayPlrPos();
        displayMap();
                 if(!showInventory){
-                listItems(playerX,playerY,canViewInvisible);
+                listItems(canViewInvisible);
                 }else{viewInventory();}
                 showInventory = false;
         cout<<"canViewInvis: "<<canViewInvisible;
@@ -450,7 +455,7 @@ void TUTORIAL_LOOP(){
         cout<<endl;
         #pragma endregion
         
-        listItems(playerX,playerY);
+        listItems();
         cout << endl;
 //                      /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
@@ -486,7 +491,7 @@ int main(){
    clearScreen()  ;
 
     cout<<col(); //reset all colour formatting
-    int stepsRemaining = 10;  // setup 
+    // int stepsRemaining = 10;  // setup 
 // entityInteraction();
     if (!tutorialComplete) {TUTORIAL_LOOP();}
     unlockDoor(tutorialDoor);  //not placed in TUTORIAL_LOOP, so will be unlocked even if TUT skipped

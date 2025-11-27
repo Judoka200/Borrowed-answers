@@ -1,5 +1,3 @@
-// #define dev true             //FOR DEBUG/DEV UNCOMMENT
-
 struct door{
     int fromX;
     int fromY;

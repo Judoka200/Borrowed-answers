@@ -2,10 +2,12 @@
 #include <fstream>
 // #include <cstdlib>
 #include <limits>
+#include "vars.h"
 #define storyFile "text.txt"
-extern bool isGood;
 
-#define normaltext
+#ifndef VARS_H
+
+ #define normaltext
 // #define quicktext
 
 #ifdef normaltext
@@ -19,6 +21,9 @@ extern bool isGood;
 #define typeW_delay 0.0005  // 0.015
 #define txtDelay 0.15       // 0.065
 #endif
+
+#endif
+
 enum class colours{
     Default,
     black,

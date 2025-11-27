@@ -11,7 +11,7 @@
 #include <unistd.h> //for usleep() function, used to for delay between text outputs
 #endif
 
-// #define dev
+
 // returns true/false if a valid direction input
 bool moveDirection(std::string str){
     if (str == "w"||str == "W"||str == "up"||str == "Up"
@@ -80,7 +80,7 @@ void clearScreen()
     #ifdef _WIN32
         system("cls");
     #else
-        system("clear";)
+        system("clear");
     #endif
 }
 
