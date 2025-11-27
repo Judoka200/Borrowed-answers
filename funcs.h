@@ -11,7 +11,7 @@
 #include <unistd.h> //for usleep() function, used to for delay between text outputs
 #endif
 
-
+// #define dev
 // returns true/false if a valid direction input
 bool moveDirection(std::string str){
     if (str == "w"||str == "W"||str == "up"||str == "Up"
@@ -24,14 +24,18 @@ bool moveDirection(std::string str){
 
 void showCommands(){
     std::cout << "\033[32m" << "\n========== AVAILABLE COMMANDS ==========" << "\033[0m" << std::endl;
-    std::cout << "  quit/exit/q          - Exit the game" << std::endl;
-    std::cout << "  observe/look         - Examine your surroundings" << std::endl;
-    std::cout << "  map                  - View the dungeon map" << std::endl;
+    std::cout << "  quit/exit            - Exit the game" << std::endl;
+    std::cout << "  observe/look/o       - Examine your surroundings" << std::endl;
     std::cout << "  inventory/inv/i      - View your items" << std::endl;
     std::cout << "  pickup/take <item>   - Pick up an item" << std::endl;
-    std::cout << "  unlock <direction>   - Unlock a door" << std::endl;
     std::cout << "  w/a/s/d              - Move (or up/down/left/right)" << std::endl;
-    std::cout << "  help                 - Show this help message" << std::endl;
+    std::cout << "  help/h               - Show this help message" << std::endl;
+#ifdef dev
+    std::cout << "\033[32m" << "\n==================DEV===================" << "\033[0m" << std::endl;
+    std::cout << "  unlock               - Unlock all doors" << std::endl;
+    std::cout << "  map                  - View the dungeon map" << std::endl;
+
+#endif
     std::cout << "\033[32m" << "========================================\n" << "\033[0m" << std::endl;
    
 }

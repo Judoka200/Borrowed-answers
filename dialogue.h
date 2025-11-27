@@ -3,13 +3,22 @@
 // #include <cstdlib>
 #include <limits>
 #define storyFile "text.txt"
-
 extern bool isGood;
 
+#define normaltext
+// #define quicktext
+
+#ifdef normaltext
+#define descDelay 0.0025   
+#define typeW_delay 0.015  
+#define txtDelay 0.45       
+#endif
+
+#ifdef quicktext
 #define descDelay 0.00025    //default 0.0025
 #define typeW_delay 0.0005  // 0.015
 #define txtDelay 0.15       // 0.065
-
+#endif
 enum class colours{
     Default,
     black,
@@ -205,7 +214,6 @@ default:
 return output;
 }
 
-//CHANGE DEFUALT SPEED TO 0.035
 void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = typeW_delay)
 {
     std::string text = output(textTitle,forcolour);
@@ -277,11 +285,6 @@ void showEntity(std::string faceType = "Default"){
     }
 }
 
-
-
-
-
-
 void entityInteraction(){
     typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg
     // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
@@ -291,7 +294,7 @@ void entityInteraction(){
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     typeWrite("towards_note", colours::red);
-    system("cls");
+    clearScreen();
 
     showEntity();
 
@@ -324,19 +327,19 @@ void entityInteraction(){
     if (lowercase(entAnswer) == "yes"){
         isGood = false;
 
-        system("cls");
+        clearScreen();
         showEntity();
 
     }else if(lowercase(entAnswer) == "no"){
         isGood = true;
 
-        system("cls");
+        clearScreen();
         showEntity("angry");
     }else{
         std::cout << "you shouldnt see this";
     }
 
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    system("cls");
+    clearScreen();
 }
 

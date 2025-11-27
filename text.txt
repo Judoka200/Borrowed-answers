@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OPENING SEQUENCE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d a little tip, theres a key in the Cells, \done of the Cellsers took it\n
+notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d a little tip, theres a key in the Cells, \done of the \#BPrisoners took it\n
 warning | but do not look at anything else\d DONT ANSWER ANYONE and don't enter the Cells without a weapon\n \d\d not even to satisfy your curiosity
 begone | anyways,\d good luck,\d dont give up\d
 

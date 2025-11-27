@@ -2,6 +2,8 @@
 #include "funcs.h"
 #include "dialogue.h"
 #include "items.h"
+#include "vars.h"
+
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time in main.cpp 
@@ -131,12 +133,12 @@ bool move(string& direction)
     {
         if(newX < 0 || newX >= mapWidth || newY < 0 || newY >= mapHeight)    //invalid becuase no room
         {
-            cout << "theres no pathway in that direction";      
+            cout << "theres no pathway in that direction\n";      
         }else if(checkLocked(playerX,playerY,newX,newY)){//invlaid becuase locked path
             cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";       //43: yellow background
 
         }else if(dungeonlayout[newY][newX] == "Cells" && !hasItem("dagger")){
-            cout << col(red) << "when taking a step towards the doorway, you feel an overwhelming amouunt of dread\n its better to not go unarmed into this place"; 
+            cout << col(red) << "when taking a step towards the doorway, you feel an overwhelming amount of dread\n its better to not go unarmed into this place\n"; 
             
         }else
         {
@@ -220,48 +222,71 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
     
     int spacePosition = input.find(' ');   //find the pos of the space which should seperate the command and args
     string cmd;
+    //get the command keyword half
     if (spacePosition != string::npos){
         cmd = input.substr(0,spacePosition);  // gives cmd the command half
-    }else {
+    } else {
         cmd = input;}
+        //get the argument half
     if (spacePosition != string::npos){
         argumentsOut = input.substr(spacePosition + 1);
-        // cout<<"pot args:" << argumentsOut<<endl;
-    } else{
-        argumentsOut = "";}
+    } else {
+        argumentsOut = "";
+    }
    
     if(tutorialComplete){        
-        if(cmd == "quit" || cmd == "exit") return {commandType::QUIT};
-        if(cmd == "observe" || cmd == "look") return {commandType::OBSERVE};
-        if(cmd == "map") return {commandType::MAP};
-        if(cmd == "inventory" || cmd == "inv") return {commandType::INVENTORY};
-        if(cmd == "pickup" || cmd == "take") return {commandType::PICKUP};
-        if(cmd == "help") return {commandType::HELP};
+        if(cmd == "quit" || cmd == "exit"){
+            return {commandType::QUIT};
+    }
+        if(cmd == "observe" || cmd == "look" || cmd == "o" ){
+            return {commandType::OBSERVE};
+        }
+        if(cmd == "inventory" || cmd == "inv" || cmd == "i"){
+            return {commandType::INVENTORY};
+        }
+        if(cmd == "pickup" || cmd == "take"){
+            return {commandType::PICKUP};
+        }
+        if(cmd == "help" || cmd == "h") {
+            return {commandType::HELP};
+        }
         if(cmd == "use") {
-            // argumentsOut = input;
-            return{commandType::USE};}
-        if(cmd == "unlock") {
-            // argumentsOut = input;
-            return {commandType::UNLOCK};};
-        if(moveDirection(input)) {
+            return{commandType::USE};
+        }
+        if(moveDirection(input)){
             argumentsOut = input;
-            return {commandType::MOVE};}
+            return {commandType::MOVE};
+        }
+#ifdef dev
+            if(cmd == "unlock") return {commandType::UNLOCK};                    
+            if(cmd == "map") return {commandType::MAP};
+#endif
     } 
     
     else{
         if(cmd == "quit" || cmd == "exit") {
-            return {commandType::QUIT};};
-        if(cmd == "inventory" || cmd == "inv") {
+            return {commandType::QUIT};
+        }
+        if(cmd == "inventory" || cmd == "inv" || cmd == "i") {
             tutorialViewedInv = true;
-            return {commandType::INVENTORY};};
-        if((cmd == "pickup" || cmd == "take" ) && lowercase(argumentsOut) =="match") {           
-            tutorialTakenMatch = true;
-            return {commandType::PICKUP};}
-        if(cmd == "observe" || cmd == "look"){
+            return {commandType::INVENTORY};
+        }
+        if(cmd == "pickup" || cmd == "take" ) {      
+            if( lowercase(argumentsOut) =="match"){     
+                tutorialTakenMatch = true;}
+            return {commandType::PICKUP};
+        }
+        if(cmd == "observe" || cmd == "look" || cmd == "o"){
             tutorialObserved = true;
-            return {commandType::OBSERVE};}
+            return {commandType::OBSERVE};
+        }
         if(cmd == "use" && lowercase(argumentsOut) == "match") {
-            return{commandType::USE};}
+            return{commandType::USE};
+        }
+#ifdef dev
+            if(cmd == "unlock") return {commandType::UNLOCK};                    
+            if(cmd == "map") return {commandType::MAP};
+#endif
     }
 
     return {commandType::INVALID};
@@ -271,7 +296,7 @@ void executeCommand(commandType type,string arguments) {
     #ifdef dev
     cout << col(black,cyan)<<"argumetns are: "<<arguments<<col()<<endl;
     #endif
-    lowercase(arguments);
+    lowercase(arguments,true);
     switch(type) {
         case commandType::QUIT:
             break;
@@ -295,14 +320,12 @@ void executeCommand(commandType type,string arguments) {
                 pickupItem(arguments, playerX, playerY);
             }
             break;
-#ifdef dev
         case commandType::UNLOCK:
             unlockDoor(hallwayDoor,"");
             unlockDoor(exitDoor,"");
             unlockDoor(tutorialDoor,"");
             break;
           
-#endif
         case commandType::MOVE:
             if(move(arguments)){cout<< "you moved: "<<arguments<<endl;}
             else if(checkLocked(playerX,playerY,nextX,nextY)){cout<<"something went wrong and you didnt go anywhere\n";}
@@ -349,12 +372,11 @@ void GAME_LOOP()
     typeWrite("#YOU NEED TO GET OUT#",red);
     timeDelay(2.0);
     */
-   system("cls");
    #pragma region           LOOP
    while(true)
    {  
+       clearScreen();
        #pragma region          /*    -----------------------------------DISPLAY UI---------------------------------   */
-    //    cout<<"THISHSREIHDSIHDI++==========";
 roomHasItem("campfire",playerX,playerY);
        displayPlrPos();
        displayMap();
@@ -396,7 +418,7 @@ roomHasItem("campfire",playerX,playerY);
                         /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
         getline(cin, command);
-        lowercase(command);
+        lowercase(command, true);
 
         string argument;
         commandType type = processCommand(command, argument);
@@ -419,10 +441,10 @@ void TUTORIAL_LOOP(){
 #pragma region          /*    -------------------------------TUTORIAL COMPLETION----------------------------    */
         cout<<col(cyan)<< "++++++++++++++++TUTORIAL COMPLETION++++++++++++++++ \n"<<col();
 //                                                      2: dimmed, 4: underline, 9: strikethrough, 0: RESET
-        cout<< ((tutorialObserved)?    "\033[2;9m - OBSERVE the room your in with:       \033[0m[#]\n":" - \033[4mOBSERVE\033[0m the room your in with:       [ ]\n") ;    
-        cout << ((tutorialTakenMatch)? "\033[2;9m - PICKUP and Item within the room with:\033[0m[#]\n":" - \033[4mPICKUP\033[0m and Item within the room with:[ ]\n");
-        cout << ((tutorialViewedInv)?  "\033[2;9m - VIEW your inventory to see the item: \033[0m[#]\n":" - \033[4mVIEW\033[0m your inventory to see the item: [ ]\n");
-        cout << ((tutorialUsedMatch)?  "\033[2;9m - USE the item:                        \033[0m[#]\n":" - \033[4mUSE\033[0m the item:                        [ ]\n") ;
+        cout<< ((tutorialObserved)?    "\033[2;9m - OBSERVE the room your in with:          \033[0m[#]\n":" - \033[4mOBSERVE\033[0m the room your in with:          [ ]\n") ;    
+        cout << ((tutorialTakenMatch)? "\033[2;9m - PICKUP and Item within the room with:   \033[0m[#]\n":" - \033[4mPICKUP\033[0m and Item within the room with:   [ ]\n");
+        cout << ((tutorialViewedInv)?  "\033[2;9m - LOOK at your inventory to see the item: \033[0m[#]\n":" - \033[4mLOOK\033[0m at your inventory to see the item: [ ]\n");
+        cout << ((tutorialUsedMatch)?  "\033[2;9m - USE the item:                           \033[0m[#]\n":" - \033[4mUSE\033[0m the item:                           [ ]\n") ;
         cout<< col(cyan)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++\n" <<col();
 
         cout<<endl;
@@ -433,14 +455,14 @@ void TUTORIAL_LOOP(){
 //                      /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
         getline(cin, command);
-        lowercase(command);
+        lowercase(command,true);
 
         string argument;
         commandType type = processCommand(command, argument);
         executeCommand(type,argument);
         
          if (tutorialObserved&&tutorialTakenMatch&&tutorialUsedMatch&&tutorialViewedInv){
-             system("cls");
+             clearScreen();
              cout<< col(black,yellow)<<"\n\n\nYou passed the Tutorial\nnow to face reality"<<col();
              timeDelay(1.5);
              tutorialComplete = true;
@@ -455,11 +477,11 @@ int main(){
 
     // cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
-    /*
-    typeWrite("notice",green);  typeWrite("warning",red);
-    cout<< "\n\033[38;5;245mPress Enter to continue...";             // grey colour from table 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    */
+    
+    // typeWrite("notice",green);  typeWrite("warning",red);
+    // cout<< "\n\033[38;5;245mPress Enter to continue...";             // grey colour from table 
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    
    generateItems();
    clearScreen()  ;
 
@@ -469,7 +491,7 @@ int main(){
     if (!tutorialComplete) {TUTORIAL_LOOP();}
     unlockDoor(tutorialDoor);  //not placed in TUTORIAL_LOOP, so will be unlocked even if TUT skipped
 
-    system("cls");
+    clearScreen();
 
     
     GAME_LOOP();

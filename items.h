@@ -13,8 +13,8 @@ struct item{
     std::string itemDesc;
     bool canPickup;
     bool visible;
-    colours colour;
-    colours backgroundColour;
+    colours colour = colours::Default;
+    colours backgroundColour = colours::Default;
 
 };
 
@@ -40,7 +40,9 @@ void generateItems()
 {   //roomItems[Y][X]
     roomItems[1][0].push_back(match);
     roomItems[1][0].push_back(campfire);
+    #ifdef dev
     roomItems[1][0].push_back(testItem);
+    #endif
 
     roomItems[0][1].push_back(key);
 
@@ -65,8 +67,8 @@ bool pickupItem(std::string itemName,int pX,int pY) {
                 //add item vec to inventory 
             inventory.push_back(*it);    //  *i derefrences i, refrencing back to roomItems[pY][pX]?
                 //remove item from room
-            roomItems[pY][pX].erase(it);  
-            std::cout << "Picked up the: " << col(it->colour,it->backgroundColour)<< it->itemTitle << col() << std::endl;
+                std::cout << "Picked up the: " << col(it->colour,it->backgroundColour)<< it->itemTitle << col() << std::endl;
+                roomItems[pY][pX].erase(it);  
 
             return true;
         }else if (lowercase(it->itemTitle) == lowercase(itemName) && (it->canPickup == false))
@@ -97,7 +99,6 @@ std::cout << "\033[38;5;203m" <<"\t----------------Items in room----------------
 //                                              5: blinking
                 std::cout << "    - " << item.itemTitle << ":\033[5m " // -->
                   <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col(colours::RESET) << std::endl;
-                std::cout<<"blinking\n";
             }else{
                 std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
 
