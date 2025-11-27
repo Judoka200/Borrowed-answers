@@ -2,6 +2,8 @@
 #include <vector>
 #include "doors.h"
 
+// #define dev
+
 const int mapwidth = 4; //X
 const int mapheight =3;  //Y
 
@@ -16,18 +18,20 @@ struct item{
 
 };
 
+
 //creates a vector of each room which holds a vector of items 
 std::vector<item> roomItems[mapheight][mapwidth];
 std::vector<item> inventory;
 
 #pragma region 
-item campfire = {"Campfire", " campfireDesc", false, true};
-item testItem = {"test item", "desc", true, true, colours::magenta};
-item key =      {"Rusty key", "rusty key desc", true, true, colours::yellow};
-item dagger =   {"dagger", "   likely once a gleaming blade, now a historical relic", true, true, colours::red};
-item book =     {"book", "     old Book desc", true, false, colours::black, colours::black};
-item match =    {"match", "    a simple match to light a fire", true,true, colours::yellow};
-item entityNote = {"note", output("Entity_warning"), false, true, colours::cyan};
+//   item           title           desc                                              pickable     visible    FG col            BG col
+item campfire = {"campfire", " campfireDesc"                                          ,false,       true};
+item testItem = {"test item", "desc"                                                  ,true,        true,  colours::magenta};
+item key =      {"Rusty key", "rusty key desc"                                        ,true,        true,  colours::yellow};
+item dagger =   {"dagger", "   likely once a gleaming blade, now a historical relic"  ,true,        true,  colours::red};
+item book =     {"book", "     old Book desc"                                         ,true,        false, colours::black, colours::black};
+item match =    {"match", "    a simple match to light a fire"                        ,true,        true,  colours::yellow};
+item entityNote = {"note",     output("Entity_warning")                               ,false,       true,  colours::cyan};
 
 #pragma endregion
 
@@ -89,7 +93,7 @@ void listItems(int pX, int pY,bool viewInvisible = false){
 std::cout << "\033[38;5;203m" <<"\t----------------Items in room----------------\n" <<col() ;
  for (const auto& item : roomItems[pY][pX]) {
     if(item.visible && !viewInvisible){
-            if (item.itemTitle =="Campfire" && usedMatch){
+            if (item.itemTitle =="campfire" && usedMatch){
 //                                              5: blinking
                 std::cout << "    - " << item.itemTitle << ":\033[5m " // -->
                   <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col(colours::RESET) << std::endl;
@@ -103,10 +107,10 @@ std::cout << "\033[38;5;203m" <<"\t----------------Items in room----------------
 
         }
         if(viewInvisible){
-            if (item.itemTitle =="Campfire" && usedMatch){
+            if (item.itemTitle =="campfire" && usedMatch){
 //                                              5: blinking
-                std::cout << "    - " << item.itemTitle << ":\033[5m " // -->
-                  <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col(colours::RESET) << std::endl;
+                std::cout << "    - " << col(item.colour,item.backgroundColour) << item.itemTitle << ":\033[5m " // -->
+                 << col(colours::RESET) << item.itemDesc  << std::endl;
                 std::cout<<"blinking\n";
             }else{
                 std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
@@ -119,8 +123,27 @@ std::cout << "\033[38;5;203m" <<"\t---------------------------------------------
 
 }
 
+//returns true/false if item is/isn't in room[Y][X]
+bool roomHasItem(std::string itemName, int X, int Y){
+    for(auto it : roomItems[Y][X]){
+        if(lowercase(itemName) == it.itemTitle){
+            #ifdef dev  
+            std::cout << "room has " << itemName<< std::endl; 
+            #endif            
+            return true;
+        }
+    }
+    #ifdef dev  
+    std::cout << "room doesnt have "<< itemName <<std::endl;
+    #endif
+    return false;
+}
 
-// Display inventory
+
+
+// -------INV------
+//     item: desc
+// ~--------------
 void viewInventory() {
     std::cout << "\033[38;5;202m" << "------------------INVENTORY------------------\n" << col();
     if (inventory.empty()) {
@@ -136,21 +159,22 @@ void viewInventory() {
     std::cout << "\033[38;5;202m" <<"---------------------------------------------\n" <<col() ;
 }
 
-void viewBook(){
-// std::cout <<
-}
-/*
-bool lightCampfire(){
-
-    for (auto i : inventory){
-        if (i.itemTitle == "match"){
-        campfire.backgroundColour = colours::red;
-       }
+// pX & pY used to check current room for campfire 
+void viewBook(int pX, int pY){
+    std::string f;
+    std::string line;
+    bool lit = roomHasItem("campfire",pX,pY);
+    for(int i = 1; i <= 20; i++){
+        if(lit){
+            f = "book_shown[" + std::to_string(i) + "]";   
+            line = output(f, book.colour, book.backgroundColour, true);
+            std::cout << line << std::endl;
+        }
     }
-
-    return true ;
+    if(!lit){
+        std::cout << output("book_dark");
+    }
 }
-*/
  
 bool useItem(std::string itemName, int pX, int pY) {
     // Check if player has the item in inventory
@@ -161,7 +185,6 @@ bool useItem(std::string itemName, int pX, int pY) {
             break;
         }
     }
-    
     if(!hasItem) {
         std::cout << "You don't have that item in your inventory." << std::endl;
         return false;
@@ -177,23 +200,25 @@ bool useItem(std::string itemName, int pX, int pY) {
                 std::cout << "You light the campfire with the match. The room fills with warmth and light." << std::endl;
                 return true;
             }
-    }
-}       
+        }
+    }       
 
 
-    if (lowercase(itemName) == "rusty key" && pX == 1, pY == 1){
+    if (lowercase(itemName) == "rusty key" && pX == 1 && pY == 1){
         unlockDoor(hallwayDoor,"");
+        #ifdef dev
         std::cout<<"trying to unlock hallway door\n";
+        #endif
         for (auto it = inventory.begin(); it != inventory.end(); ++it) {
-             auto a= *it;
-             inventory.erase(it);
-             break;
+            auto a= *it;             
+            inventory.erase(it);
+            break;
         }
         return true;
     }  
     // -------------BOOK------------ //
     if(lowercase(itemName) == "book") {
-        viewBook();
+        viewBook(pX,pY);
         return true;
     }
     

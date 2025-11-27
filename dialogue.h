@@ -4,6 +4,12 @@
 #include <limits>
 #define storyFile "text.txt"
 
+extern bool isGood;
+
+#define descDelay 0.00025    //default 0.0025
+#define typeW_delay 0.0005  // 0.015
+#define txtDelay 0.15       // 0.065
+
 enum class colours{
     Default,
     black,
@@ -18,7 +24,7 @@ enum class colours{
 };
 
 
-std::string col(colours forColour  , colours backColour );
+std::string col(colours forColour  , colours backColour );          //func definition
 
 /*
    ---------- getting  \n \t and \ for escape codes instead of being interpreted as individual chars----------
@@ -79,6 +85,7 @@ std::string processEscapes(const std::string& str) {
     --------------------GETTING TEXT FROM .TXT FILE--------------------
 */
 
+//must be used with std::cout 
 std::string output(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default, bool preserveWhitespace = false)
 /*
     returns string instead of directly outputting
@@ -198,12 +205,8 @@ default:
 return output;
 }
 
-// void col(bool reset = true){
-//     cout <<"\033[0m";
-// }
-
 //CHANGE DEFUALT SPEED TO 0.035
-void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = 0.01)
+void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = typeW_delay)
 {
     std::string text = output(textTitle,forcolour);
     /*      when using ansi escape codes the characters are placed at the front of the string
@@ -235,8 +238,8 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
             {
                 if(text[i] == '\\'){
                     if (text[i+1] == 'd' && i+1 < text.length()){
-                        timeDelay(0.65);
-                        i++;
+                        timeDelay(txtDelay);
+                        i++;\
                     continue;}}
                 std::cout << text[i];
                 timeDelay(delay);
@@ -256,7 +259,7 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
         // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');     //UNCOMMENT TO DISCARD INPUT WHEN TYPING
 }
 
-void outputface(std::string faceType = "Default"){
+void showEntity(std::string faceType = "Default"){
     if(faceType == "Default"){
         for (int i = 1; i<17;i++){
         std::string f = "face["+std::to_string(i) +"]";
@@ -283,14 +286,14 @@ void entityInteraction(){
     typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg
     // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
 
-    std::cout << col(colours::cyan)<< " do you want to INSPECT "<< col(colours::RESET) <<"yes]/no]\n\n" << col();
+    std::cout << col(colours::cyan)<< " do you want to INSPECT "<< col() <<"[yes/no]\n\n" << col();
     std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     typeWrite("towards_note", colours::red);
     system("cls");
 
-    outputface();
+    showEntity();
 
     for(int i = 1; i<= 4; i++){
         // std::cout << "\n\n";
@@ -300,19 +303,39 @@ void entityInteraction(){
     std::cout << std::endl;
     std::cout << col(colours::cyan)<<"Do you choose to accept?"<<col(colours::RESET)<<" [yes/no]\n";
 
-    std::cout << "Enter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);                            // ?25l: hides cursor
+    std::cout << "Enter command:" <<col(colours::cyan) << "[yes/no]"<<col(colours::RESET);                            // ?25l: hides cursor
+    std::cout << "\rEnter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);    // \r
     timeDelay(1);
-//          \r goes back to start of line wihtout new line so text gets replaces            hence the large blank space ↓ to overwrite 
     std::string entAnswer ="";
     while(lowercase(entAnswer) !="no"){
-        std::cout << "\rEnter command:" <<col(colours::cyan) << "yes/"<<col(colours::cyan,colours::white)<<"NO\033[0m                             "<<std::endl;
-        std::getline(std::cin,entAnswer);
-
-        if(lowercase(entAnswer) != "no"){
-            std::cout<<col(colours::cyan, colours::white) << "ge";
+        //          \r goes back to start of line wihtout new line so text gets replaced                hence the large blank space ↓ to overwrite 
+        std::cout << "\rEnter choice:" <<col(colours::black,colours::red) << "yes\033[36;49m/"<<col(colours::cyan,colours::white)<<"NO\033[0m                             ";
+        
+        if(lowercase(entAnswer) != "no" || lowercase(entAnswer) != "yes"){
+            std::cout<<col(colours::green) << "\033[?25h" << "\n-----> "<<col();
+            std::getline(std::cin,entAnswer);
+            if(lowercase(entAnswer) == "no" || lowercase(entAnswer) == "yes"){
+                break;
+            }
+            std::cout << "\033[1A\033[2K\033[1A";  // 1A: move cursor up 1 line, 2k:delete whole line
         }
     }
     
+    if (lowercase(entAnswer) == "yes"){
+        isGood = false;
+
+        system("cls");
+        showEntity();
+
+    }else if(lowercase(entAnswer) == "no"){
+        isGood = true;
+
+        system("cls");
+        showEntity("angry");
+    }else{
+        std::cout << "you shouldnt see this";
+    }
+
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     system("cls");
 }

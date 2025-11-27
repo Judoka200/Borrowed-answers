@@ -10,14 +10,16 @@ struct door{
     std::string doorName;
 };
 #ifndef dev
-    door tutorialDoor = {0, 1, 1, 1, true, "", ""};
-    door hallwayDoor = {1, 1, 2, 1, true, "", "hallway door"};
-    door exitDoor = {2, 1, 3, 1, true, "", "exit"};
+//          door        fx   fy  tx  ty lckd  key name  
+    door tutorialDoor = {0,  1,  1,  1, true, "", ""};
+    door hallwayDoor =  {1,  1,  2,  1, true, "", "hallway door"};
+    door exitDoor =     {2,  1,  3,  1, true, "", "exit"};
 #endif
 #ifdef dev
+//          door        fx   fy  tx  ty lckd  key name  
     door tutorialDoor = {0, 1, 1, 1, false, "", ""};
-    door hallwayDoor = {1, 1, 2, 1, false, "", "hallway door"};
-    door exitDoor = {2, 1, 3, 1, false, "", "exit"};
+    door hallwayDoor =  {1, 1, 2, 1, false, "", "hallway door"};
+    door exitDoor =     {2, 1, 3, 1, false, "", "exit"};
 #endif
 
 bool checkLocked(  int fromX, int fromY, int toX, int toY){

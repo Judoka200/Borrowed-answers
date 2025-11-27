@@ -30,17 +30,19 @@ first_interaction[2] | I know a way to get out of here \tand I know you want to 
 first_interaction[3] | you see, I also want to get out and I want you to help me\n
 first_interaction[4] | \nlet me\d help \#Yyou \n\d\nand in return \#Yyou \dhelp \dme
 
+first_interaction_good  | I see, \#Yyou wont take my help,\d good luck wihtout it
+first_interaction_bad   |
 
 note_observation1 | By one of the bodies you see something on the wall\n\dupon looking closer you see a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n
 note_observation2 | By one of the bodies you see some words scratched into the floor\n\d
 note_content | libr..y / pi.. up, / bo.k
 
+
+
+
+
+
 test | The quick brown fox jumped over the fence \n
-
-
-
-
-
 
 
 
@@ -82,23 +84,46 @@ face_angry[13]  |      @@@@@                              @@@@@
 light campfire -> read about entity -> find entity -> gain viewHidden command -> find and read book -> see scratched words -> read book next to campfire -> sentry -> exit
 
 
-book[1]  | #                                        #
-book[2]  | #    th.                                 #
-book[3]  | #                                        #
-book[4]  | #                                        #
-book[5]  | #                                        #
-book[6]  | #                                        #
-book[7]  | #                                        #
-book[8]  | #                                        #
-book[9]  | #                                        #
-book[10] | #                                        #
-book[11] | #                                        #
-book[12] | #                                        #
-book[13] | #                                        #
-book[14] | #                                        #
-book[15] | #                                        #
-book[16] | #                                        #
-book[17] | #                                        #
-book[18] | #                                        #
-book[19] | #                                        #
-book[20] | #                                        #
+book_dark | the writing on the page is too faded to see in this room\n maybe a \#Ybrighter room will allow you to \#Cread \n
+
+book_hidden[1]  | #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+book_hidden[2]  | |    th.                         |
+book_hidden[3]  | |                                |
+book_hidden[4]  | |                                |
+book_hidden[5]  | |                                |
+book_hidden[6]  | |                          2     |
+book_hidden[7]  | |          asd                   |
+book_hidden[8]  | |                                |
+book_hidden[9]  | |                                |
+book_hidden[10] | |            ad                  |
+book_hidden[11] | |              2                 |
+book_hidden[12] | |                                |
+book_hidden[13] | |                       asd      |
+book_hidden[14] | |                                |
+book_hidden[15] | |                                |
+book_hidden[16] | |          e                     |
+book_hidden[17] | |                                |
+book_hidden[18] | |                                |
+book_hidden[19] | |                                |
+book_hidden[20] | #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+book_shown[1]  | \#Y#-------~~+~------~-~~----~~---#
+book_shown[2]  | \#Y|    th.                       \#Y|
+book_shown[3]  | \#Y|                              \#Y|
+book_shown[4]  | \#Y|                              \#Y|
+book_shown[5]  | \#Y|                              \#Y|
+book_shown[6]  | \#Y|                          2   \#Y|
+book_shown[7]  | \#Y|          asd                 \#Y|
+book_shown[8]  | \#Y|                              \#Y|
+book_shown[9]  | \#Y|                              \#Y|
+book_shown[10] | \#Y|            ad                \#Y|
+book_shown[11] | \#Y|              2               \#Y|
+book_shown[12] | \#Y|                              \#Y|
+book_shown[13] | \#Y|                       asd    \#Y|
+book_shown[14] | \#Y|                              \#Y|
+book_shown[15] | \#Y|                              \#Y|
+book_shown[16] | \#Y|          e                   \#Y|
+book_shown[17] | \#Y|                              \#Y|
+book_shown[18] | \#Y|                              \#Y|
+book_shown[19] | \#Y|                              \#Y|
+book_shown[20] | \#Y#----~+~-----~---~~-~--~+-~----#
