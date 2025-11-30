@@ -84,6 +84,16 @@ std::string processEscapes(const std::string& str) {
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
+            } else if (str[i + 1] == '#' && str[i+2] == 'M') {
+                result +="\e[95m";      i+=3;
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}       result += "\e[0m";
+                i--;
+            } else if (str[i + 1] == '#' && str[i+2] == 'O') {
+                result +="\e[30m";      i+=3;
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}       result += "\e[0m";
+                i--;
 
             } else {
                 result += str[i];  // Keep the backslash if not recognized
@@ -175,8 +185,11 @@ textFile.close();
 return "";
 }
 
-std::string col(colours forColour  = colours::Default, colours backColour = colours::Default )
-{
+/**- col( ) sets FG and BG colour to Default
+ * 
+ * - col( colours::RESET ) resets all formatting
+ */
+std::string col(colours forColour  = colours::Default, colours backColour = colours::Default ){
 /*
     to get integer value use  static_cast<int>(colours:'col')
 */
@@ -213,8 +226,6 @@ switch (backColour){
 default:
     break;
 }
-
-
 
 return output;
 }
@@ -331,15 +342,19 @@ void entityInteraction(){
     
     if (lowercase(entAnswer) == "yes"){
         isGood = false;
-
         clearScreen();
+
         showEntity();
+        typeWrite("first_interaction_bad");
 
     }else if(lowercase(entAnswer) == "no"){
         isGood = true;
-
         clearScreen();
+
         showEntity("angry");
+        typeWrite("first_interaction_good");
+        std::cout<<output("view_invis_good",colours::cyan,colours::white);
+
     }else{
         std::cout << "you shouldnt see this";
     }
@@ -348,3 +363,21 @@ void entityInteraction(){
     clearScreen();
 }
 
+void sentryInteraction(){
+    std::string sentryAnswer = "";
+    if(!talkedSentry){
+        typeWrite("sentry_greeting");
+            talkedSentry = true;
+    }
+    typeWrite("Your Question is as follows:\n",colours::magenta);
+    if(isGood){
+        typeWrite("sentry_good_question");
+    } else 
+    if(!isGood){
+        typeWrite("sentry_bad_warning");
+        typeWrite("sentry_bad_question");
+    } else{
+        std::cout<<"shouldnt trigger";
+    }
+
+}

@@ -14,14 +14,20 @@ in red do 'WHY?'
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ROOM DESCRIPTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Campfire_Room_desc      | A dark and damp room,\d only a single \#Ydoor almost expectantly looking at you\n
-Hallway_desc            | another plain and empty room, \#Bwater drips from the ceiling into a puddle of \#Csadness and \#Csorrows \n
-Cells_desc              | The room is filled with rotten, disintegrated flesh that wreaks havoc on your nose,\d\n you can still feel the prescence of the entity presiding over its throne of flesh\d\n you dont want to stay any longer than you have to
-Sentry_desc             | A much cleaner, well-kempt room,\d walls with an \#Cunnerving lack of marks compared to the other rooms
+Hallway_desc            | another plain and empty room, \#Bwater drips from the ceiling into a puddle of \#Csadness and \#Csorrows \n a stone figure of a \#MRAVEN sits ontop of each doorway \n
+Cells_desc              | The room is filled with rotten, disintegrated flesh that wreaks havoc on your nose,\d\n you can still feel the prescence of the entity presiding over its throne of flesh\d\n you dont want to stay any longer than you have to\n
+Sentry_desc             | A much cleaner, well-kempt room,\d walls with an \#Cunnerving lack of marks compared to the other rooms\n
 Tome_hall_Entrance_desc | libENT placeholder
 Tome_hall_desc          | Lib placeholder
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Entity_warning |     'notice about prisoner-2314 [codename: entity]'\n\t   2314 is now confirmed to have been possesed by something dubed\n\t      The Entity 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ENTITY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Entity_warning |     'notice about prisoner-2315 [codename: entity]'\n\t   2315 is now confirmed to have been bedeviled\n
+
+
 
 towards_note | You shuffle closer to the glint\n\dand closer\n\dand closer\n\dCOME CLOSER!!!\d
 first_interaction | you remember the first thing you heard ""DONT ANSWER ANYONE"" \dbut\d you look anyways\n\d
@@ -30,8 +36,10 @@ first_interaction[2] | I know a way to get out of here \tand I know you want to 
 first_interaction[3] | you see, I also want to get out and I want you to help me\n
 first_interaction[4] | \nlet me\d help \#Yyou \n\d\nand in return \#Yyou \dhelp \dme
 
-first_interaction_good  | I see, \#Yyou wont take my help,\d good luck wihtout it
-first_interaction_bad   |
+
+first_interaction_good  | I see, \#Yyou wont take my help,\d good luck without it\n\d Though... \#Csome secrets reveal themselves when you \#Yselect them carefully...\n
+view_invis_good         | You feel a sense of goodwill enter your mind from another room,\n something urges you to take whatever is in the Tome Hall\n
+first_interaction_bad   | Ahhh,\d how \#Ywonderful.\d \n\nYou won't need to \#Cstrain your eyes\d or \#Yselect anything carefully. \dNo need for such... \#Ceffort.\d\n\n When the time comes,\d I'll \#Rwhisper the answer.\d All you need to do is \#Ylisten and obey...\n
 
 note_observation1 | By one of the bodies you see something on the wall\n\dupon looking closer you see a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n
 note_observation2 | By one of the bodies you see some words scratched into the floor\n\d
@@ -41,6 +49,13 @@ note_content | libr..y / pi.. up, / bo.k
 
 
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SENTRY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sentry_greeting      | I see,\d I know you want to get out of here,\d\n But I'm not allowed to let \#RTHEM out, at least not yet.\d\n However\d you do have my sympathies so I give you a Question\n
+sentry_good_question | the most recent to accept \#RTHEIR help had a design etched upon themselves by another\nMy question is simple, of what kind was the ink?\n
+
+sentry_bad_warning  |  I should warn you that to seek aid of another is a means to loose themselves
+sentry_bad_question |   
 
 test | The quick brown fox jumped over the fence \n
 
@@ -79,17 +94,15 @@ face_angry[12]  |        @@@@@@@@@**              **@@@@@@@@
 face_angry[13]  |      @@@@@                              @@@@@
 
 
-
-
 light campfire -> read about entity -> find entity -> gain viewHidden command -> find and read book -> see scratched words -> read book next to campfire -> sentry -> exit
 
 
 book_dark | the writing on the page is too faded to see in this room\n maybe a \#Ybrighter room will allow you to \#Cread \n
 
 book_hidden[1]  | #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-book_hidden[2]  | |    th.                         |
+book_hidden[2]  | | prisoner log: 2315       |
 book_hidden[3]  | |                                |
-book_hidden[4]  | |                                |
+book_hidden[4]  | |         asd             |
 book_hidden[5]  | |                                |
 book_hidden[6]  | |                          2     |
 book_hidden[7]  | |          asd                   |
@@ -108,22 +121,22 @@ book_hidden[19] | |                                |
 book_hidden[20] | #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 book_shown[1]  | \#Y#-------~~+~------~-~~----~~---#
-book_shown[2]  | \#Y|    th.                       \#Y|
+book_shown[2]  | \#Y| INTAKE FORM - PRISONER 2315  \#Y|
 book_shown[3]  | \#Y|                              \#Y|
-book_shown[4]  | \#Y|                              \#Y|
-book_shown[5]  | \#Y|                              \#Y|
-book_shown[6]  | \#Y|                          2   \#Y|
-book_shown[7]  | \#Y|          asd                 \#Y|
+book_shown[4]  | \#Y| NAME: Mark Aldridge          \#Y|
+book_shown[5]  | \#Y| AGE: 34                      \#Y|
+book_shown[6]  | \#Y| HEIGHT: 5'11"                \#Y|
+book_shown[7]  | \#Y| CRIME: [REDACTED]            \#Y|
 book_shown[8]  | \#Y|                              \#Y|
-book_shown[9]  | \#Y|                              \#Y|
-book_shown[10] | \#Y|            ad                \#Y|
-book_shown[11] | \#Y|              2               \#Y|
-book_shown[12] | \#Y|                              \#Y|
-book_shown[13] | \#Y|                       asd    \#Y|
-book_shown[14] | \#Y|                              \#Y|
-book_shown[15] | \#Y|                              \#Y|
-book_shown[16] | \#Y|          e                   \#Y|
-book_shown[17] | \#Y|                              \#Y|
-book_shown[18] | \#Y|                              \#Y|
+book_shown[9]  | \#Y| DISTINGUISHING MARKS:        \#Y|
+book_shown[10] | \#Y| - Scar on left forearm       \#Y|
+book_shown[11] | \#Y| - Tattoo of a: \#OSERPENT        \#Y|
+book_shown[12] | \#Y|   on right shoulder          \#Y| 
+book_shown[13] | \#Y|                              \#Y|
+book_shown[14] | \#Y| CELL ASSIGNMENT: B-7         \#Y|
+book_shown[15] | \#Y| CELLMATE: 2314               \#Y|
+book_shown[16] | \#Y|                              \#Y|
+book_shown[17] | \#Y| NOTES: Prisoner cooperative  \#Y|
+book_shown[18] | \#Y| No incidents reported        \#Y|
 book_shown[19] | \#Y|                              \#Y|
 book_shown[20] | \#Y#----~+~-----~---~~-~--~+-~----#

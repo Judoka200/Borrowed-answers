@@ -27,13 +27,13 @@ std::vector<item> inventory;
 
 #pragma region 
 //   item           title           desc                                              pickable     visible    FG col            BG col
-item campfire = {"campfire", " campfireDesc"                                          ,false,       true};
-item testItem = {"test item", "desc"                                                  ,true,        true,  colours::magenta};
-item key =      {"Rusty key", "rusty key desc"                                        ,true,        true,  colours::yellow};
-item dagger =   {"dagger", "   likely once a gleaming blade, now a historical relic"  ,true,        true,  colours::red};
-item book =     {"book", "     old Book desc"                                         ,true,        false, colours::black, colours::black};
-item match =    {"match", "    a simple match to light a fire"                        ,true,        true,  colours::yellow};
-item entityNote = {"note",     output("Entity_warning")                               ,false,       true,  colours::cyan};
+item campfire =   {"campfire", " campfireDesc"                                          ,false,       true};
+item testItem =   {"test item", "desc"                                                  ,true,        true,  colours::magenta};
+item key =        {"Rusty key", "rusty key desc"                                        ,true,        true,  colours::yellow};
+item dagger =     {"dagger", "   likely once a gleaming blade, now a historical relic"  ,true,        true,  colours::red};
+item book =       {"book", "     old Book desc"                                         ,true,        false, colours::black, colours::black};
+item match =      {"match", "    a simple match to light a fire"                        ,true,        true,  colours::yellow};
+item entityNote = {"note",       output("Entity_warning")                               ,false,       true,  colours::cyan};
 
 #pragma endregion
 
@@ -99,7 +99,7 @@ std::cout << "\033[38;5;203m" <<"\t----------------Items in room----------------
     if(item.visible && !viewInvisible){
             if (item.itemTitle =="campfire" && usedMatch){
 //                                              5: blinking
-                std::cout << "    - " << item.itemTitle << ":\033[5m " // -->
+                std::cout << "  - " << item.itemTitle << ":\033[5m " // -->
                   <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col(colours::RESET) << std::endl;
             }else{
                 std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
@@ -112,9 +112,8 @@ std::cout << "\033[38;5;203m" <<"\t----------------Items in room----------------
         if(viewInvisible){
             if (item.itemTitle =="campfire" && usedMatch){
 //                                              5: blinking
-                std::cout << "    - " << col(item.colour,item.backgroundColour) << item.itemTitle << ":\033[5m " // -->
-                 << col(colours::RESET) << item.itemDesc  << std::endl;
-                std::cout<<"blinking\n";
+                std::cout << "  - " << item.itemTitle << ":\033[5m " // -->
+                 << col(item.colour,item.backgroundColour)<< item.itemDesc << col(colours::RESET) << std::endl;
             }else{
                 std::cout << "  - " << item.itemTitle << ": " <<col(item.colour,item.backgroundColour)<< item.itemDesc <<col()<< std::endl;
 

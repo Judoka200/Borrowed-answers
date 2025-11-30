@@ -10,7 +10,7 @@
 
 #include <string>  //just for the dungeon layout array
 
-// #define dev
+#define dev
 bool GAME_LOOP_WON = false;
 //#######################################################################################################################################################################################################
 
@@ -34,6 +34,8 @@ bool tutorialObserved = false;
 bool canViewInvisible = false;
 bool showInventory = false;
 
+bool talkedSentry = false;
+bool seenSentry = false;
 bool isGood ;
 
 //access the layout by dungeonlayout[ Y POS][X POS]
@@ -55,10 +57,16 @@ bool observed[mapHeight][mapWidth] ={false};
 
 
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  dialouge.h  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#ifndef dev
+#define textNorm
+#endif
 
+#ifdef dev
 #define textFast
+#endif
 
-#ifdef testNorm
+
+#ifdef textNorm
 #define descDelay 0.0025   
 #define typeW_delay 0.015  
 #define txtDelay 0.45       

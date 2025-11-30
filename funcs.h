@@ -3,6 +3,7 @@
 #include <ctime>
 #include <iomanip>
 #include <cctype>  // used for tolower() 
+#include "vars.h"
 #ifdef _WIN32
 #include <windows.h> //for sleep() function, used to for delay between text outputs
 #endif
@@ -10,6 +11,10 @@
 #ifdef linux
 #include <unistd.h> //for usleep() function, used to for delay between text outputs
 #endif
+
+//declarations for functions that use them
+bool currentRoom(std::string roomName);
+std::string lowercase(std::string str);
 
 
 // returns true/false if a valid direction input
@@ -30,6 +35,10 @@ void showCommands(){
     std::cout << "  pickup/take <item>   - Pick up an item" << std::endl;
     std::cout << "  w/a/s/d              - Move (or up/down/left/right)" << std::endl;
     std::cout << "  help/h               - Show this help message" << std::endl;
+if(seenSentry){
+    if(currentRoom("Sentry")){  std::cout <<"\033[94;107m"; }else{  std::cout <<"\033[2m";    }   // dims the text if not in Sentry room
+    std::cout << "  TALK                 - Talk to the sentry guard" << "\033[0m" <<std::endl;
+}
 #ifdef dev
     std::cout << "\033[32m" << "\n==================DEV===================" << "\033[0m" << std::endl;
     std::cout << "  unlock               - Unlock all doors" << std::endl;
@@ -60,6 +69,12 @@ std::string lowercase(std::string str){
     return str;
 }
 
+bool currentRoom(std::string roomName){
+    if (lowercase(roomName) == lowercase(dungeonlayout[playerY][playerX])){
+        return true;
+    }
+return false;
+}
 
 void timeDelay(double duration_inSeconds){
 /* 
@@ -74,6 +89,7 @@ void timeDelay(double duration_inSeconds){
         usleep(duration_inSeconds*1000000); //usleep() takes an intager in micro-seconds so we muultiply by 1,000,000
     #endif
 }
+
 
 void clearScreen()
 {
