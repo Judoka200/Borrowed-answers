@@ -12,6 +12,7 @@
 
 #define dev
 bool GAME_LOOP_WON = false;
+bool GAME_LOOP_END = false;
 //#######################################################################################################################################################################################################
 
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  from main.cpp  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,6 +24,7 @@ int playerX = 0, playerY = 1; //    player starting position
 int nextX = -1, nextY = -1;
 #pragma endregion
 
+int guessesRemaining = 3;
 
 /*    ============================TUTORIAL================================== */
 bool tutorialComplete = false;
@@ -41,7 +43,7 @@ bool isGood ;
 //access the layout by dungeonlayout[ Y POS][X POS]
 // increasing:          X: →               Y: ↓    
 std::string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL", "Cells", "WALL", "WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
+{"WALL", "Cells", "WALL", "WALL"},                     // [0][0] | [0][1] | [0][2] | [0][3]
 {"Campfire_Room", "Hallway", "Sentry", "Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
 {"WALL", "Tome_hall_Entrance", "Tome_hall", "WALL"}    // [2][0] | [2][1] | [2][2] | [2][3]
 };
@@ -49,6 +51,9 @@ std::string dungeonlayout[mapHeight][mapWidth] = {
 bool visible[mapHeight][mapWidth] ={false};
 bool observed[mapHeight][mapWidth] ={false};
 
+
+std::string sentryHardAns = "serpent"; // if denied   entity | hard 'reputation'
+std::string sentryEasyAns = "raven"; // if accepted entity | easy  'reputation'
 
 
 

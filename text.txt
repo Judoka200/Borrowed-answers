@@ -51,11 +51,15 @@ note_content | libr..y / pi.. up, / bo.k
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SENTRY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-sentry_greeting      | I see,\d I know you want to get out of here,\d\n But I'm not allowed to let \#RTHEM out, at least not yet.\d\n However\d you do have my sympathies so I give you a Question\n
-sentry_good_question | the most recent to accept \#RTHEIR help had a design etched upon themselves by another\nMy question is simple, of what kind was the ink?\n
 
-sentry_bad_warning  |  I should warn you that to seek aid of another is a means to loose themselves
-sentry_bad_question |   
+
+
+sentry_greeting      | I see,\d I know you want to get out of here,\d\n But I'm not allowed to let \#RTHEM out, at least not yet.\d\n However\d you do have my sympathies so I give you a Question\n
+
+sentry_hard_question | the most recent to accept \#RTHEIR help had a design etched upon themselves by another\nMy question is simple, of what kind was the ink?\n
+
+sentry_easy_warning  |  I should warn you that to seek aid of another is a means to loose themselves\n
+sentry_easy_question |  Scattered around the Scape has been a keen set of eyes \#C silently observing,\nMy Question is simple, of what kind was the observer?\n
 
 test | The quick brown fox jumped over the fence \n
 

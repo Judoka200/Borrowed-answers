@@ -56,7 +56,9 @@
       "text_encoding": "cpp",
       "typeinfo": "cpp",
       "variant": "cpp",
-      "cstring": "cpp"
+      "cstring": "cpp",
+      "chrono": "cpp",
+      "ratio": "cpp"
     },
     
     "workbench.colorCustomizations": {

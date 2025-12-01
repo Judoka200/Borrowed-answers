@@ -267,7 +267,6 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
                     continue;}}
                 std::cout << text[i];
                 timeDelay(delay);
-
             }
         }
         // if string is just text to be outputted
@@ -364,20 +363,59 @@ void entityInteraction(){
 }
 
 void sentryInteraction(){
-    std::string sentryAnswer = "";
+    std::string sentryAns = "";
     if(!talkedSentry){
         typeWrite("sentry_greeting");
             talkedSentry = true;
     }
-    typeWrite("Your Question is as follows:\n",colours::magenta);
-    if(isGood){
-        typeWrite("sentry_good_question");
-    } else 
-    if(!isGood){
-        typeWrite("sentry_bad_warning");
-        typeWrite("sentry_bad_question");
-    } else{
-        std::cout<<"shouldnt trigger";
+
+    /*  
+    bad reputation (accepted entity) -----> easy question
+    good reputation (denied entity)  -----> hard question
+    */
+    switch (isGood){
+        case true:
+            typeWrite("Your Question is as follows:\n",colours::magenta);
+            typeWrite("sentry_hard_question");
+        break;
+
+        case false:
+            typeWrite("Your Question is as follows:\n",colours::magenta);
+            std::cout<< "\033[4m"<<output("sentry_easy_warning", colours::Default, colours::magenta);
+            typeWrite("sentry_easy_question");
+        break;  
     }
 
+    typeWrite("What is your answer: ", colours::green);
+    std::cin >> sentryAns;
+    std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    if(isGood && lowercase(sentryAns) == sentryHardAns){   //easy answer [raven]
+        std::cout << "successfull";
+    } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  //hard answer [serpent]
+        std::cout << "successfull";
+    } else {
+        std::cout <<col(colours::magenta); 
+        switch (guessesRemaining){
+            case 3:
+            std::cout << "unfortunatley not, and seeing as i am in no place to be infinitley benevolent,\n this is the first of three chances i give to you.";
+            std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
+            guessesRemaining -= 1;
+            break;
+            case 2:
+            std::cout << "Wrong again. Your chances dwindle, this is your second strike,\n One opportunity remains.\nSome things can be revealed by Higlighting";        
+            std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
+            guessesRemaining -= 1;
+                break;
+            case 1:
+            std::cout << "thrice you have failed, your chances are spent";
+
+
+
+
+            GAME_LOOP_END = true; 
+            break;
+        }
+    }
 }

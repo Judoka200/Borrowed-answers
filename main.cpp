@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <limits> // needed for numeric_limits<streamsize>::max()
+#include <chrono>
 
 
 using enum colours; //used for col() to colour text | prevents having to use colours:: every time in main.cpp 
@@ -85,7 +86,7 @@ bool isValid(int X, int Y)
 
 
 }
-void revealAdjcent(){   //sets all adjacent rooms to visible 
+void revealAdjcent(){   //sets all adjacent rooms to visible using bool array
     if (playerY > 0) visible[playerY - 1][playerX] = true;
     if (playerY < mapHeight ) visible[playerY + 1][playerX] = true;
     if (playerX > 0) visible[playerY][playerX - 1] = true;
@@ -220,7 +221,7 @@ void displayMap()
 #pragma endregion
 
 /*    --------------------------------COMMAND--------------------------------    */
-commandType processCommand(const string input,string& argumentsOut) {  //return the commandtype of the command 
+commandType processCommand(const string input,string& argumentsOut) {  //return the commandype of the command 
     
     #ifdef dev
         cout<<col(black,cyan)<< "DEV: input is:"<<input<<col()<<endl;
@@ -313,15 +314,6 @@ void executeCommand(commandType type,string arguments) {
     switch(type) {
         case commandType::QUIT:
             break;
-        
-        case commandType::_DEV_:
-            #ifndef dev
-            #define dev
-            #endif
-        break;
-
-
-
 
         case commandType::OBSERVE:
             typeWrite(dungeonlayout[playerY][playerX] + "_desc",colours::Default,descDelay);
@@ -372,7 +364,8 @@ void executeCommand(commandType type,string arguments) {
 
 
             case commandType::TALK:
-                cout<<"You talk to the guard"<<endl;
+            clearScreen();
+                cout<<col(magenta)<<"You talk to the guard"<<endl;
                 sentryInteraction();
                 
 
@@ -403,7 +396,7 @@ void GAME_LOOP()
     timeDelay(2.0);
     */
 
-   while(!GAME_LOOP_WON)
+   while(!GAME_LOOP_END)
    {  
        clearScreen();
        #pragma region          col(item.colour,item.backgroundColour) /*    -----------------------------------DISPLAY UI---------------------------------   */
@@ -517,7 +510,6 @@ void TUTORIAL_LOOP(){
     }    
 }
 
-
 int main(){
     typeWrite("notice",green);  typeWrite("warning",red);
     cout<< "\n\033[38;5;245mPress Enter to continue...";             // grey colour from table 
@@ -533,15 +525,19 @@ int main(){
 #endif
 tutorialComplete = true;
     unlockDoor(tutorialDoor);  //not placed in TUTORIAL_LOOP, so will be unlocked even if TUTORIAL skipped
-
     clearScreen();
-    
+
+    auto startTime = chrono::high_resolution_clock::now(); //stores the start time to calculate time taken 
+
     GAME_LOOP();
-
-
+    auto stopTime = chrono::high_resolution_clock::now(); //stores the start time to calculate time taken 
+    
+    auto time = duration_cast<std::chrono::seconds>(stopTime - startTime);
+    std::cout << "your final time was: " << format_duration(time);
+    
     cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
+    
 }
 
 

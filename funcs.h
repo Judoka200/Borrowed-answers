@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <cctype>  // used for tolower() 
 #include "vars.h"
+#include <chrono>
 #ifdef _WIN32
 #include <windows.h> //for sleep() function, used to for delay between text outputs
 #endif
@@ -15,6 +16,23 @@
 //declarations for functions that use them
 bool currentRoom(std::string roomName);
 std::string lowercase(std::string str);
+
+std::string format_duration( std::chrono::seconds s ) {
+    using namespace std::chrono;
+    auto secs = duration_cast<seconds>(s);
+    auto mins = duration_cast<minutes>(secs);
+    secs -= duration_cast<seconds>(mins);
+    auto hour = duration_cast<hours>(mins);
+    mins -= duration_cast<minutes>(hour);
+
+    std::stringstream ss;
+    if(hour.count()){
+    ss << hour.count() << " Hours : " << mins.count() << " Minutes : " << secs.count() << " Seconds : ";
+    } else {
+    ss << mins.count() << " Minutes : " << secs.count() << " Seconds : ";
+    }
+    return ss.str();
+}
 
 
 // returns true/false if a valid direction input
