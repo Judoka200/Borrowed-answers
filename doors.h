@@ -32,13 +32,10 @@ bool checkLocked(  int fromX, int fromY, int toX, int toY){
     if(tutorialDoor.fromX == fromX && tutorialDoor.fromY == fromY && tutorialDoor.toX == toX && tutorialDoor.toY == toY){
         return tutorialDoor.locked;
     }
-
-
     return false;    
-
 }
 
-void unlockDoor(door& gate, std::string key =""){
+void unlockDoor(door& gate, std::string key = ""){
     if(key == gate.key){
         gate.locked = false;
         std::cout<<"you unlocked the " << gate.doorName<<std::endl;

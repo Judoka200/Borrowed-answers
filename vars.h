@@ -11,6 +11,7 @@
 #include <string>  //just for the dungeon layout array
 
 #define dev
+
 bool GAME_LOOP_WON = false;
 bool GAME_LOOP_END = false;
 //#######################################################################################################################################################################################################
@@ -63,7 +64,8 @@ std::string sentryEasyAns = "raven"; // if accepted entity | easy  'reputation'
 
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  dialouge.h  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef dev
-#define textNorm
+// #define textNorm
+#define textFast
 #endif
 
 #ifdef dev

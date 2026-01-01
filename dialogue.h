@@ -1,7 +1,6 @@
 #include <string>
-#include <fstream>
-// #include <cstdlib>
-#include <limits>
+#include <fstream>  // for file interactions
+#include <limits>   // used for max()
 #include "vars.h"
 #define storyFile "text.txt"
 
@@ -17,79 +16,77 @@
 #endif
 
 #ifdef quicktext
-#define descDelay 0.00025    //default 0.0025
+#define descDelay 0.00025    // default 0.0025
 #define typeW_delay 0.0005  // 0.015
 #define txtDelay 0.15       // 0.065
 #endif
 
 #endif
 
-enum class colours{
-    Default,
-    black,
-    red,
-    green,
-    yellow,
-    blue,
-    magenta,
-    cyan,
-    white,
-    RESET
+enum colours{
+    Default,    black,    red,    green,    yellow,
+    blue,    magenta,    cyan,    white,    RESET
 };
 
 
-std::string col(colours forColour  , colours backColour );          //func definition
+std::string col(colours forColour  , colours backColour );          // func definition
 
-/*
-   ---------- getting  \n \t and \ for escape codes instead of being interpreted as individual chars----------
-*/
+
 std::string processEscapes(const std::string& str) {
+    /* processes escape codes from raw text taken from file
+       file reading only gives character by character output
+       so will read '\' then 'n' instead of '\n' as one */
     std::string result;
     for (size_t i = 0; i < str.length(); i++) {
         if (str[i] == '\\' && i + 1 < str.length()) {
             // Check what comes after the backslash
-            if (str[i + 1] == 'n') {
+            if (str[i + 1] == 'n') {                                // NEWLINE
                 result += '\n';  // Convert \n to newline
                 i++;  // Skip the 'n'
-            } else if (str[i + 1] == 't') {
+            } else if (str[i + 1] == 't') {                         // TAB
                 result += '\t';  // Convert \t to tab
                 i++;  // Skip the 't'
-            } else if (str[i + 1] == '\\') {
+            } else if (str[i + 1] == '\\') {                        // '\'
                 result += '\\';  // Convert \\ to single backslash
                 i++;  // Skip the second backslash
 
 
-            } else if (str[i + 1] == '#' && str[i+2] == 'R') {
+            } else if (str[i + 1] == '#' && str[i+2] == 'R') {      // single word RED
                 result +="\e[31m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'G') {
+            } else if (str[i + 1] == '#' && str[i+2] == 'r') {      // RED continues
+                result +="\e[31m";      i+=3;
+                while(i < str.length() && str[i] != ' '){
+                    result += str[i];       i++;}
+                i--;
+            } else if (str[i + 1] == '#' && str[i+2] == 'G') {      // single word GREEN
                 result +="\e[32m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'Y') {
+            } else if (str[i + 1] == '#' && str[i+2] == 'Y') {      // single word YELLOW
                 result +="\e[33m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'B') {
+            } else if (str[i + 1] == '#' && str[i+2] == 'B') {      // single word BLUE
                 result +="\e[34m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'C') {
+            } else if (str[i + 1] == '#' && str[i+2] == 'C') {      // single word CYAN
                 result +="\e[36m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'M') {
+            } else if (str[i + 1] == '#' && str[i+2] == 'M') {      // single word MAGENTA
                 result +="\e[95m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'O') {
+            } else if (str[i + 1] == '#' && str[i+2] == 'O') {      // single word BLACK
                 result +="\e[30m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
@@ -105,18 +102,10 @@ std::string processEscapes(const std::string& str) {
     return result;
 }
 
-/*
-    --------------------GETTING TEXT FROM .TXT FILE--------------------
-*/
+/* --------------------GETTING TEXT FROM .TXT FILE-------------------- */
 
-//must be used with std::cout 
-std::string output(const std::string &textTitle,colours forColour  = colours::Default, colours backColour = colours::Default, bool preserveWhitespace = false)
-/*
-    returns string instead of directly outputting
-    allows use of ANSI escape codes
-*/
-{
-
+// must be used with std::cout 
+std::string output(const std::string textTitle,colours forColour  = colours::Default, colours backColour = colours::Default, bool preserveWhitespace = false){
     // open the text file
     std::ifstream textFile("text.txt");
 
@@ -129,21 +118,19 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
     std::string line;
     while (std::getline(textFile, line))
     {
-        // checks if the line has the delimiter
+        // looks fo the delimiter 
         size_t delimPosition = line.find('|');
 
-        // if delmiter found then execute, but if not found, skip the code, close the file, and return end message
+        // if delmiter found then execute, but if not found goes to next line
         if (delimPosition != std::string::npos)
         {
-            // extract the text before the delimiter
-            std::string key = line.substr(0, delimPosition);
+            // extract text before the delimiter
+            std::string title = line.substr(0, delimPosition);
 
-            key.erase(0, key.find_first_not_of(" \t")); // remove leading whitespace
-            key.erase(key.find_last_not_of(" \t") + 1); // remove trailing whitespace
+            title.erase(0, title.find_first_not_of(" \t")); // remove leading whitespace
+            title.erase(title.find_last_not_of(" \t") + 1 /*, to end of line by defualt*/); // remove trailing whitespace
 
-            // check if the section key is the 'wanted' one inputted as an argument
-            if (key == textTitle)
-            {
+            if (title == textTitle){
                 // extract the text after the delimiter
                 std::string content = line.substr(delimPosition + 1);
                 if(!preserveWhitespace){
@@ -153,12 +140,8 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
                 // Closes the textFile and returns the message
 
 
-/*
- --------------------COLOUR FOR TEXT--------------------
-*/
-                if (static_cast<int> (forColour) || static_cast<int>(backColour)){
-
-
+/* --------------------COLOUR FOR TEXT-------------------- */
+                if (forColour != colours::Default || backColour != colours::Default){
                     std::string output="";
                     output += col(forColour,backColour);
                     output += content;
@@ -167,19 +150,13 @@ std::string output(const std::string &textTitle,colours forColour  = colours::De
                     output = processEscapes(output);
                     textFile.close();
                     return output;
-
-                }else{
+                } else {
                     content = processEscapes(content);
-
                     textFile.close();
                     return content;
                 }
-
         }
     }
-
-
-
 }
 textFile.close();
 return "";
@@ -241,7 +218,7 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
     this is 16 characters long, so if the first two characters are '\0' then assume the whole
     code is being used and immediatley start printing from the 17th [index 16] character*/
 
-    //if string is a title from text.txt
+    // if string is a title from text.txt
 
       if (text[0] == '\\' && text[1]=='0')
         { // becuase \ is an escape code, two are needed to check for a single "\"
@@ -270,7 +247,7 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
             }
         }
         // if string is just text to be outputted
-        else{
+        else {
             text =textTitle;
             std::cout<<col(forcolour);
             for (int i = 0; i < text.length(); i++){
@@ -302,7 +279,7 @@ void showEntity(std::string faceType = "Default"){
 
 void entityInteraction(){
     typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg
-    // std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
+    //  std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
 
     std::cout << col(colours::cyan)<< " do you want to INSPECT "<< col() <<"[yes/no]\n\n" << col();
     std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor
@@ -313,13 +290,14 @@ void entityInteraction(){
 
     showEntity();
 
-    for(int i = 1; i<= 4; i++){
+    for(int i = 1; i<= 5; i++){
         // std::cout << "\n\n";
         std::string interactText = "first_interaction["+std::to_string(i)+"]";
+        std::cout << "\e[3m";
         typeWrite(interactText, colours::red);
     }
     std::cout << std::endl;
-    std::cout << col(colours::cyan)<<"Do you choose to accept?"<<col(colours::RESET)<<" [yes/no]\n";
+    std::cout << col(colours::cyan)<<"Do you choose to accept?"<<col(colours::RESET)<< std::endl;
 
     std::cout << "Enter command:" <<col(colours::cyan) << "[yes/no]"<<col(colours::RESET);                            // ?25l: hides cursor
     std::cout << "\rEnter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);    // \r
@@ -344,21 +322,24 @@ void entityInteraction(){
         clearScreen();
 
         showEntity();
+        std::cout << "\033[3m";
         typeWrite("first_interaction_bad");
+        
 
-    }else if(lowercase(entAnswer) == "no"){
+    } else if(lowercase(entAnswer) == "no"){
         isGood = true;
         clearScreen();
 
         showEntity("angry");
+        std::cout << "\033[3m";
         typeWrite("first_interaction_good");
         std::cout<<output("view_invis_good",colours::cyan,colours::white);
 
-    }else{
+    } else {
         std::cout << "you shouldnt see this";
     }
-
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
     clearScreen();
 }
 
@@ -375,14 +356,20 @@ void sentryInteraction(){
     */
     switch (isGood){
         case true:
-            typeWrite("Your Question is as follows:\n",colours::magenta);
+            typeWrite("Your Question is as follows:\n\n",colours::magenta);
             typeWrite("sentry_hard_question");
         break;
 
         case false:
-            typeWrite("Your Question is as follows:\n",colours::magenta);
+            typeWrite("Your Question is as follows:\n\n",colours::magenta);
             std::cout<< "\033[4m"<<output("sentry_easy_warning", colours::Default, colours::magenta);
             typeWrite("sentry_easy_question");
+            timeDelay(1.5);
+            std::cout << col(colours::red) << "\033[3m\n\n...you hear a whisper in your mind...\n" << col(colours::red);
+            std::cout << "\"The answer you seek is: " << col(colours::black, colours::red) 
+                      << "RAVEN" << col(colours::red) << "\"\n";
+            std::cout << "\"Now remember your promise to me...\"\n" << col(colours::RESET);
+            timeDelay(1.0);
         break;  
     }
 
@@ -391,28 +378,31 @@ void sentryInteraction(){
     std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    if(isGood && lowercase(sentryAns) == sentryHardAns){   //easy answer [raven]
+    if(isGood && lowercase(sentryAns) == sentryHardAns){   // easy answer [raven]
         std::cout << "successfull";
-    } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  //hard answer [serpent]
+        GAME_LOOP_WON = true;
+    } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  // hard answer [serpent]
         std::cout << "successfull";
+        GAME_LOOP_WON = true;
     } else {
+        
         std::cout <<col(colours::magenta); 
         switch (guessesRemaining){
             case 3:
-            std::cout << "unfortunatley not, and seeing as i am in no place to be infinitley benevolent,\n this is the first of three chances i give to you.";
+            std::cout << "unfortunatley not, and seeing as i am in no place to be infinitley benevolent,\n this is the first of three chances i give to you.\n";
             std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
             guessesRemaining -= 1;
             break;
             case 2:
-            std::cout << "Wrong again. Your chances dwindle, this is your second strike,\n One opportunity remains.\nSome things can be revealed by Higlighting";        
+            std::cout << "Wrong again. Your chances dwindle, this is your second strike,\n One opportunity remains.\nSome things can be revealed by Higlighting\n";        
             std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
             guessesRemaining -= 1;
                 break;
             case 1:
-            std::cout << "thrice you have failed, your chances are spent";
-
-
-
+            std::cout << "thrice you have failed, your chances are spent\n";
+            
+            std::cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
             GAME_LOOP_END = true; 
             break;

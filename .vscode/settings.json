@@ -58,11 +58,28 @@
       "variant": "cpp",
       "cstring": "cpp",
       "chrono": "cpp",
-      "ratio": "cpp"
+      "ratio": "cpp",
+      "xstring": "cpp",
+      "forward_list": "cpp",
+      "ios": "cpp",
+      "locale": "cpp",
+      "xfacet": "cpp",
+      "xiosbase": "cpp",
+      "xlocale": "cpp",
+      "xlocbuf": "cpp",
+      "xlocinfo": "cpp",
+      "xlocmes": "cpp",
+      "xlocmon": "cpp",
+      "xlocnum": "cpp",
+      "xloctime": "cpp",
+      "xmemory": "cpp",
+      "xtr1common": "cpp",
+      "xutility": "cpp"
     },
     
     "workbench.colorCustomizations": {
 
   "editor.foldBackground": "#3b3f4028"
-}
+},
+"C_Cpp.errorSquiggles": "disabled"
 }

@@ -34,13 +34,14 @@ first_interaction | you remember the first thing you heard ""DONT ANSWER ANYONE"
 first_interaction[1] | I am but an entity stuck here, I know where the answer that frustrating excuse of a guard want's\n\n
 first_interaction[2] | I know a way to get out of here \tand I know you want to get out\n
 first_interaction[3] | you see, I also want to get out and I want you to help me\n
-first_interaction[4] | \nlet me\d help \#Yyou \n\d\nand in return \#Yyou \dhelp \dme
+first_interaction[4] | \nlet me\d help \#Yyou \n\d\n
+first_interaction[5] | and in return \#Yyou \d\#Rhelp \d\#Rme
 
 
-first_interaction_good  | I see, \#Yyou wont take my help,\d good luck without it\n\d Though... \#Csome secrets reveal themselves when you \#Yselect them carefully...\n
-view_invis_good         | You feel a sense of goodwill enter your mind from another room,\n something urges you to take whatever is in the Tome Hall\n
-first_interaction_bad   | Ahhh,\d how \#Ywonderful.\d \n\nYou won't need to \#Cstrain your eyes\d or \#Yselect anything carefully. \dNo need for such... \#Ceffort.\d\n\n When the time comes,\d I'll \#Rwhisper the answer.\d All you need to do is \#Ylisten and obey...\n
-
+first_interaction_good  | \#rI see, \#Yyou \#rwont take my help,\d good luck without it\n\d Though... \#Csome \#rsecrets reveal themselves when you \#YHighlight \#rthem carefully...\n
+view_invis_good         | You feel a sense of goodwill enter your mind from another room,\n you're urged to take whatever you can find in the Tome Hall\n
+first_interaction_bad   | \#rAhhh, \dhow wonderful\d  \n\n\#rYou won't need to strain your eyes\d or \#Ychoose \#ranything carefully. \dNo need for such... effort.\d\n\n When the time comes,\d I'll whisper the answer.\d All you need to do is \#Ylisten \#rand obey...\n
+2
 note_observation1 | By one of the bodies you see something on the wall\n\dupon looking closer you see a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n
 note_observation2 | By one of the bodies you see some words scratched into the floor\n\d
 note_content | libr..y / pi.. up, / bo.k
@@ -59,7 +60,13 @@ sentry_greeting      | I see,\d I know you want to get out of here,\d\n But I'm 
 sentry_hard_question | the most recent to accept \#RTHEIR help had a design etched upon themselves by another\nMy question is simple, of what kind was the ink?\n
 
 sentry_easy_warning  |  I should warn you that to seek aid of another is a means to loose themselves\n
-sentry_easy_question |  Scattered around the Scape has been a keen set of eyes \#C silently observing,\nMy Question is simple, of what kind was the observer?\n
+sentry_easy_question |  Scattered around the Scape has been a keen set of eyes silently observing,\nMy Question is simple, of what kind was the observer?\n
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 
 test | The quick brown fox jumped over the fence \n
 
@@ -134,7 +141,7 @@ book_shown[7]  | \#Y| CRIME: [REDACTED]            \#Y|
 book_shown[8]  | \#Y|                              \#Y|
 book_shown[9]  | \#Y| DISTINGUISHING MARKS:        \#Y|
 book_shown[10] | \#Y| - Scar on left forearm       \#Y|
-book_shown[11] | \#Y| - Tattoo of a: \#OSERPENT        \#Y|
+book_shown[11] | \#Y| \#Y- \#YTattoo \#Yof \#Ya: \#OSERPENT       \#Y|
 book_shown[12] | \#Y|   on right shoulder          \#Y| 
 book_shown[13] | \#Y|                              \#Y|
 book_shown[14] | \#Y| CELL ASSIGNMENT: B-7         \#Y|

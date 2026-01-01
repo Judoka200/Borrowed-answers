@@ -1,48 +1,13 @@
+#include <vector>
+#include <limits> // needed for numeric_limits<streamsize>::max()
+#include <chrono> // used for time taken (start - end times)
 #include "funcs.h"
 #include "dialogue.h"
 #include "items.h"
 #include "vars.h"
 
-#include <vector>
-#include <limits> // needed for numeric_limits<streamsize>::max()
-#include <chrono>
 
-
-using enum colours; //used for col() to colour text | prevents having to use colours:: every time in main.cpp 
 using namespace std;
-
-#ifndef VARS_H
- 
-
-const int mapWidth = 4;  // X
-const int mapHeight = 3;  // Y
-int stepsRemaining = 10;
-int playerX = 0, playerY = 1; //    player starting position
-int nextX = -1, nextY = -1;
-/*    ============================TUTORIAL================================== */
-bool tutorialComplete = false;
-bool tutorialViewedInv = false;
-bool tutorialTakenMatch = false;
-bool tutorialUsedMatch = false;
-bool tutorialObserved = false;
-//  ====================================================================== 
-bool canViewInvisible = false;
-bool showInventory = false;
-bool isGood ;
-
-// increasing:          X: →               Y: ↓    
-std::string dungeonlayout[mapHeight][mapWidth] = {  
-{"WALL", "Cells", "WALL", "WALL"},                    // [0][0] | [0][1] | [0][2] | [0][3]
-{"Campfire_Room", "Hallway", "Sentry", "Exit"},        // [1][0] | [1][1] | [1][2] | [1][3]
-{"WALL", "Tome_hall_Entrance", "Tome_hall", "WALL"}    // [2][0] | [2][1] | [2][2] | [2][3]
-};
-
-bool visible[mapHeight][mapWidth] ={false};
-bool observed[mapHeight][mapWidth] ={false};
-
-
-#endif
-
 
 enum commandType {
     QUIT,    OBSERVE,    _MAP_,    INVENTORY,    PICKUP,
@@ -53,14 +18,14 @@ enum commandType {
 
 #pragma region functions 
 bool isBlocked(int fromX,int fromY, int ToX, int ToY){
-    //checks for doors and virtual 'Walls between rooms'
+    // checks for doors and prevents specific room transitions
     string fromRoom = dungeonlayout[fromY][fromX];
     string toRoom = dungeonlayout[ToY][ToX];
 
-    if(checkLocked(fromX, fromY, ToX, ToY)){    //returns true if path is locked 
+    if(checkLocked(fromX, fromY, ToX, ToY)){    // returns true if path is locked 
         return true;
     }
-    // add virtual wall between sentry room and Tome_hall
+    // block room between sentry room and Tome_hall
     if((fromRoom =="Sentry" && toRoom =="Tome_hall")||(fromRoom =="Tome_hall" && toRoom =="Sentry") )
     {return true;}
 
@@ -74,31 +39,30 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
 }
 bool isValid(int X, int Y)
 {
-    if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight) //checks if current position is within a 1-room margin (if there's a room in that)
-    {
+    if (X < 0 || X >= mapWidth || Y < 0 || Y >= mapHeight){ // checks if player has a room between them and the border (wont go outside the map)
         return false;
     }
-    else if(isBlocked(playerX,playerY,X,Y))
-    {return false;}
-    
-    return dungeonlayout[Y][X] != "WALL";   //returns true if the room isnt a wall
-    
-
-
+    else if(isBlocked(playerX,playerY,X,Y)){
+        return false;
+    } else if(dungeonlayout[Y][X] == "WALL"){
+        return false;
+    }
+    return true;
 }
-void revealAdjcent(){   //sets all adjacent rooms to visible using bool array
-    if (playerY > 0) visible[playerY - 1][playerX] = true;
-    if (playerY < mapHeight ) visible[playerY + 1][playerX] = true;
-    if (playerX > 0) visible[playerY][playerX - 1] = true;
-    if (playerX < mapWidth ) visible[playerY][playerX + 1] = true;
+void revealAdjcent(){   // sets all adjacent rooms to visible using bool array
+/* the if statemetns prevent trying to write true to a place outside of the array */
+    if (playerY > 0) visible[playerY - 1][playerX] = true;          // up
 
+    if (playerY < mapHeight ) visible[playerY + 1][playerX] = true; //  down
+
+    if (playerX > 0) visible[playerY][playerX - 1] = true;          // left
+
+    if (playerX < mapWidth ) visible[playerY][playerX + 1] = true;  // right
 }
-vector<string> getMoves() //using vector becuase size of list will change depending on postition 
+vector<string> getMoves(){ // using vector becuase size of list will change depending on the room 
 
-{
-    vector<string> moves; //just a tempory vector to store the possible moves in
-    
-    //if valid room to 'direction' of player then add the corresponding string to the vector
+    vector<string> moves; // just a tempory vector to store the possible moves in
+    // if valid room to 'direction' of player then add the corresponding string to the vector
     if (playerY > 0 && isValid(playerX, playerY - 1))   
     { moves.push_back("Up (w)"); }
 
@@ -110,8 +74,7 @@ vector<string> getMoves() //using vector becuase size of list will change depend
     
     if (playerX < mapWidth - 1 && isValid(playerX + 1, playerY))    
     { moves.push_back("Right (d)"); }
-    
-    return moves;   //returns the possible moves which is a vector of strings 
+    return moves;   // returns the possible moves as a vector of strings 
 }
 bool move(string& direction)
 {/*    reference to string 'direction' used to change the input to the direction when printed   */
@@ -134,41 +97,39 @@ bool move(string& direction)
         {newX += 1;
         direction = "right";}
 
-    if(!isValid(newX,newY))     //if the direction to next room is INVALID
+    if(!isValid(newX,newY))     // if the direction to next room is INVALID
     {
-        if(newX < 0 || newX >= mapWidth || newY < 0 || newY >= mapHeight)    //invalid becuase no room
+        if(newX < 0 || newX >= mapWidth || newY < 0 || newY >= mapHeight)    // invalid becuase no room
         {
             cout << "theres no pathway in that direction\n";      
-        }else if(checkLocked(playerX,playerY,newX,newY)){//invlaid becuase locked path
-            cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";       //43: yellow background
+        } else if(checkLocked(playerX,playerY,newX,newY)){                    // invlaid becuase locked path
+            cout<<"This pathway is blocked by a \033[43mlocked\033[0m gate\n";       // 43: yellow background
         }
         #ifndef dev
-        else if(dungeonlayout[newY][newX] == "Cells" && !hasItem("dagger")){
+        else if(dungeonlayout[newY][newX] == "Cells" && !hasItem("dagger")){ //  invalid becuase unarmmed
             cout << col(red) << "when taking a step towards the doorway, you feel an overwhelming amount of dread\n its better to not go unarmed into this place\n"; 
-            
         }
          #endif
-        else
-        {
-            cout<<"theres no way to go this direction \n";  //any exceptions e.g. Blocked path between rooms
-            }
-        return false;   //move was unsuccesful
+        else {
+            cout<<"theres no way to go this direction \n";  // any exceptions e.g. Blocked path between rooms    
+        }
+        return false;   // move was unsuccesful for some reason
     }
 //  set the current player position to the next position 
     playerX = newX;     
     playerY = newY;
-    nextX = newX;
+    nextX = newX;       
     nextY = newY;
-    visible[playerY][playerX] = true; //current room to visible 
+    visible[playerY][playerX] = true; // current room to visible 
     revealAdjcent();        
-    return true;        //move was successful
+    return true;        // move was successful
 }
 void displayPlrPos()
 {
     cout << "\e[38;5;27m" << "+========================== ROOM =========================+\n" << col();
     cout << "ROOM name: " << dungeonlayout[playerY][playerX] << endl;
     cout << "_MAP_ Position X: " << playerX << "\tY: " << playerY;
-    cout << "\t| Steps Remaining: "<< stepsRemaining;
+    // cout << "\t| Steps Remaining: "<< stepsRemaining;
     cout << "\e[38;5;27m" << "\n+=========================================================+\n" << col();
 }
 void displayMap()
@@ -180,12 +141,12 @@ void displayMap()
                 for(int X = 0; X < mapWidth; X++){
                     if(X == playerX && Y == playerY){
                             cout<< col(yellow)<<"[PLYR] "<<col();
-                        }else if(!visible[Y][X]){
+                        } else if(!visible[Y][X]){
                             cout << "[~~~~] ";
-                        }else if(dungeonlayout[Y][X] == "WALL"){
+                        } else if(dungeonlayout[Y][X] == "WALL"){
                             // cout << col(red)<<"[###] " <<col();
                             cout << col(red)<<"[####] " <<col();
-                        }else{
+                        } else {
                             string roomName;
                             if(dungeonlayout[Y][X].length() >=4)
                             { roomName = dungeonlayout[Y][X].substr(0,4);}
@@ -202,15 +163,15 @@ void displayMap()
                 for(int X = 0; X < mapWidth; X++){
                     if(X==0){cout<<"\t\t";}
                     if(X == playerX && Y == playerY){
-                        cout<< col(yellow)<<"[PLYR] "<<col();
-                    }else if(dungeonlayout[Y][X] == "WALL"){
-                        cout << col(cyan)<<"(####) " <<col();
-                    }else{
+                        cout<< col(colours::yellow)<<"[PLYR] "<<col();
+                    } else if(dungeonlayout[Y][X] == "WALL"){
+                        cout << col(colours::cyan)<<"(####) " <<col();
+                    } else {
                         // cout <<col(red,cyan) <<"{" << X << "," << Y << "} "<<col();
                         string roomName;
                         if(dungeonlayout[Y][X].length() >=4)
                         { roomName = dungeonlayout[Y][X].substr(0,4);}
-                        cout <<col(cyan) <<"(" << roomName << ") "<<col();
+                        cout <<col(colours::cyan) <<"(" << roomName << ") "<<col();
                     }
             }
             cout<<endl;
@@ -221,27 +182,24 @@ void displayMap()
 #pragma endregion
 
 /*    --------------------------------COMMAND--------------------------------    */
-commandType processCommand(const string input,string& argumentsOut) {  //return the commandype of the command 
+commandType processCommand(const string input,string& argumentsOut) {  // return the commandype of the command 
     
     #ifdef dev
-        cout<<col(black,cyan)<< "DEV: input is:"<<input<<col()<<endl;
+        cout<<col(colours::black,colours::cyan)<< "DEV: input is:"<<input<<col()<<endl;
     #endif
-    
-    int spacePosition = input.find(' ');   //find the pos of the space which should seperate the command and args
+
+    int spacePosition = input.find(' ');   // find the pos of the space which should seperate the cmd and arguments
     string cmd;
-    //get the command keyword half
+    /* get the command keyword half */
     if (spacePosition != string::npos){
-        cmd = input.substr(0,spacePosition);  // gives cmd the command half
+        cmd = input.substr(0,spacePosition);  // store up to the space into cmd
+        argumentsOut = input.substr(spacePosition + 1); // store after the space into argumetnsOut
     } else {
-        cmd = input;}
-        //get the argument half
-    if (spacePosition != string::npos){
-        argumentsOut = input.substr(spacePosition + 1);
-    } else {
+        cmd = input;                // if theres nothing after the command then nothing needs to be done
         argumentsOut = "";
     }
-   
-    if(tutorialComplete){        
+
+    if(tutorialComplete){                   // full command list
         if(cmd == "quit" || cmd == "exit"){
             return {commandType::QUIT};
     }
@@ -273,7 +231,7 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
 #endif
     } 
     
-    else{
+    else {                                   // limited command list for tutorial 
         if(cmd == "quit" || cmd == "exit") {
             return {commandType::QUIT};
         }
@@ -293,7 +251,7 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
         if(cmd == "use" && lowercase(argumentsOut) == "match") {
             return{commandType::USE};
         }
-#ifdef dev
+#ifdef dev                                   // still provides commands for dev mode
             if(cmd == "unlock") return {commandType::_UNLOCK_};                    
             if(cmd == "map") return {commandType::_MAP_};
             if(moveDirection(input)){
@@ -307,16 +265,16 @@ commandType processCommand(const string input,string& argumentsOut) {  //return 
 
 }
 void executeCommand(commandType type,string arguments) {
-    #ifdef dev
-    cout << col(black,cyan)<<"argumetns are: "<<arguments<<col()<<endl;
-    #endif
-    lowercase(arguments,true);
+#ifdef dev 
+    cout << col(colours::black,colours::cyan)<<"argumetns are: "<<arguments<<col()<<endl;
+#endif
+    lowercase(arguments,true); // sets the argumetns to lowercase
     switch(type) {
         case commandType::QUIT:
             break;
 
         case commandType::OBSERVE:
-            typeWrite(dungeonlayout[playerY][playerX] + "_desc",colours::Default,descDelay);
+            typeWrite(dungeonlayout[playerY][playerX] + "_desc",colours::Default,descDelay);    // double the speed for descriptions
             break;
             
         case commandType::_MAP_:      // dev mode only
@@ -324,7 +282,7 @@ void executeCommand(commandType type,string arguments) {
             break;
             
         case commandType::INVENTORY:
-            // viewInventory();
+        /* dont call viewInventory() so that it can replace the item list section of the interface */
             showInventory = true;
             break;
             
@@ -332,8 +290,11 @@ void executeCommand(commandType type,string arguments) {
             if(!arguments.empty()) {
            
                 pickupItem(arguments, playerX, playerY);
+            } else {
+                cout<<"what do you want to pickup?" << endl;
             }
             break;
+
         case commandType::_UNLOCK_:    // dev mode only
             unlockDoor(hallwayDoor,"");
             unlockDoor(exitDoor,"");
@@ -345,43 +306,39 @@ void executeCommand(commandType type,string arguments) {
             else if(checkLocked(playerX,playerY,nextX,nextY)){cout<<"something went wrong and you didnt go anywhere\n";}
             break;
             
-            case commandType::USE:
-            if(!arguments.empty()) {                
-                if(arguments == "match" && hasItem("match"))  // tutorial check
-                    {tutorialUsedMatch = true;}
-                
-                if(useItem(arguments)) {
-                    if(arguments== "book"){
-                        cout << "You read the " << arguments << endl;
-                    }else{
-                    cout << "You used the " << arguments << endl;
-                    }
-                }
-            } else {
-                cout << "Use what? Specify an item name." << endl;
-            }
-            break;
-
-
-            case commandType::TALK:
-            clearScreen();
-                cout<<col(magenta)<<"You talk to the guard"<<endl;
-                sentryInteraction();
-                
-
-            break;
+        case commandType::USE:
+        if(!arguments.empty()) {                
+            if(arguments == "match" && hasItem("match"))  // tutorial use check
+                {tutorialUsedMatch = true;}
             
-            case commandType::HELP:
-            showCommands();
-            break;
-
-            case commandType::INVALID:
-                cout << "Invalid command!" << endl;
-                break;
+            if(useItem(arguments)) {
+                if(arguments== "book"){
+                    cout << "You read the " << arguments << endl;
+                } else {
+                cout << "You used the " << arguments << endl;
+                }
+            }
+        } else {
+            cout << "what do you want to use?" << endl;
         }
+        break;
+
+        case commandType::TALK:
+        clearScreen();
+            cout<<"You talk to the guard"<<endl;
+            sentryInteraction();
+        break;
         
-        cout<< "\033[38;5;245mPress Enter to continue..."; // grey colour from table 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        case commandType::HELP:
+            showCommands();
+        break;
+
+        case commandType::INVALID:
+            cout << "Invalid command!" << endl;
+            break;
+        }
+    cout<< "\033[38;5;245mPress Enter to continue..."; // grey colour from table 
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 void GAME_LOOP()
@@ -390,47 +347,45 @@ void GAME_LOOP()
     visible[playerY][playerX] = true;
     revealAdjcent();
     
-    typeWrite("Campfire_room_opening",magenta,descDelay);
-    /*
-    typeWrite("#YOU NEED TO GET OUT#",red);
-    timeDelay(2.0);
-    */
+    typeWrite("Campfire_room_opening",colours::magenta,descDelay);
 
    while(!GAME_LOOP_END)
    {  
-       clearScreen();
-       #pragma region          col(item.colour,item.backgroundColour) /*    -----------------------------------DISPLAY UI---------------------------------   */
+        clearScreen();
+        #pragma region          col(item.colour,item.backgroundColour) /*    -----------------------------------DISPLAY UI---------------------------------   */
 
-       displayPlrPos();
-       displayMap();
+        displayPlrPos();
+        displayMap();
 
-       // toggles the item list for the inventory list when viewing inventory
-                if(!showInventory){                 
-                    listItems(canViewInvisible);
-                }else{viewInventory();}
-                showInventory = false;
-
+        // toggles the item list for the inventory list when inventory command is called
+        if(showInventory){
+            viewInventory();
+        } else {
+            listItems(canViewInvisible);
+        }
+        showInventory = false;
         cout<<endl;
+
 #pragma endregion 
         
 #pragma region                  /*    -----------------------------------ROOM CHECKS------------------------------   */
-        if(!observed[playerY][playerX]) //if room hasnt been enterd, provide the room's description 
+        if(!observed[playerY][playerX]) // if room hasnt been enterd, provide the room's description 
         {
-            cout<< col(green)<<"You observe the room your in: \n"<< col();     //1: bold , 22:  revert underline 
-                if(currentRoom("Cells")) {
-                    entityInteraction();
-                    canViewInvisible = true;
+            cout<< col(colours::green)<<"You observe the room your in: \n"<< col();     // 1: bold , 22:  revert underline 
+            if(currentRoom("Cells")) {
+                entityInteraction();
+                canViewInvisible = true;
              
-            #ifndef dev
-                }else if (currentRoom("Sentry")){
-                // gain TALK command
+#ifndef dev
+            } else if (currentRoom("Sentry")){         // gain TALK command
                 seenSentry = true;
-                typeWrite("You face a towering, stone, cloaked stautewith a raven on its shoulder\n when looking at its face, all you see is a flash of white\n ", Default, 0.01);
-                cout << col(blue, white) << "And feel the ability to commune with what towers in front of you\n" << col();
+                typeWrite("You face a towering, stone, cloaked staute with a raven on its shoulder\n", colours::Default, 0.01);
+                typeWrite(" when moving your eyes to it's cloaked gaze, all you see is a flash of white\n ", colours::Default, 0.01);
+                cout << col(colours::blue, colours::white) << "You gain the ability to commune with what stands in front of you\n" << col();
                 showCommands();
-            #endif
+#endif
             } else {
-                typeWrite(dungeonlayout[playerY][playerX] + "_desc",Default, descDelay);
+                typeWrite(dungeonlayout[playerY][playerX] + "_desc",colours::Default, descDelay);
             }
             observed[playerY][playerX] = true;  // sets the current room to have been observed on entry
             cout<<endl;
@@ -439,28 +394,28 @@ void GAME_LOOP()
 #pragma endregion 
 
 #pragma region                  /*    ----------------------------------DIPLAY MOVES--------------------------------   */
-        cout<<col(green)<<"possible moves: "<<col();
-        vector<string> moves = getMoves();      //gets a vector of possible moves 
+        cout<<col(colours::green)<<"possible moves: "<<col();
+        vector<string> moves = getMoves();      // gets a vector of possible moves 
         for (int i = 0; i < moves.size(); i++){
             cout << moves[i];
-            if (i < moves.size() - 1)
-                cout << ", "; // seperates each direction by ', ' unless there are no more moves
+            if (i < moves.size() - 1){
+                cout << ", ";    // seperates each direction by ', ' until no more moves
+            }
         }
         cout << endl;
 #pragma endregion
 
-#pragma region                  /*    ----------------------------------GET COMMAND---------------------------------    */
+        /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
         getline(cin, command);
-        lowercase(command, true);
+        lowercase(command, true);   // sets the whole command to lowercase incase i forget to add lowercase() to if statements
 
-        string argument;  // temp variable that will store the argument, using pointer in processCommand()
+        string argument;  // temp variable that will store the argument, will be edited by processCommand()
         commandType type = processCommand(command, argument);
         cout << endl;
         executeCommand(type,argument);
             
         clearScreen();               
-#pragma endregion
         }
 }
 
@@ -470,28 +425,27 @@ void TUTORIAL_LOOP(){
     
     while(!tutorialComplete)
     {  
-                        /*    -----------------------------------DISPLAY UI---------------------------------    */  
+        /*    -----------------------------------DISPLAY UI---------------------------------    */  
         showCommands();
-#pragma region          /*    -------------------------------TUTORIAL COMPLETION----------------------------    */
-        cout<<col(cyan)<< "++++++++++++++++TUTORIAL COMPLETION++++++++++++++++ \n"<<col();
-//                                                      2: dimmed, 4: underline, 9: strikethrough, 0: RESET
+        /*    -------------------------------TUTORIAL COMPLETION----------------------------    */
+        cout<<col(colours::cyan)<< "++++++++++++++++TUTORIAL COMPLETION++++++++++++++++ \n"<<col();
+//                                          2: dimmed, 4: underline, 9: strikethrough, 0: RESET
         cout<< ((tutorialObserved)?    "\033[2;9m - OBSERVE the room your in with:          \033[0m[#]\n":" - \033[4mOBSERVE\033[0m the room your in with:          [ ]\n") ;    
         cout << ((tutorialTakenMatch)? "\033[2;9m - PICKUP and Item within the room with:   \033[0m[#]\n":" - \033[4mPICKUP\033[0m and Item within the room with:   [ ]\n");
         cout << ((tutorialViewedInv)?  "\033[2;9m - VIEW at your inventory to see the item: \033[0m[#]\n":" - \033[4mVIEW\033[0m at your inventory to see the item: [ ]\n");
         cout << ((tutorialUsedMatch)?  "\033[2;9m - USE the item:                           \033[0m[#]\n":" - \033[4mUSE\033[0m the item:                           [ ]\n") ;
-        cout<< col(cyan)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++\n" <<col();
+        cout<< col(colours::cyan)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++\n" <<col();
 
         cout<<endl;
-        #pragma endregion
         
-        if(!showInventory){
-            listItems();
-        } else {
+        if(showInventory){
             viewInventory();
+        } else {
+            listItems(canViewInvisible);
         }
         showInventory = false;
-        cout << endl;
-//                      /*    ----------------------------------GET COMMAND---------------------------------    */
+        cout<<endl;
+        /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
         getline(cin, command);
         lowercase(command,true);
@@ -502,7 +456,7 @@ void TUTORIAL_LOOP(){
         
          if (tutorialObserved&&tutorialTakenMatch&&tutorialUsedMatch&&tutorialViewedInv){
              clearScreen();
-             cout<< col(black,yellow)<<"\n\n\nYou passed the Tutorial\nnow to face reality\n"<<col();
+             cout<< col(colours::black,colours::yellow)<<"\n\n\nYou passed the Tutorial\nnow to face reality\n"<<col();
              typeWrite("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ",colours::green, 0.01);
              tutorialComplete = true;
             }       
@@ -511,30 +465,34 @@ void TUTORIAL_LOOP(){
 }
 
 int main(){
-    typeWrite("notice",green);  typeWrite("warning",red);
-    cout<< "\n\033[38;5;245mPress Enter to continue...";             // grey colour from table 
+    typeWrite("notice",colours::green);  typeWrite("warning",colours::red);
+    cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
     generateItems();
     clearScreen()  ;
     
-    cout<<col(); //reset all colour formatting
+    cout<<col(); // reset all colour formatting
 #ifndef dev
     tutorialComplete = false;
     if (!tutorialComplete) {TUTORIAL_LOOP();}
 #endif
-tutorialComplete = true;
-    unlockDoor(tutorialDoor);  //not placed in TUTORIAL_LOOP, so will be unlocked even if TUTORIAL skipped
+    tutorialComplete = true;
+    unlockDoor(tutorialDoor);  // not placed in TUTORIAL_LOOP, so will be unlocked even if TUTORIAL skipped
     clearScreen();
 
-    auto startTime = chrono::high_resolution_clock::now(); //stores the start time to calculate time taken 
+    auto startTime = chrono::high_resolution_clock::now(); // stores the start time to calculate time taken 
 
     GAME_LOOP();
-    auto stopTime = chrono::high_resolution_clock::now(); //stores the start time to calculate time taken 
-    
-    auto time = duration_cast<std::chrono::seconds>(stopTime - startTime);
-    std::cout << "your final time was: " << format_duration(time);
-    
+    auto stopTime = chrono::high_resolution_clock::now(); // stores the start time to calculate time taken 
+    auto timeTaken = duration_cast<std::chrono::seconds>(stopTime - startTime);
+
+    if(isGood){
+// good ending
+    } else {
+// bad ending 
+    }
+
     cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     

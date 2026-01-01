@@ -1,22 +1,16 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <iomanip>
-#include <cctype>  // used for tolower() 
-#include "vars.h"
 #include <chrono>
 #ifdef _WIN32
-#include <windows.h> //for sleep() function, used to for delay between text outputs
+#include <windows.h> // for sleep() function, used to for delay between text outputs
 #endif
+#include "vars.h"
 
-#ifdef linux
-#include <unistd.h> //for usleep() function, used to for delay between text outputs
-#endif
 
-//declarations for functions that use them
+// declarations for functions that use them
 bool currentRoom(std::string roomName);
 std::string lowercase(std::string str);
 
+// https://www.geeksforgeeks.org/cpp/measure-execution-time-function-cpp/
 std::string format_duration( std::chrono::seconds s ) {
     using namespace std::chrono;
     auto secs = duration_cast<seconds>(s);
@@ -35,7 +29,7 @@ std::string format_duration( std::chrono::seconds s ) {
 }
 
 
-// returns true/false if a valid direction input
+
 bool moveDirection(std::string str){
     if (str == "w"||str == "W"||str == "up"||str == "Up"
       ||str == "a"||str == "A"||str == "left"||str == "Left"
@@ -54,7 +48,7 @@ void showCommands(){
     std::cout << "  w/a/s/d              - Move (or up/down/left/right)" << std::endl;
     std::cout << "  help/h               - Show this help message" << std::endl;
 if(seenSentry){
-    if(currentRoom("Sentry")){  std::cout <<"\033[94;107m"; }else{  std::cout <<"\033[2m";    }   // dims the text if not in Sentry room
+    if(currentRoom("Sentry")){  std::cout <<"\033[94;107m" << "\033[5m"; } else {  std::cout <<"\033[2m" << "\033[5m";    }   // dims the text if not in Sentry room
     std::cout << "  TALK                 - Talk to the sentry guard" << "\033[0m" <<std::endl;
 }
 #ifdef dev
@@ -71,20 +65,26 @@ if(seenSentry){
 /** reference and return versions
  * adding a bool value to the function gives reference which will change the actual string
  * no bool will make a copy
+ * the value of the bool doesnt matter
+ * https://www.geeksforgeeks.org/cpp/function-overloading-c/
 */
 void lowercase(std::string &str, bool){
-for(int i=0; i <str.length();i++)
-    {str[i]= tolower(str[i]);}
+for(int i=0; i <str.length();i++){
+    str[i]= tolower(str[i]);
+    }
+    // no return value as directly changing the string 
 }
 
 /** reference and return versions
  * adding a bool value to the function gives reference which will change the actual string
  * no bool will make a copy
+ * the value of the bool doesnt matter
 */
 std::string lowercase(std::string str){
-    for(int i=0; i <str.length();i++)
-    {str[i]= tolower(str[i]);}
-    return str;
+    for(int i=0; i <str.length();i++){
+        str[i]= tolower(str[i]);
+    }
+return str;
 }
 
 bool currentRoom(std::string roomName){
@@ -100,11 +100,11 @@ void timeDelay(double duration_inSeconds){
 */
 
     #ifdef _WIN32
-        Sleep(duration_inSeconds*1000); //Sleep() takes an intager in milli-seconds so we muultiply by 1,000
+        Sleep(duration_inSeconds*1000); // Sleep() takes an intager in milli-seconds so we muultiply by 1,000
     #endif
 
     #ifdef linux
-        usleep(duration_inSeconds*1000000); //usleep() takes an intager in micro-seconds so we muultiply by 1,000,000
+        usleep(duration_inSeconds*1000000); // usleep() takes an intager in micro-seconds so we muultiply by 1,000,000
     #endif
 }
 
