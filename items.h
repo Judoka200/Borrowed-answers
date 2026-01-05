@@ -155,8 +155,8 @@ void viewBook(){
             fLine = "book_shown[" + std::to_string(i) + "]";   
             line = output(fLine, book.colour, book.backgroundColour, true);
             std::cout << line << std::endl;
+            }
         }
-    }
     if(!lit){
         std::cout << output("book_dark");
     }
