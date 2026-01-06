@@ -1,6 +1,6 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OPENING SEQUENCE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d a little tip, theres a key in the Cells, \done of the \#BPrisoners took it\n
+notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d there is a key in the Cells, \done of the \#BPrisoners \#Gtook \#Git\n
 warning | but do not look at anything else\d DONT ANSWER ANYONE and don't enter the Cells without a weapon\n \d\d not even to satisfy your curiosity
 begone | anyways,\d good luck,\d dont give up\d
 
@@ -14,7 +14,7 @@ in red do 'WHY?'
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ROOM DESCRIPTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Campfire_Room_desc      | A dark and damp room,\d only a single \#Ydoor almost expectantly looking at you\n
-Hallway_desc            | another plain and empty room, \#Bwater drips from the ceiling into a puddle of \#Csadness and \#Csorrows \n a stone figure of a \#MRAVEN sits ontop of each doorway \n
+Hallway_desc            | another plain and empty room, \#Bwater drips from the ceiling into a puddle of \#Csadness and \#Csorrows \n a stone figure of a Raven sits ontop of each doorway \n
 Cells_desc              | The room is filled with rotten, disintegrated flesh that wreaks havoc on your nose,\d\n you can still feel the prescence of the entity presiding over its throne of flesh\d\n you dont want to stay any longer than you have to\n
 Sentry_desc             | A much cleaner, well-kempt room,\d walls with an \#Cunnerving lack of marks compared to the other rooms\n
 Tome_hall_Entrance_desc | libENT placeholder
@@ -61,6 +61,13 @@ sentry_hard_question | the most recent to accept \#RTHEIR help had a design etch
 
 sentry_easy_warning  |  I should warn you that to seek aid of another is a means to loose themselves\n
 sentry_easy_question |  Scattered around the Scape has been a keen set of eyes silently observing,\nMy Question is simple, of what kind was the observer?\n
+
+
+sentry_hard_correct[1] | The Sentry nods it's head slowly \d \nMark bore the mark of the serpent, it was given to him by a previous encounter with the \#RTHEM 
+sentry_hard_correct[2] | He was brought back by the mark after he failed his bargain with THEM outside this place.\n\dI do hope you didn't make the same mistake
+sentry_hard_correct[3] | Here is the key for the door behind me, You merely have to take it and you will be able to walk through  
+
+
 
 
 
@@ -153,3 +160,152 @@ book_shown[19] | \#Y|                              \#Y|
 book_shown[20] | \#Y#----~+~-----~---~~-~--~+-~----#
 
 cheese
+
+
+
+~               ____
+~             //    \\
+~            ||      ||                                      
+~             \\____//                                 
+~                ||                                         
+~                ||                                         
+~                ||                                         
+~             -==||                                         
+~             -==||                                           
+
+key[1] |               ____
+key[2] |             //    \\\\
+key[3] |            ||      ||                                      
+key[4] |             \\\\____//                                 
+key[5] |                ||                                         
+key[6] |                ||                                         
+key[7] |                ||                                         
+key[8] |             -==||                                         
+key[9] |             -==||                                           
+                                                            
+                                                            
+~              to get two '\\' together you, \\\\ is needed as it is processed into a single \ per \\ in processEscapes()
+                                                            
+                                                            
+ /----------------------------------------------------------------------------------------------------------------------\                                                           
+|                                                                                                                       |
+|                                                                                                                       |
+|                                                                      ________________________                         |
+|                                                                     //______________________\\                        |
+|                                                                    //           ||           \\                       |
+|                                                                    ||           ||           ||                       |
+|                                                                    ||           ||           ||                       |
+|                                                                    ||===========[]===========||                       |
+|                  ___=============__                                ||           ||           ||                       |
+|                 //                 \\                              ||           ||           ||                       |
+|               //                     \\                            ||           ||           ||                       |
+|              ||                       ||                           ||===========[]===========||                       |
+|             ||                         ||                          ||  {+}      ||      {+}  ||                       |
+|          /=||                           ||=\                       ||           ||           ||                       |
+|          { ||                           || }                       ||           ||           ||                       |
+|          \ ||                           || /                       ||===========[]===========||                       |
+|           =+\\                         //+=                        ||           ||           ||                       |
+|              ||                        ||                          ||           ||           ||                       |
+|               ||   ||            ||   ||                           ||           ||           ||                       |
+|                \\  ||            ||  //                            ||===========[]===========||                       |
+|                 \|+||            ||=|/                                                                                |
+|                    ||            ||                                                                                   |
+|                    ||            ||                                                                                   |
+\-----------------------------------------------------------------------------------------------------------------------/
+
+
+win_screen[1]    |    /-------------------------------------------------------------------------------------------------------------\                                                           
+win_screen[2]    |    |                                                                                                             |
+win_screen[3]    |    |        __     ______  _    _  __          ______  _   _                                                     |
+win_screen[4]    |    |        \ \   / / __ \| |  | | \ \        / / __ \| \ | |                                                    |
+win_screen[5]    |    |         \ \_/ / |  | | |  | |  \ \  /\  / / |  | |  \| |                                                    |
+win_screen[6]    |    |          \   /| |  | | |  | |   \ \/  \/ /| |  | | . ` |                                                    |
+win_screen[7]    |    |           | | | |__| | |__| |    \  /\  / | |__| | |\  |                                                    |
+win_screen[8]    |    |           |_|  \____/ \____/      \/  \/   \____/|_| \_|                                                    |
+win_screen[9]    |    |                                                                      _______________________                |
+win_screen[10]   |    |                                                                     //_____________________\\\\               |
+win_screen[11]   |    |                                                                    //           ||          \\\\              |
+win_screen[12]   |    |                                                                    ||           ||           ||             |
+win_screen[13]   |    |                                                                    ||           ||           ||             |
+win_screen[14]   |    |                                                                    ||===========[]===========||             |
+win_screen[15]   |    |                  ___=============__                                ||           ||           ||             |
+win_screen[16]   |    |                 //                 \\\\                              ||           ||           ||             |
+win_screen[17]   |    |               //                     \\\\                            ||           ||           ||             |
+win_screen[18]   |    |              ||                       ||                           ||===========[]===========||             |
+win_screen[19]   |    |             ||                         ||                          ||  {+}      ||      {+}  ||             |
+win_screen[20]   |    |          /=||                           ||=\                       ||           ||           ||             |
+win_screen[21]   |    |          { ||                           || }                       ||           ||           ||             |
+win_screen[22]   |    |          \ ||                           || /                       ||===========[]===========||             |
+win_screen[23]   |    |           =+\\\\                         //+=                        ||           ||           ||             |
+win_screen[24]   |    |              ||                        ||                          ||           ||           ||             |
+win_screen[25]   |    |               ||   ||            ||   ||                           ||           ||           ||             |
+win_screen[26]   |    |                \\\\  ||            ||  //                            ||===========[]===========||             |
+win_screen[27]   |    |                 \|+||            ||=|/                                                                      |
+win_screen[28]   |    |                    ||            ||                                                                         |
+win_screen[29]   |    |                    ||            ||                                                                         |
+win_screen[20]   |    \-------------------------------------------------------------------------------------------------------------/
+
+
+
+win_screen_good[1]    |    /-------------------------------------------------------------------------------------------------------------\       
+win_screen_good[2]    |    |                                                                                                             |
+win_screen_good[3]    |    |        __     ______  _    _  __          ______  _   _                                                     |
+win_screen_good[4]    |    |        \ \   / / __ \| |  | | \ \        / / __ \| \ | |                                                    |
+win_screen_good[5]    |    |         \ \_/ / |  | | |  | |  \ \  /\  / / |  | |  \| |                                                    |
+win_screen_good[6]    |    |          \   /| |  | | |  | |   \ \/  \/ /| |  | | . ` |                                                    |
+win_screen_good[7]    |    |           | | | |__| | |__| |    \  /\  / | |__| | |\  |                                                    |
+win_screen_good[8]    |    |           |_|  \____/ \____/      \/  \/   \____/|_| \_|                                                    |
+win_screen_good[9]    |    |                                                                      _______________________                |
+win_screen_good[10]   |    |                     [ TRUE FREEDOM ]                                //_____________________\\\\               |
+win_screen_good[11]   |    |                                                                    //           ||          \\\\              |
+win_screen_good[12]   |    |                                                                    ||           ||           ||             |
+win_screen_good[13]   |    |                                                                    ||           ||           ||             |
+win_screen_good[14]   |    |                                                                    ||===========[]===========||             |
+win_screen_good[15]   |    |                  ___=============__                                ||           ||           ||             |
+win_screen_good[16]   |    |                 //                 \\\\                              ||           ||           ||             |
+win_screen_good[17]   |    |               //                     \\\\                            ||           ||           ||             |
+win_screen_good[18]   |    |              ||                       ||                           ||===========[]===========||             |
+win_screen_good[19]   |    |             ||                         ||                          ||  {+}      ||      {+}  ||             |
+win_screen_good[20]   |    |          /=||         .:::::::.        ||=\                        ||           ||           ||             |
+win_screen_good[21]   |    |          { ||         ::LIGHT::        || }                        ||           ||           ||             |
+win_screen_good[22]   |    |          \ ||          :::::::         || /                        ||===========[]===========||             |
+win_screen_good[23]   |    |           =+\\\\           :::          //+=                         ||           ||           ||             |
+win_screen_good[24]   |    |              ||                        ||                          ||           ||           ||             |
+win_screen_good[25]   |    |               ||   ||            ||   ||                           ||           ||           ||             |
+win_screen_good[26]   |    |                \\\\  ||            ||  //                            ||===========[]===========||             |
+win_screen_good[27]   |    |                 \|+||            ||=|/                                                                      |
+win_screen_good[28]   |    |                    ||            ||                                                                         |
+win_screen_good[29]   |    |                    ||            ||                                                                         |
+win_screen_good[30]   |    \-------------------------------------------------------------------------------------------------------------/
+
+
+win_screen_bad[1]    |    /-------------------------------------------------------------------------------------------------------------\       
+win_screen_bad[2]    |    |                                                                                                             |
+win_screen_bad[3]    |    |        __     ______  _    _  __          ______  _   _                                                     |
+win_screen_bad[4]    |    |        \ \   / / __ \| |  | | \ \   ##   / / __ \| \ | |                                                    |
+win_screen_bad[5]    |    |         \ \_/ / |  | | | #| |  \ \ #/\  / / | #| |  \| |                                                    |
+win_screen_bad[6]    |    |          \   /| | #| | |  | |   \ \/  \/ /| |  | | . ` |                                                    |
+win_screen_bad[7]    |    |           | | | |__| | |__| |    \  /\  / | |__| | |\  |                                                    |
+win_screen_bad[8]    |    |           |_|  \____/ \____/      \/  \/   \____/|_| \_|                                                    |
+win_screen_bad[9]    |    |                                                                      _______________________                |
+win_screen_bad[10]   |    |                     [ ...BUT AT WHAT COST? ]                        //_____________________\\\\               |
+win_screen_bad[11]   |    |                                                                    //###        ||          \\\\              |
+win_screen_bad[12]   |    |                                                                    ||###        ||           ||             |
+win_screen_bad[13]   |    |                                                                    ||###        ||           ||             |
+win_screen_bad[14]   |    |                                                                    ||###========[]===========||             |
+win_screen_bad[15]   |    |                  ___=============__                                ||###        ||           ||             |
+win_screen_bad[16]   |    |                 //                 \\\\                              ||###        ||           ||             |
+win_screen_bad[17]   |    |               //                     \\\\                            ||###        ||           ||             |
+win_screen_bad[18]   |    |              ||                       ||                           ||###========[]===========||             |
+win_screen_bad[19]   |    |             ||                         ||                          ||###  {+}   ||      {+}  ||             |
+win_screen_bad[20]   |    |          /=||       ~~~SHADOW~~~        ||=\                       ||###        ||           ||             |
+win_screen_bad[21]   |    |          { ||       ~~~FOLLOWS~~~       || }                       ||###        ||           ||             |
+win_screen_bad[22]   |    |          \ ||       ~~~~~~~~~~~~~       || /                       ||###========[]===========||             |
+win_screen_bad[23]   |    |           =+\\\\                         //+=                        ||###        ||           ||             |
+win_screen_bad[24]   |    |              ||                        ||                          ||###        ||           ||             |
+win_screen_bad[25]   |    |               ||   ||            ||   ||                           ||###        ||           ||             |
+win_screen_bad[26]   |    |                \\\\  ||            ||  //                            ||###========[]===========||             |
+win_screen_bad[27]   |    |                 \|+||            ||=|/                                                                      |
+win_screen_bad[28]   |    |                    ||            ||                                                                         |
+win_screen_bad[29]   |    |                    ||            ||                                                                         |
+win_screen_bad[30]   |    \-------------------------------------------------------------------------------------------------------------/

@@ -325,7 +325,7 @@ void executeCommand(commandType type,string arguments) {
 
         case commandType::TALK:
         clearScreen();
-            cout<<"You talk to the guard"<<endl;
+            cout<< col(yellow) <<"You talk to the guard"<< col() << endl;
             sentryInteraction();
         break;
         
@@ -352,7 +352,7 @@ void GAME_LOOP()
    while(!GAME_LOOP_END)
    {  
         clearScreen();
-        #pragma region          col(item.colour,item.backgroundColour) /*    -----------------------------------DISPLAY UI---------------------------------   */
+        #pragma region          /*    -----------------------------------DISPLAY UI---------------------------------   */
 
         displayPlrPos();
         displayMap();
@@ -431,8 +431,8 @@ void TUTORIAL_LOOP(){
         cout<<col(colours::cyan)<< "++++++++++++++++TUTORIAL COMPLETION++++++++++++++++ \n"<<col();
 //                                          2: dimmed, 4: underline, 9: strikethrough, 0: RESET
         cout<< ((tutorialObserved)?    "\033[2;9m - OBSERVE the room your in with:          \033[0m[#]\n":" - \033[4mOBSERVE\033[0m the room your in with:          [ ]\n") ;    
-        cout << ((tutorialTakenMatch)? "\033[2;9m - PICKUP and Item within the room with:   \033[0m[#]\n":" - \033[4mPICKUP\033[0m and Item within the room with:   [ ]\n");
         cout << ((tutorialViewedInv)?  "\033[2;9m - VIEW at your inventory to see the item: \033[0m[#]\n":" - \033[4mVIEW\033[0m at your inventory to see the item: [ ]\n");
+        cout << ((tutorialTakenMatch)? "\033[2;9m - PICKUP and Item within the room with:   \033[0m[#]\n":" - \033[4mPICKUP\033[0m and Item within the room with:   [ ]\n");
         cout << ((tutorialUsedMatch)?  "\033[2;9m - USE the item:                           \033[0m[#]\n":" - \033[4mUSE\033[0m the item:                           [ ]\n") ;
         cout<< col(colours::cyan)<<"+++++++++++++++++++++++++++++++++++++++++++++++++++\n" <<col();
 
@@ -465,6 +465,9 @@ void TUTORIAL_LOOP(){
 }
 
 int main(){
+    showWinScreens(2);
+    cin.ignore();
+
     typeWrite("notice",colours::green);  typeWrite("warning",colours::red);
     cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');

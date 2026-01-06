@@ -259,6 +259,8 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
         // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');     //UNCOMMENT TO DISCARD INPUT WHEN TYPING
 }
 
+
+/* -----------------------DISPLAY GRAPHICS----------------------- */
 void showEntity(std::string faceType = "Default"){
     if(faceType == "Default"){
         for (int i = 1; i<17;i++){
@@ -276,13 +278,42 @@ void showEntity(std::string faceType = "Default"){
 
     }
 }
+void showWinScreens(int ending){
+    if(ending == 1){ //good ending
+        for (int i = 1; i<31;i++){
+        std::string win = "win_screen_good["+std::to_string(i) +"]";
+            std::string line = output(win);
+            std::cout << line << std::endl;
+        }
+    }
+    if(ending == 2){ //bad ending
+        for (int i = 1; i<31;i++){
+        std::string win = "win_screen_bad["+std::to_string(i) +"]";
+            std::string line = output(win);
+            std::cout << line << std::endl;
+        }
+    }
+}
+void showKey(){
+    for (int i = 1; i = 9; i++){
+        std::string key = "key["+std::to_string(i) +"]";
+        std::string line = output(key, colours::red, colours::Default,true);
+        std::cout << line << std::endl;
+    }
+} 
+
+
 
 void entityInteraction(){
+    /* covers the first interaction with the 'entity' in the cells room*/
+
     typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg
     //  std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
 
     std::cout << col(colours::cyan)<< " do you want to INSPECT "<< col() <<"[yes/no]\n\n" << col();
-    std::cout << "Enter command:\033[31m YES \033[?25l"<<col(colours::black)<<std::endl;                            // ?25l: hides cursor
+    std::cout << "Enter command:\033[31m"<<col(colours::black);                            
+    typeWrite("YES", colours::red, 0.1);
+    std::cout <<"\033[?25l" << col(colours::RESET);                                             // ?25l: hides cursor
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     typeWrite("towards_note", colours::red);
@@ -291,9 +322,9 @@ void entityInteraction(){
     showEntity();
 
     for(int i = 1; i<= 5; i++){
-        // std::cout << "\n\n";
+        //loops through the first_interaction lines
         std::string interactText = "first_interaction["+std::to_string(i)+"]";
-        std::cout << "\e[3m";
+        std::cout << "\e[3m";                                                                   // 3: italics
         typeWrite(interactText, colours::red);
     }
     std::cout << std::endl;
@@ -301,8 +332,9 @@ void entityInteraction(){
 
     std::cout << "Enter command:" <<col(colours::cyan) << "[yes/no]"<<col(colours::RESET);                            // ?25l: hides cursor
     std::cout << "\rEnter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);    // \r
-    timeDelay(1);
+    timeDelay(2);
     std::string entAnswer ="";
+
     while(lowercase(entAnswer) !="no"){
         //          \r goes back to start of line wihtout new line so text gets replaced                hence the large blank space ↓ to overwrite 
         std::cout << "\rEnter choice:" <<col(colours::black,colours::red) << "yes\033[36;49m/"<<col(colours::cyan,colours::white)<<"NO\033[0m                             ";
@@ -333,7 +365,7 @@ void entityInteraction(){
         showEntity("angry");
         std::cout << "\033[3m";
         typeWrite("first_interaction_good");
-        std::cout<<output("view_invis_good",colours::cyan,colours::white);
+        std::cout<< std::endl << output("view_invis_good",colours::cyan,colours::white);
 
     } else {
         std::cout << "you shouldnt see this";
@@ -349,10 +381,9 @@ void sentryInteraction(){
         typeWrite("sentry_greeting");
             talkedSentry = true;
     }
-
     /*  
     bad reputation (accepted entity) -----> easy question
-    good reputation (denied entity)  -----> hard question
+    good reputation (denied entity)  -----> hard question     (requires finding book)
     */
     switch (isGood){
         case true:
@@ -365,28 +396,42 @@ void sentryInteraction(){
             std::cout<< "\033[4m"<<output("sentry_easy_warning", colours::Default, colours::magenta);
             typeWrite("sentry_easy_question");
             timeDelay(1.5);
-            std::cout << col(colours::red) << "\033[3m\n\n...you hear a whisper in your mind...\n" << col(colours::red);
-            std::cout << "\"The answer you seek is: " << col(colours::black, colours::red) 
-                      << "RAVEN" << col(colours::red) << "\"\n";
-            std::cout << "\"Now remember your promise to me...\"\n" << col(colours::RESET);
+            std::cout << col(colours::red) << "\n\n...you hear a whisper in your mind...\n\033[3m" << col(colours::red);
+            std::cout << "\"My strength is limited here so i can only help you so much: \n " <<
+                         "your answer can be found within the " << col(colours::black, colours::red) << "\"Hallway\"\n";
+            std::cout << col(colours::red) << "\"Now remember your promise to me...\"\n" << col(colours::RESET);
             timeDelay(1.0);
         break;  
     }
 
     typeWrite("What is your answer: ", colours::green);
     std::cin >> sentryAns;
-    std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
+    // std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+    
     if(isGood && lowercase(sentryAns) == sentryHardAns){   // easy answer [raven]
-        std::cout << "successfull";
+
+    typeWrite("")
+
+
+
         GAME_LOOP_WON = true;
+
     } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  // hard answer [serpent]
         std::cout << "successfull";
-        GAME_LOOP_WON = true;
-    } else {
         
+        
+        
+        
+        GAME_LOOP_WON = true;
+
+    } else if(lowercase(sentryAns) == "back" || lowercase(sentryAns) == "cancel"){
+        guessesRemaining +=4;           //removes guessesRemaing from the possible range of the switch case statement as no guess made
+
+    } else {        
         std::cout <<col(colours::magenta); 
+                                /* ---------------------------------- Incorrect guess---------------------------------- */
         switch (guessesRemaining){
             case 3:
             std::cout << "unfortunatley not, and seeing as i am in no place to be infinitley benevolent,\n this is the first of three chances i give to you.\n";
@@ -408,4 +453,8 @@ void sentryInteraction(){
             break;
         }
     }
+    guessesRemaining -= 4;              // Reverts guessesRemaing back to its value
 }
+
+
+

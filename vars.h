@@ -65,7 +65,7 @@ std::string sentryEasyAns = "raven"; // if accepted entity | easy  'reputation'
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  dialouge.h  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef dev
 // #define textNorm
-#define textFast
+#define textNorm
 #endif
 
 #ifdef dev
