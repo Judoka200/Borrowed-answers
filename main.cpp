@@ -6,14 +6,13 @@
 #include "items.h"
 #include "vars.h"
 
-
 using namespace std;
+
 
 enum commandType {
     QUIT,    OBSERVE,    _MAP_,    INVENTORY,    PICKUP,
     _UNLOCK_,    MOVE,    USE,     HELP,    INVALID, TALK
 };
-
 
 #pragma region functions 
 bool isBlocked(int fromX,int fromY, int ToX, int ToY){
@@ -490,7 +489,7 @@ void TUTORIAL_LOOP(){
 }
 
 int main(){
-
+    clearScreen();
 cout << "\e[8;32;111t";
 
     typeWrite("notice",colours::green);  typeWrite("warning",colours::red);
@@ -522,8 +521,8 @@ cout << "\e[8;32;111t";
         showWinScreens(2);
     }
     
-    std::cout << format_duration(timeTaken);
-    cout<< "\033[38;5;245mPress Enter Twice to continue...";                   // grey colour from table 
+    std::cout << "\033[38;5;15m" << format_duration(timeTaken);
+    cout<< "\033[38;5;245m\nPress Enter twice to Exit";                   // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     

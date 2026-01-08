@@ -1,11 +1,10 @@
 #include <iostream>
 #include <chrono>
-#ifdef _WIN32
+#ifdef _WIN32        // checks if system OS is windows 
 #include <windows.h> // for sleep() function, used to for delay between text outputs
 #endif
 #include "vars.h"
-
-
+#include<unistd.h>
 // declarations for functions that use them
 bool currentRoom(std::string roomName);
 std::string lowercase(std::string str);
@@ -20,17 +19,16 @@ std::string format_duration( std::chrono::seconds s ) {
     mins -= duration_cast<minutes>(hour);
 
 
-    if(hour.count()){
+    if(hour.count()){           // checks if duration is >= 1 hour
         return std::to_string(hour.count()) + " Hours : " + std::to_string(mins.count()) + " Minutes : " + std::to_string(secs.count()) + " Seconds : ";
     } else {
         return std::to_string(mins.count()) + " Minutes : " + std::to_string(secs.count()) + " Seconds : ";
     }
     return "";
 }
-
-
-
-bool moveDirection(std::string str){
+//gets move direction inputs
+//returns true for correct direction 
+bool moveDirection(std::string str){ 
     if (str == "w"||str == "W"||str == "up"||str == "Up"
       ||str == "a"||str == "A"||str == "left"||str == "Left"
       ||str == "s"||str == "S"||str == "down"||str == "Down"
@@ -48,7 +46,8 @@ void showCommands(){
     std::cout << "  w/a/s/d              - Move (or up/down/left/right)" << std::endl;
     std::cout << "  help/h               - Show this help message" << std::endl;
 if(seenSentry){
-    if(currentRoom("Sentry")){  std::cout <<"\033[94;107m" << "\033[5m"; } else {  std::cout <<"\033[2m" << "\033[5m";    }   // dims the text if not in Sentry room
+    if(currentRoom("Sentry")){  std::cout <<"\033[94;107m" << "\033[5m"; }
+    else {  std::cout <<"\033[2m" << "\033[5m";    }   // dims the text if not in Sentry room
     std::cout << "  TALK                 - Talk to the sentry guard" << "\033[0m" <<std::endl;
 }
 #ifdef dev
@@ -61,12 +60,11 @@ if(seenSentry){
    
 }
 
-
 /** reference and return versions
  * adding a bool value to the function gives reference which will change the actual string
  * no bool will make a copy
  * the value of the bool doesnt matter
- * https://www.geeksforgeeks.org/cpp/function-overloading-c/
+ * https://www.geeksforgeeks.org/cpp/function-overloading-c/ [accessed: 12/11/25]
 */
 void lowercase(std::string &str, bool){
 for(int i=0; i <str.length();i++){
@@ -74,7 +72,6 @@ for(int i=0; i <str.length();i++){
     }
     // no return value as directly changing the string 
 }
-
 /** reference and return versions
  * adding a bool value to the function gives reference which will change the actual string
  * no bool will make a copy
@@ -86,7 +83,7 @@ std::string lowercase(std::string str){
     }
 return str;
 }
-
+//checks if the room is the room the player is in
 bool currentRoom(std::string roomName){
     if (lowercase(roomName) == lowercase(dungeonlayout[playerY][playerX])){
         return true;
@@ -94,21 +91,18 @@ bool currentRoom(std::string roomName){
 return false;
 }
 
-void timeDelay(double duration_inSeconds){
-/* 
+void timeDelay(double duration){
+/*
     Windows and Linux/Unix have differing ways of a sleep function
 */
-
     #ifdef _WIN32
-        Sleep(duration_inSeconds*1000); // Sleep() takes an intager in milli-seconds so we muultiply by 1,000
+        Sleep(duration*1000); // Sleep() takes an intager in milli-seconds so we muultiply by 1,000
     #endif
 
     #ifdef linux
-        usleep(duration_inSeconds*1000000); // usleep() takes an intager in micro-seconds so we muultiply by 1,000,000
+        usleep(duration*1000000); // usleep() takes an intager in micro-seconds so we muultiply by 1,000,000
     #endif
 }
-
-
 void clearScreen()
 {
     #ifdef _WIN32
@@ -117,4 +111,3 @@ void clearScreen()
         system("clear");
     #endif
 }
-

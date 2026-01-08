@@ -10,7 +10,7 @@
 
 #include <string>  //just for the dungeon layout array
 
-#define dev
+// #define dev
 
 bool GAME_LOOP_WON = false;
 bool GAME_LOOP_END = false;
