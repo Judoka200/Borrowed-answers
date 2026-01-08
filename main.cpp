@@ -1,5 +1,5 @@
 #include <vector>
-#include <limits> // needed for numeric_limits<streamsize>::max()
+#include <limits> // needed for numeric_limits<streamsize>::max() to remove whole input buffer
 #include <chrono> // used for time taken (start - end times)
 #include "funcs.h"
 #include "dialogue.h"
@@ -11,8 +11,7 @@ using namespace std;
 
 enum commandType {
     QUIT,    OBSERVE,    _MAP_,    INVENTORY,    PICKUP,
-    _UNLOCK_,    MOVE,    USE,     HELP,    INVALID, TALK,
-    _DEV_
+    _UNLOCK_,    MOVE,    USE,     HELP,    INVALID, TALK
 };
 
 
@@ -493,6 +492,7 @@ void TUTORIAL_LOOP(){
 int main(){
 
 cout << "\e[8;32;111t";
+
     typeWrite("notice",colours::green);  typeWrite("warning",colours::red);
     cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');

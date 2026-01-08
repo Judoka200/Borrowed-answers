@@ -10,7 +10,7 @@
 bool currentRoom(std::string roomName);
 std::string lowercase(std::string str);
 
-// https://www.geeksforgeeks.org/cpp/measure-execution-time-function-cpp/
+// https://www.geeksforgeeks.org/cpp/measure-execution-time-function-cpp/ for usage of std::chrono
 std::string format_duration( std::chrono::seconds s ) {
     using namespace std::chrono;
     auto secs = duration_cast<seconds>(s);
@@ -19,13 +19,13 @@ std::string format_duration( std::chrono::seconds s ) {
     auto hour = duration_cast<hours>(mins);
     mins -= duration_cast<minutes>(hour);
 
-    std::stringstream ss;
+
     if(hour.count()){
-    ss << hour.count() << " Hours : " << mins.count() << " Minutes : " << secs.count() << " Seconds : ";
+        return std::to_string(hour.count()) + " Hours : " + std::to_string(mins.count()) + " Minutes : " + std::to_string(secs.count()) + " Seconds : ";
     } else {
-    ss << mins.count() << " Minutes : " << secs.count() << " Seconds : ";
+        return std::to_string(mins.count()) + " Minutes : " + std::to_string(secs.count()) + " Seconds : ";
     }
-    return ss.str();
+    return "";
 }
 
 

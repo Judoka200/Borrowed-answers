@@ -294,12 +294,13 @@ void showWinScreens(int ending){
     }
 }
 void showKey(){
-    for (int lineNum = 1; lineNum == 9; lineNum++){
+    for (int lineNum = 1; lineNum <= 9; lineNum++){
         std::string key = "key["+std::to_string(lineNum) +"]";
-        std::string line = output(key, colours::red, colours::Default,true);
+        std::string line = output(key, colours::yellow, colours::Default,true);
         std::cout << line << std::endl;
     }
 } 
+
 
 
 
@@ -394,7 +395,7 @@ void sentryInteraction(){
             typeWrite("Your Question is as follows:\n\n",colours::magenta);
             std::cout<< "\033[4m"<<output("sentry_easy_warning", colours::Default, colours::magenta);
             typeWrite("sentry_easy_question");
-            timeDelay(1.5);
+            timeDelay(0.5);
             std::cout << col(colours::red) << "\n\n...you hear a whisper in your mind...\n\033[3m" << col(colours::red);
             std::cout << "\"My strength is limited here so i can only help you so much: \n " <<
                          "your answer can be found within the " << col(colours::black, colours::red) << "\"Hallway\"\n";
@@ -406,16 +407,16 @@ void sentryInteraction(){
     typeWrite("What is your answer: ", colours::green);
     std::cin >> sentryAns;
     // std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
-    std::cout<<isGood<<" isgood\n";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
     if(isGood && lowercase(sentryAns) == sentryHardAns){   // hard answer [serpent]
         
-        for(int lineNum = 0; lineNum <= 4; lineNum++){
-            std::string line = "sentry_easy_correct[" +std::to_string(lineNum)+ "]";
-            typeWrite(line, colours::magenta,0.01);
+        for(int lineNum = 1; lineNum <= 4; lineNum++){
+            std::string line = "sentry_hard_correct[" +std::to_string(lineNum)+ "]";
+            typeWrite(line, colours::magenta,0.025);
             std::cout << std::endl;            
         }
+        showKey();
         
         
         GAME_LOOP_WON = true;
@@ -425,10 +426,11 @@ void sentryInteraction(){
         
         for(int lineNum = 0; lineNum <= 4; lineNum++){
             std::string line = "sentry_easy_correct[" +std::to_string(lineNum)+ "]";
-            typeWrite(line, colours::magenta,0.01);
+            typeWrite(line, colours::magenta,0.025);
             std::cout << std::endl;
             timeDelay(0.5);
         }
+        showKey();
 
 
         GAME_LOOP_WON = true;
