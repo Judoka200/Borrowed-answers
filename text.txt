@@ -1,8 +1,8 @@
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~OPENING SEQUENCE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-notice | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n please wait till all text has finished displaying before pressing enter\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d there is a key in the Cells, \done of the \#BPrisoners \#Gtook \#Git\n
+notice  | the game works on a command system,\d\d all commands can be viewed using the command 'help'\d\n-Please wait till all text has finished displaying before pressing enter\n-Please don't resize the terminal window\n\n Your goal is to find a way out,\n\n but dont get distracted\n\d there is a key in the Cells, \done of the \#BPrisoners \#Gtook \#Git \n
 warning | but do not look at anything else\d DONT ANSWER ANYONE and don't enter the Cells without a weapon\n \d\d not even to satisfy your curiosity
-begone | anyways,\d good luck,\d dont give up\d
+begone  | anyways,\d good luck,\d dont give up\d
 
 
 
@@ -25,7 +25,7 @@ Tome_hall_desc          | Lib placeholder
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ENTITY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Entity_warning |     'notice about prisoner-2315 [codename: entity]'\n\t   2315 is now confirmed to have been bedeviled\n
+Entity_warning |     'notice about prisoner-2315 '\n\t   2315 is now confirmed to have been affected\n
 
 
 
@@ -41,12 +41,7 @@ first_interaction[5] | and in return \#Yyou \d\#Rhelp \d\#Rme
 first_interaction_good  | \#rI see, \#Yyou \#rwont take my help,\d good luck without it\n\d Though... \#Csome \#rsecrets reveal themselves when you \#YHighlight \#rthem carefully...\n
 view_invis_good         | You feel a sense of goodwill enter your mind from another room,\n you're urged to take whatever you can find in the Tome Hall\n
 first_interaction_bad   | \#rAhhh, \dhow wonderful\d  \n\n\#rYou won't need to strain your eyes\d or \#Ychoose \#ranything carefully. \dNo need for such... effort.\d\n\n When the time comes,\d I'll whisper the answer.\d All you need to do is \#Ylisten \#rand obey...\n
-2
-note_observation1 | By one of the bodies you see something on the wall\n\dupon looking closer you see a set of broken, jagged lines\n they are barley readable yet you manage to make out some parts:\n\n
-note_observation2 | By one of the bodies you see some words scratched into the floor\n\d
-note_content | libr..y / pi.. up, / bo.k
-
-
+  
 
 
 
@@ -63,11 +58,18 @@ sentry_easy_warning  |  I should warn you that to seek aid of another is a means
 sentry_easy_question |  Scattered around the Scape has been a keen set of eyes silently observing,\nMy Question is simple, of what kind was the observer?\n
 
 
-sentry_hard_correct[1] | The Sentry nods it's head slowly \d \nMark bore the mark of the serpent, it was given to him by a previous encounter with the \#RTHEM 
+sentry_hard_correct[1] | The Sentry calmly nods it's head , \d \nHe bore the mark of the serpent, it was given to him by a previous encounter with the \#RTHEM 
 sentry_hard_correct[2] | He was brought back by the mark after he failed his bargain with THEM outside this place.\n\dI do hope you didn't make the same mistake
-sentry_hard_correct[3] | Here is the key for the door behind me, You merely have to take it and you will be able to walk through  
+sentry_hard_correct[3] | Here is the key for the door behind me, You merely have to take it and you will be able to walk through \n 
+sentry_hard_correct[4] | You may leave.
 
-
+sentry_easy_correct[0] | You see the Sentry's eyes glimmer for a brief moment before retuning back to normal 
+sentry_easy_correct[1] | Hmm it seems you payed attention, this place was built over a commonplace for Ravens so they were included as part of a 'spiritual' intention
+sentry_easy_correct[2] | \#RTHEY \#Malso \#Mconnected \#Mto \#Mthe \#MRavens \#Min \#Msome \#Mway,\d \#Mwe \#Mdon't \#Myet \#Mknow \#Mhow \#Mbut \#Mthere \#Mhasnt \#Mbeen \#Ma \#Mraven \#Mseen \#Mhere \#Min \#Mdecades,
+sentry_easy_correct[3] | ever since the last intake of 2315
+sentry_easy_correct[4] | Anyways, I digress,\d they key to the door may be found on the wall behind you. \n
+sentry_easy_correct[5] | \#YYou \#Yreach \#Yfor \#Ythe \#Ykey \#Yand \#Yunlock \#Ythe \#Ydoor 
+cursed_ending[1] | 
 
 
 
@@ -118,9 +120,9 @@ light campfire -> read about entity -> find entity -> gain viewHidden command ->
 book_dark | the writing on the page is too faded to see in this room\n maybe a \#Ybrighter room will allow you to \#Cread \n
 
 book_hidden[1]  | #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-book_hidden[2]  | | prisoner log: 2315       |
+book_hidden[2]  | | prisoner log: 2315             |
 book_hidden[3]  | |                                |
-book_hidden[4]  | |         asd             |
+book_hidden[4]  | |         asd                    |
 book_hidden[5]  | |                                |
 book_hidden[6]  | |                          2     |
 book_hidden[7]  | |          asd                   |
@@ -143,7 +145,7 @@ book_shown[2]  | \#Y| INTAKE FORM - PRISONER 2315  \#Y|
 book_shown[3]  | \#Y|                              \#Y|
 book_shown[4]  | \#Y| NAME: Mark Aldridge          \#Y|
 book_shown[5]  | \#Y| AGE: 34                      \#Y|
-book_shown[6]  | \#Y| HEIGHT: 5'11"                \#Y|
+book_shown[6]  | \#Y| HEIGHT: 5'9" / 175cm         \#Y|
 book_shown[7]  | \#Y| CRIME: [REDACTED]            \#Y|
 book_shown[8]  | \#Y|                              \#Y|
 book_shown[9]  | \#Y| DISTINGUISHING MARKS:        \#Y|
@@ -282,10 +284,10 @@ win_screen_good[30]   |    \----------------------------------------------------
 win_screen_bad[1]    |    /-------------------------------------------------------------------------------------------------------------\       
 win_screen_bad[2]    |    |                                                                                                             |
 win_screen_bad[3]    |    |        __     ______  _    _  __          ______  _   _                                                     |
-win_screen_bad[4]    |    |        \ \   / / __ \| |  | | \ \   ##   / / __ \| \ | |                                                    |
-win_screen_bad[5]    |    |         \ \_/ / |  | | | #| |  \ \ #/\  / / | #| |  \| |                                                    |
-win_screen_bad[6]    |    |          \   /| | #| | |  | |   \ \/  \/ /| |  | | . ` |                                                    |
-win_screen_bad[7]    |    |           | | | |__| | |__| |    \  /\  / | |__| | |\  |                                                    |
+win_screen_bad[4]    |    |        \ \   / / __ \| |  | | \ \   ##   / / __ \" \ | |                                                    |
+win_screen_bad[5]    |    |         \ \_/ / | "| | | #| |  \ \ #/\  / / | #| |  \| |                                                    |
+win_screen_bad[6]    |    |          \   /| |  } | |  | |   \ \/  \/ /| |  | | . ` |                                                    |
+win_screen_bad[7]    |    |           | | | |__| | |__| |    \  /\  / | |__| ' |\  |                                                    |
 win_screen_bad[8]    |    |           |_|  \____/ \____/      \/  \/   \____/|_| \_|                                                    |
 win_screen_bad[9]    |    |                                                                      _______________________                |
 win_screen_bad[10]   |    |                     [ ...BUT AT WHAT COST? ]                        //_____________________\\\\               |

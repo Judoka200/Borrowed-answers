@@ -39,7 +39,7 @@ bool showInventory = false;
 
 bool talkedSentry = false;
 bool seenSentry = false;
-bool isGood ;
+bool isGood = true ;
 
 //access the layout by dungeonlayout[ Y POS][X POS]
 // increasing:          X: →               Y: ↓    
@@ -65,7 +65,7 @@ std::string sentryEasyAns = "raven"; // if accepted entity | easy  'reputation'
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  dialouge.h  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef dev
 // #define textNorm
-#define textNorm
+#define textFast
 #endif
 
 #ifdef dev

@@ -384,6 +384,11 @@ void GAME_LOOP()
                 cout << col(colours::blue, colours::white) << "You gain the ability to commune with what stands in front of you\n" << col();
                 showCommands();
 #endif
+            } else if(currentRoom("Exit")){
+                GAME_LOOP_END = true;
+
+
+
             } else {
                 typeWrite(dungeonlayout[playerY][playerX] + "_desc",colours::Default, descDelay);
             }
@@ -414,8 +419,11 @@ void GAME_LOOP()
         commandType type = processCommand(command, argument);
         cout << endl;
         executeCommand(type,argument);
-            
-        clearScreen();               
+        
+        if(GAME_LOOP_WON){unlockDoor(exitDoor);}
+        
+        clearScreen();
+
         }
 }
 
@@ -465,9 +473,8 @@ void TUTORIAL_LOOP(){
 }
 
 int main(){
-    showWinScreens(2);
-    cin.ignore();
 
+cout << "\e[8;32;111t";
     typeWrite("notice",colours::green);  typeWrite("warning",colours::red);
     cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -489,13 +496,15 @@ int main(){
     GAME_LOOP();
     auto stopTime = chrono::high_resolution_clock::now(); // stores the start time to calculate time taken 
     auto timeTaken = duration_cast<std::chrono::seconds>(stopTime - startTime);
-
     if(isGood){
-// good ending
+        clearScreen();
+        showWinScreens(1);
     } else {
-// bad ending 
+        clearScreen();
+        showWinScreens(2);
     }
-
+    
+    std::cout << format_duration(timeTaken);
     cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     

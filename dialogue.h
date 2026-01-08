@@ -82,7 +82,7 @@ std::string processEscapes(const std::string& str) {
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
             } else if (str[i + 1] == '#' && str[i+2] == 'M') {      // single word MAGENTA
-                result +="\e[95m";      i+=3;
+                result +="\e[35m";      i+=3;
                 while(i < str.length() && str[i] != ' '){
                     result += str[i];       i++;}       result += "\e[0m";
                 i--;
@@ -259,20 +259,19 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
         // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');     //UNCOMMENT TO DISCARD INPUT WHEN TYPING
 }
 
-
 /* -----------------------DISPLAY GRAPHICS----------------------- */
 void showEntity(std::string faceType = "Default"){
     if(faceType == "Default"){
-        for (int i = 1; i<17;i++){
-        std::string f = "face["+std::to_string(i) +"]";
-            std::string line = output(f, colours::red, colours::Default,true);
+        for (int lineNum = 1; lineNum<17;lineNum++){
+        std::string face = "face["+std::to_string(lineNum) +"]";
+            std::string line = output(face, colours::red, colours::Default,true);
             std::cout << line << std::endl;
             }
         }
     if(faceType =="angry"){
-        for (int i = 1; i<14; i++){
-            std::string f = "face_angry["+std::to_string(i) +"]";
-            std::string line = output(f, colours::red, colours::Default,true);
+        for (int lineNum = 1; lineNum<14; lineNum++){
+            std::string face = "face_angry["+std::to_string(lineNum) +"]";
+            std::string line = output(face, colours::red, colours::Default,true);
             std::cout << line << std::endl;
             }
 
@@ -280,23 +279,23 @@ void showEntity(std::string faceType = "Default"){
 }
 void showWinScreens(int ending){
     if(ending == 1){ //good ending
-        for (int i = 1; i<31;i++){
-        std::string win = "win_screen_good["+std::to_string(i) +"]";
+        for (int lineNum = 1; lineNum<31; lineNum++){
+        std::string win = "win_screen_good["+std::to_string(lineNum) +"]";
             std::string line = output(win);
             std::cout << line << std::endl;
         }
     }
     if(ending == 2){ //bad ending
-        for (int i = 1; i<31;i++){
-        std::string win = "win_screen_bad["+std::to_string(i) +"]";
+        for (int lineNum = 1; lineNum<31; lineNum++){
+        std::string win = "win_screen_bad["+std::to_string(lineNum) +"]";
             std::string line = output(win);
             std::cout << line << std::endl;
         }
     }
 }
 void showKey(){
-    for (int i = 1; i = 9; i++){
-        std::string key = "key["+std::to_string(i) +"]";
+    for (int lineNum = 1; lineNum == 9; lineNum++){
+        std::string key = "key["+std::to_string(lineNum) +"]";
         std::string line = output(key, colours::red, colours::Default,true);
         std::cout << line << std::endl;
     }
@@ -313,7 +312,7 @@ void entityInteraction(){
     std::cout << col(colours::cyan)<< " do you want to INSPECT "<< col() <<"[yes/no]\n\n" << col();
     std::cout << "Enter command:\033[31m"<<col(colours::black);                            
     typeWrite("YES", colours::red, 0.1);
-    std::cout <<"\033[?25l" << col(colours::RESET);                                             // ?25l: hides cursor
+    std::cout <<"\033[?25l" << col(colours::black);                                             // ?25l: hides cursor
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     typeWrite("towards_note", colours::red);
@@ -321,9 +320,9 @@ void entityInteraction(){
 
     showEntity();
 
-    for(int i = 1; i<= 5; i++){
+    for(int lineNum = 1; lineNum<= 5; lineNum++){
         //loops through the first_interaction lines
-        std::string interactText = "first_interaction["+std::to_string(i)+"]";
+        std::string interactText = "first_interaction["+std::to_string(lineNum)+"]";
         std::cout << "\e[3m";                                                                   // 3: italics
         typeWrite(interactText, colours::red);
     }
@@ -336,7 +335,7 @@ void entityInteraction(){
     std::string entAnswer ="";
 
     while(lowercase(entAnswer) !="no"){
-        //          \r goes back to start of line wihtout new line so text gets replaced                hence the large blank space ↓ to overwrite 
+        //          \r goes back to start of line wihtout new line so text gets replaced                                   hence the large blank space ↓ to overwrite 
         std::cout << "\rEnter choice:" <<col(colours::black,colours::red) << "yes\033[36;49m/"<<col(colours::cyan,colours::white)<<"NO\033[0m                             ";
         
         if(lowercase(entAnswer) != "no" || lowercase(entAnswer) != "yes"){
@@ -407,22 +406,25 @@ void sentryInteraction(){
     typeWrite("What is your answer: ", colours::green);
     std::cin >> sentryAns;
     // std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
+    std::cout<<isGood<<" isgood\n";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     
-    if(isGood && lowercase(sentryAns) == sentryHardAns){   // easy answer [raven]
-
-    typeWrite("")
-
-
-
+    if(isGood && lowercase(sentryAns) == sentryHardAns){   // hard answer [serpent]
+        
+        std::cout << "successfulzzzl";
+        
+        
         GAME_LOOP_WON = true;
-
-    } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  // hard answer [serpent]
-        std::cout << "successfull";
+        
+    } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  // easy answer [raven]
         
         
-        
+        for(int lineNum = 0; lineNum <= 5; lineNum++){
+            std::string line = "sentry_easy_correct[" +std::to_string(lineNum)+ "]";
+            typeWrite(line, colours::magenta,0.01);
+            std::cout << std::endl;
+            timeDelay(0.5);
+        }
         
         GAME_LOOP_WON = true;
 
@@ -447,11 +449,11 @@ void sentryInteraction(){
             std::cout << "thrice you have failed, your chances are spent\n";
             
             std::cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
+            
             GAME_LOOP_END = true; 
             break;
         }
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
     guessesRemaining -= 4;              // Reverts guessesRemaing back to its value
 }
