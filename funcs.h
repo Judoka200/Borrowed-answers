@@ -10,7 +10,7 @@ bool currentRoom(std::string roomName);
 std::string lowercase(std::string str);
 
 // https://www.geeksforgeeks.org/cpp/measure-execution-time-function-cpp/ for usage of std::chrono
-std::string format_duration( std::chrono::seconds s ) {
+std::string format_duration( std::chrono::seconds s ){
     using namespace std::chrono;
     auto secs = duration_cast<seconds>(s);
     auto mins = duration_cast<minutes>(secs);
@@ -26,8 +26,9 @@ std::string format_duration( std::chrono::seconds s ) {
     }
     return "";
 }
+
 //gets move direction inputs
-//returns true for correct direction 
+//returns true for correct direction
 bool moveDirection(std::string str){ 
     if (str == "w"||str == "W"||str == "up"||str == "Up"
       ||str == "a"||str == "A"||str == "left"||str == "Left"
@@ -83,6 +84,7 @@ std::string lowercase(std::string str){
     }
 return str;
 }
+
 //checks if the room is the room the player is in
 bool currentRoom(std::string roomName){
     if (lowercase(roomName) == lowercase(dungeonlayout[playerY][playerX])){
@@ -103,8 +105,8 @@ void timeDelay(double duration){
         usleep(duration*1000000); // usleep() takes an intager in micro-seconds so we muultiply by 1,000,000
     #endif
 }
-void clearScreen()
-{
+
+void clearScreen(){
     #ifdef _WIN32
         system("cls");
     #else

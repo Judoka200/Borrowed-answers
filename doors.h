@@ -13,7 +13,7 @@ struct door{
     door hallwayDoor =  {1,  1,  2,  1,  true, "", "hallway door"};
     door exitDoor =     {2,  1,  3,  1,  true, "", "exit"};
 #endif
-#ifdef dev
+#ifdef dev // unlock all doors if in dev  
 //          door        fx   fy  tx  ty  lckd  key name  
     door tutorialDoor = {0,  1,  1,  1,  false, "", ""};
     door hallwayDoor =  {1,  1,  2,  1,  false, "", "hallway door"};

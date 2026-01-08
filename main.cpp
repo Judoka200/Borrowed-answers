@@ -6,6 +6,8 @@
 #include "items.h"
 #include "vars.h"
 
+// dev is defined in vars.h 
+
 using namespace std;
 
 
@@ -490,19 +492,21 @@ void TUTORIAL_LOOP(){
 
 int main(){
     clearScreen();
-cout << "\e[8;32;111t";
+    cout << "\e[8;32;111t"; // resizes the terminal window to the correct size [32 columns 111 rows]
 
-    typeWrite("notice",colours::green);  typeWrite("warning",colours::red);
+    typeWrite("notice",colours::green);
+    typeWrite("warning",colours::red);
     cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    
-    generateItems();
     clearScreen()  ;
+    generateItems();
     
-    cout<<col(); // reset all colour formatting
-#ifndef dev
-    tutorialComplete = false;
-    if (!tutorialComplete) {TUTORIAL_LOOP();}
+    cout<<col(colours::RESET); // reset all colour formatting
+#ifndef dev     // skips the tutorial if dev is defined
+    tutorialComplete = false;       
+    if (!tutorialComplete) {
+        TUTORIAL_LOOP();
+    }
 #endif
     tutorialComplete = true;
     unlockDoor(tutorialDoor);  // not placed in TUTORIAL_LOOP, so will be unlocked even if TUTORIAL skipped
@@ -511,13 +515,14 @@ cout << "\e[8;32;111t";
     auto startTime = chrono::high_resolution_clock::now(); // stores the start time to calculate time taken 
 
     GAME_LOOP();
+
     auto stopTime = chrono::high_resolution_clock::now(); // stores the start time to calculate time taken 
     auto timeTaken = duration_cast<std::chrono::seconds>(stopTime - startTime);
+
+    clearScreen();
     if(isGood){
-        clearScreen();
         showWinScreens(1);
     } else {
-        clearScreen();
         showWinScreens(2);
     }
     
