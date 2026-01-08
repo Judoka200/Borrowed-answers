@@ -385,9 +385,27 @@ void GAME_LOOP()
                 showCommands();
 #endif
             } else if(currentRoom("Exit")){
+                
+                if(!isGood){
+                    for(int lineNum = 1; lineNum <=2; lineNum++){
+                        std::string line = "cursed_ending[" + std::to_string(lineNum) + "]";
+                        typeWrite(line, colours::yellow,0.01);
+                        std::cout << std::endl;
+                    }
+                    cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');                    
+                }else if(isGood){
+                    for(int lineNum = 1; lineNum <=2; lineNum++){
+                        std::string line = "freedom_ending[" + std::to_string(lineNum) + "]";
+                        typeWrite(line, colours::yellow,0.01);
+                        std::cout << std::endl;
+                    }
+                    cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');                    
+                
+                }
                 GAME_LOOP_END = true;
-
-
+                break;
 
             } else {
                 typeWrite(dungeonlayout[playerY][playerX] + "_desc",colours::Default, descDelay);
@@ -505,7 +523,8 @@ cout << "\e[8;32;111t";
     }
     
     std::cout << format_duration(timeTaken);
-    cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
+    cout<< "\033[38;5;245mPress Enter Twice to continue...";                   // grey colour from table 
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
 }

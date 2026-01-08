@@ -62,14 +62,16 @@ sentry_hard_correct[1] | The Sentry calmly nods it's head , \d \nHe bore the mar
 sentry_hard_correct[2] | He was brought back by the mark after he failed his bargain with THEM outside this place.\n\dI do hope you didn't make the same mistake
 sentry_hard_correct[3] | Here is the key for the door behind me, You merely have to take it and you will be able to walk through \n 
 sentry_hard_correct[4] | You may leave.
+freedom_ending[1]      | after reaching for the keys and passing through the door, you feel glad to leave this place  
+freedom_ending[2]      | you know that it will forever be in the back of you mind 
 
 sentry_easy_correct[0] | You see the Sentry's eyes glimmer for a brief moment before retuning back to normal 
 sentry_easy_correct[1] | Hmm it seems you payed attention, this place was built over a commonplace for Ravens so they were included as part of a 'spiritual' intention
 sentry_easy_correct[2] | \#RTHEY \#Malso \#Mconnected \#Mto \#Mthe \#MRavens \#Min \#Msome \#Mway,\d \#Mwe \#Mdon't \#Myet \#Mknow \#Mhow \#Mbut \#Mthere \#Mhasnt \#Mbeen \#Ma \#Mraven \#Mseen \#Mhere \#Min \#Mdecades,
 sentry_easy_correct[3] | ever since the last intake of 2315
 sentry_easy_correct[4] | Anyways, I digress,\d they key to the door may be found on the wall behind you. \n
-sentry_easy_correct[5] | \#YYou \#Yreach \#Yfor \#Ythe \#Ykey \#Yand \#Yunlock \#Ythe \#Ydoor 
-cursed_ending[1] | 
+cursed_ending[1]       | You reach for the key and unlock the door, leaving the world behind you.
+cursed_ending[2]       | all that follows is a faint laughter trailing behind you
 
 
 
@@ -258,7 +260,7 @@ win_screen_good[6]    |    |          \   /| |  | | |  | |   \ \/  \/ /| |  | | 
 win_screen_good[7]    |    |           | | | |__| | |__| |    \  /\  / | |__| | |\  |                                                    |
 win_screen_good[8]    |    |           |_|  \____/ \____/      \/  \/   \____/|_| \_|                                                    |
 win_screen_good[9]    |    |                                                                      _______________________                |
-win_screen_good[10]   |    |                     [ TRUE FREEDOM ]                                //_____________________\\\\               |
+win_screen_good[10]   |    |                     [ \#CTRUE FREEDOM ]                                //_____________________\\\\               |
 win_screen_good[11]   |    |                                                                    //           ||          \\\\              |
 win_screen_good[12]   |    |                                                                    ||           ||           ||             |
 win_screen_good[13]   |    |                                                                    ||           ||           ||             |
@@ -271,7 +273,7 @@ win_screen_good[19]   |    |             ||                         ||          
 win_screen_good[20]   |    |          /=||         .:::::::.        ||=\                        ||           ||           ||             |
 win_screen_good[21]   |    |          { ||         ::LIGHT::        || }                        ||           ||           ||             |
 win_screen_good[22]   |    |          \ ||          :::::::         || /                        ||===========[]===========||             |
-win_screen_good[23]   |    |           =+\\\\           :::          //+=                         ||           ||           ||             |
+win_screen_good[23]   |    |           =+\\\\           :::           //+=                        ||           ||           ||             |
 win_screen_good[24]   |    |              ||                        ||                          ||           ||           ||             |
 win_screen_good[25]   |    |               ||   ||            ||   ||                           ||           ||           ||             |
 win_screen_good[26]   |    |                \\\\  ||            ||  //                            ||===========[]===========||             |
@@ -303,7 +305,7 @@ win_screen_bad[19]   |    |             ||                         ||           
 win_screen_bad[20]   |    |          /=||       ~~~SHADOW~~~        ||=\                       ||###        ||           ||             |
 win_screen_bad[21]   |    |          { ||       ~~~FOLLOWS~~~       || }                       ||###        ||           ||             |
 win_screen_bad[22]   |    |          \ ||       ~~~~~~~~~~~~~       || /                       ||###========[]===========||             |
-win_screen_bad[23]   |    |           =+\\\\                         //+=                        ||###        ||           ||             |
+win_screen_bad[23]   |    |           =+\\\\                          //+=                       ||###        ||           ||             |
 win_screen_bad[24]   |    |              ||                        ||                          ||###        ||           ||             |
 win_screen_bad[25]   |    |               ||   ||            ||   ||                           ||###        ||           ||             |
 win_screen_bad[26]   |    |                \\\\  ||            ||  //                            ||###========[]===========||             |

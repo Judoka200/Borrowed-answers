@@ -411,7 +411,11 @@ void sentryInteraction(){
     
     if(isGood && lowercase(sentryAns) == sentryHardAns){   // hard answer [serpent]
         
-        std::cout << "successfulzzzl";
+        for(int lineNum = 0; lineNum <= 4; lineNum++){
+            std::string line = "sentry_easy_correct[" +std::to_string(lineNum)+ "]";
+            typeWrite(line, colours::magenta,0.01);
+            std::cout << std::endl;            
+        }
         
         
         GAME_LOOP_WON = true;
@@ -419,13 +423,14 @@ void sentryInteraction(){
     } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  // easy answer [raven]
         
         
-        for(int lineNum = 0; lineNum <= 5; lineNum++){
+        for(int lineNum = 0; lineNum <= 4; lineNum++){
             std::string line = "sentry_easy_correct[" +std::to_string(lineNum)+ "]";
             typeWrite(line, colours::magenta,0.01);
             std::cout << std::endl;
             timeDelay(0.5);
         }
-        
+
+
         GAME_LOOP_WON = true;
 
     } else if(lowercase(sentryAns) == "back" || lowercase(sentryAns) == "cancel"){
