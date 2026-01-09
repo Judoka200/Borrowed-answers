@@ -22,7 +22,7 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     string fromRoom = dungeonlayout[fromY][fromX];
     string toRoom = dungeonlayout[ToY][ToX];
 
-    if(checkLocked(fromX, fromY, ToX, ToY)){    // returns true if path is locked 
+    if(checkLocked(fromX, fromY, ToX, ToY)){                     // returns true if path is locked 
         return true;
     }
     // block room between sentry room and Tome_hall
@@ -386,7 +386,7 @@ void GAME_LOOP()
 #endif
             } else if(currentRoom("Exit")){
                 
-                if(!isGood){
+                if(!refusedEntity){
                     for(int lineNum = 1; lineNum <=2; lineNum++){
                         std::string line = "cursed_ending[" + std::to_string(lineNum) + "]";
                         typeWrite(line, colours::yellow,0.01);
@@ -394,7 +394,7 @@ void GAME_LOOP()
                     }
                     cout<< "\n\033[38;5;245mPress Enter to continue...";            // grey colour from table 
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');                    
-                }else if(isGood){
+                }else if(refusedEntity){
                     for(int lineNum = 1; lineNum <=2; lineNum++){
                         std::string line = "freedom_ending[" + std::to_string(lineNum) + "]";
                         typeWrite(line, colours::yellow,0.01);
@@ -520,7 +520,7 @@ int main(){
     auto timeTaken = duration_cast<std::chrono::seconds>(stopTime - startTime);
 
     clearScreen();
-    if(isGood){
+    if(refusedEntity){
         showWinScreens(1);
     } else {
         showWinScreens(2);
