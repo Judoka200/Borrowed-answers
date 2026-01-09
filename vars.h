@@ -2,8 +2,8 @@
 
 #ifndef VARS_H   
 /*
-    if VARS_H is undefined, define it and set all the variables.
-    will not define the variables if it has already been defined
+    if VARS_H is undefined, define it, setting all the variables.
+    will not define the variables if it has already been defined from whithn another file
     preventing redeclaration errors
 */
 #define VARS_H
@@ -37,9 +37,9 @@ bool tutorialObserved = false;
 bool canViewInvisible = false;
 bool showInventory = false;
 
-bool talkedSentry = false;
+bool talkedToSentry = false;
 bool seenSentry = false;
-bool isGood = true ;
+bool refusedEntity = true ;
 
 //access the layout by dungeonlayout[ Y POS][X POS]
 // increasing:          X: →               Y: ↓    
@@ -53,8 +53,8 @@ bool visible[mapHeight][mapWidth] ={false};
 bool observed[mapHeight][mapWidth] ={false};
 
 
-std::string sentryHardAns = "serpent"; // if denied   entity | hard 'reputation'
-std::string sentryEasyAns = "raven"; // if accepted entity | easy  'reputation'
+std::string sentryHardAns = "serpent"; // if denied entity | hard 
+std::string sentryEasyAns = "raven"; // if accepted entity | easy 
 
 
 
@@ -64,8 +64,7 @@ std::string sentryEasyAns = "raven"; // if accepted entity | easy  'reputation'
 
 //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  dialouge.h  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #ifndef dev
-// #define textNorm
-#define textFast
+#define textNorm
 #endif
 
 #ifdef dev
