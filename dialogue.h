@@ -1,14 +1,12 @@
 #include <string>
-#include <fstream>  // for file interactions
+#include <fstream>  // for file usage
 #include <limits>   // used for max()
 #include "vars.h"
 #define storyFile "text.txt"
 
 #ifndef VARS_H
-
  #define normaltext
 // #define quicktext
-
 #ifdef normaltext
 #define descDelay 0.0025   
 #define typeW_delay 0.015  
@@ -20,7 +18,6 @@
 #define typeW_delay 0.0005  // 0.015
 #define txtDelay 0.15       // 0.065
 #endif
-
 #endif
 
 enum colours{
@@ -29,16 +26,16 @@ enum colours{
 };
 
 
-std::string col(colours forColour  , colours backColour );          // func definition
-
+std::string col(colours forColour  , colours backColour );         
 
 std::string processEscapes(const std::string& str) {
-    /* processes escape codes from raw text taken from file
-       file reading only gives character by character output
+    /* processes escape codes from raw text taken from file,
+       text gets extraceted character by character 
        so will read '\' then 'n' instead of '\n' as one */
     std::string result;
-    for (size_t i = 0; i < str.length(); i++) {
-        if (str[i] == '\\' && i + 1 < str.length()) {
+
+    for (size_t i = 0; i < str.length(); i++) {                     // loop through the whole string
+        if (str[i] == '\\' && i + 1 < str.length()) {               // if \ is detected and there is another character afterwards   (the first backslash 'escapes' the second, only checks against a single \)
             // Check what comes after the backslash
             if (str[i + 1] == 'n') {                                // NEWLINE
                 result += '\n';  // Convert \n to newline
@@ -46,52 +43,92 @@ std::string processEscapes(const std::string& str) {
             } else if (str[i + 1] == 't') {                         // TAB
                 result += '\t';  // Convert \t to tab
                 i++;  // Skip the 't'
+           
             } else if (str[i + 1] == '\\') {                        // '\'
                 result += '\\';  // Convert \\ to single backslash
                 i++;  // Skip the second backslash
 
 
-            } else if (str[i + 1] == '#' && str[i+2] == 'R') {      // single word RED
-                result +="\e[31m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}       result += "\e[0m";
-                i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'r') {      // RED continues
-                result +="\e[31m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}
-                i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'G') {      // single word GREEN
-                result +="\e[32m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}       result += "\e[0m";
-                i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'Y') {      // single word YELLOW
-                result +="\e[33m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}       result += "\e[0m";
-                i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'B') {      // single word BLUE
-                result +="\e[34m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}       result += "\e[0m";
-                i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'C') {      // single word CYAN
-                result +="\e[36m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}       result += "\e[0m";
-                i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'M') {      // single word MAGENTA
-                result +="\e[35m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}       result += "\e[0m";
-                i--;
-            } else if (str[i + 1] == '#' && str[i+2] == 'O') {      // single word BLACK
-                result +="\e[30m";      i+=3;
-                while(i < str.length() && str[i] != ' '){
-                    result += str[i];       i++;}       result += "\e[0m";
-                i--;
+            
+            } else if (str[i + 1] == '#' && str[i + 2] == 'R'){                       // single word RED
+                result += "\e[31m"; // change the colour
+                i += 3;             // skips the inline command
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result
+                    result += str[i];
+                    i++;
+                }
+                result += "\e[0m";
+                i--;                                       // goes back to the space character
+            
+            } else if (str[i + 1] == '#' && str[i + 2] == 'r'){ // Continue RED
+                result += "\e[31m";
+                i += 3;
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result 
+                    result += str[i];
+                    i++;
+                }
+                i--;                                       // goes back to the space character 
 
+            } else if (str[i + 1] == '#' && str[i + 2] == 'G'){ // single word GREEN
+                result += "\e[32m";
+                i += 3;
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result
+                    result += str[i];
+                    i++;
+                }
+                result += "\e[0m";
+                i--;                                       // goes back to the space character
+
+            } else if (str[i + 1] == '#' && str[i + 2] == 'Y'){ // single word YELLOW
+                result += "\e[33m";
+                i += 3;
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result
+                    result += str[i];
+                    i++;
+                }
+                result += "\e[0m";
+                i--;                                       // goes back to the space character
+
+            } else if (str[i + 1] == '#' && str[i + 2] == 'B'){ // single word BLUE
+                result += "\e[34m";
+                i += 3;
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result
+                    result += str[i];
+                    i++;
+                }
+                result += "\e[0m";
+                i--;                                       // goes back to the space character
+
+            } else if (str[i + 1] == '#' && str[i + 2] == 'C'){ // single word CYAN
+                result += "\e[36m";
+                i += 3;
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result
+                    result += str[i];
+                    i++;
+                }
+                result += "\e[0m";
+                i--;                                       // goes back to the space character
+
+            } else if (str[i + 1] == '#' && str[i + 2] == 'M'){ // single word MAGENTA
+                result += "\e[35m";
+                i += 3;
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result
+                    result += str[i];
+                    i++;
+                }
+                result += "\e[0m";
+                i--;                                       // goes back to the space character
+
+            } else if (str[i + 1] == '#' && str[i + 2] == 'O'){ // single word BLACK
+                result += "\e[30m";
+                i += 3;
+                while (i < str.length() && str[i] != ' '){ // adds the whole word to the result
+                    result += str[i];
+                    i++;
+                }
+                result += "\e[0m";
+                i--;                                       // goes back to the space character
+                
             } else {
                 result += str[i];  // Keep the backslash if not recognized
             }
@@ -109,31 +146,28 @@ std::string output(const std::string textTitle,colours forColour  = colours::Def
     // open the text file
     std::ifstream textFile("text.txt");
 
-    if (!textFile.is_open())
-    {
+    if (!textFile.is_open()){
         std::cout << "Error: Could not open textFile" << std::endl;
         return "There was a problem retrieving this text";
     }
 
     std::string line;
-    while (std::getline(textFile, line))
-    {
-        // looks fo the delimiter 
-        size_t delimPosition = line.find('|');
+    while (std::getline(textFile, line)){
+        
+        int delimPosition = line.find('|');                                                     // looks for the delimiter 
 
-        // if delmiter found then execute, but if not found goes to next line
-        if (delimPosition != std::string::npos)
-        {
+        
+        if (delimPosition != std::string::npos){                                                 // if delmiter found then execute, but if not found goes to next line
             // extract text before the delimiter
             std::string title = line.substr(0, delimPosition);
 
-            title.erase(0, title.find_first_not_of(" \t")); // remove leading whitespace
-            title.erase(title.find_last_not_of(" \t") + 1 /*, to end of line by defualt*/); // remove trailing whitespace
+                                /* " \t" searches for ' ' and for '\t'*/
+            title.erase(0, title.find_first_not_of(" \t"));                                     // remove leading whitespace    
+            title.erase(title.find_last_not_of(" \t") + 1 /*, to end of line by defualt*/);     // remove trailing whitespace
 
             if (title == textTitle){
-                // extract the text after the delimiter
-                std::string content = line.substr(delimPosition + 1);
-                if(!preserveWhitespace){
+                std::string content = line.substr(delimPosition + 1);                           // extract the text after the delimiter
+                if(!preserveWhitespace){                
                     content.erase(0, content.find_first_not_of(" \t"));
                     content.erase(content.find_last_not_of(" \t") + 1);
                 }
@@ -155,9 +189,9 @@ std::string output(const std::string textTitle,colours forColour  = colours::Def
                     textFile.close();
                     return content;
                 }
+            }
         }
     }
-}
 textFile.close();
 return "";
 }
@@ -165,90 +199,84 @@ return "";
 /**- col( ) sets FG and BG colour to Default
  * 
  * - col( colours::RESET ) resets all formatting
- */
+*/
 std::string col(colours forColour  = colours::Default, colours backColour = colours::Default ){
 /*
-    to get integer value use  static_cast<int>(colours:'col')
+    to get integer value of colour use  static_cast<int>(colours:'col')
 */
-std::string output ="";
+    std::string output ="";
 
-switch (forColour){
+    switch (forColour){
+        // adds the corresponding ANSI escape codes to the output 
+        // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797    [accessed: 29/10/25]
+        case colours::Default:  output += "\033[39m"; break;
+        case colours::black:    output += "\033[30m"; break;
+        case colours::red:      output += "\033[31m"; break;
+        case colours::green:    output += "\033[32m"; break;
+        case colours::yellow:   output += "\033[33m"; break;
+        case colours::blue:     output += "\033[34m"; break;
+        case colours::magenta:  output += "\033[35m"; break;
+        case colours::cyan:     output += "\033[36m"; break;
+        case colours::white:    output += "\033[37m"; break;
+        case colours::RESET:    output += " \033[0m"; break;
 
-    case colours::Default:  output += "\033[39m"; break;
-    case colours::black:    output += "\033[30m"; break;
-    case colours::red:      output += "\033[31m"; break;
-    case colours::green:    output += "\033[32m"; break;
-    case colours::yellow:   output += "\033[33m"; break;
-    case colours::blue:     output += "\033[34m"; break;
-    case colours::magenta:  output += "\033[35m"; break;
-    case colours::cyan:     output += "\033[36m"; break;
-    case colours::white:    output += "\033[37m"; break;
-    case colours::RESET:    output += " \033[0m"; break;
-    default:
-    break;
+    }
+
+    switch (backColour){
+        case colours::Default:  output += "\033[49m"; break;
+        case colours::black:    output += "\033[40m"; break;
+        case colours::red:      output += "\033[41m"; break;
+        case colours::green:    output += "\033[42m"; break;
+        case colours::yellow:   output += "\033[43m"; break;
+        case colours::blue:     output += "\033[44m"; break;
+        case colours::magenta:  output += "\033[45m"; break;
+        case colours::cyan:     output += "\033[46m"; break;
+        case colours::white:    output += "\033[47m"; break;
+        case colours::RESET:    output += " \033[0m"; break;
+
+    }
+    return output;
 }
 
-switch (backColour){
-    case colours::Default:  output += "\033[49m"; break;
-    case colours::black:    output += "\033[40m"; break;
-    case colours::red:      output += "\033[41m"; break;
-    case colours::green:    output += "\033[42m"; break;
-    case colours::yellow:   output += "\033[43m"; break;
-    case colours::blue:     output += "\033[44m"; break;
-    case colours::magenta:  output += "\033[45m"; break;
-    case colours::cyan:     output += "\033[46m"; break;
-    case colours::white:    output += "\033[47m"; break;
-    case colours::RESET:    output += " \033[0m"; break;
-
-default:
-    break;
-}
-
-return output;
-}
-
-void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = typeW_delay)
-{
+void typeWrite(std::string textTitle, colours forcolour = colours::Default, double delay = typeW_delay){
+    // loops through each character, pauses then moves onto the next character 
     std::string text = output(textTitle,forcolour);
-    /*      when using ansi escape codes the characters are placed at the front of the string
+    /*   
+    when using ansi escape codes the characters are placed at the front of the string
     therefore what ouputs as "text" is actually "\033[39mtext".
     theses characters are processed in the for loop which causes a noticable delay before
     the first character is actually outputted.
-    output() will always lead a string with "\033[39m\033[49m" or the corresponding colour val
+    output() will always lead a string with "\033[39m\033[49m" or the corresponding colour values
     this is 16 characters long, so if the first two characters are '\0' then assume the whole
-    code is being used and immediatley start printing from the 17th [index 16] character*/
+    code is being used and immediatley start printing from the 17th [index 16] character
+    */
 
-    // if string is a title from text.txt
 
-      if (text[0] == '\\' && text[1]=='0')
-        { // becuase \ is an escape code, two are needed to check for a single "\"
-            for (int i = 16; i < text.length(); i++)
-            {
+      if (text[0] == '\\' && text[1]=='0'){                 // becuase \ is an escape character, two are needed to check for a single "\"
+            for (int i = 16; i < text.length(); i++){
                 if(text[i] == '\\' && i+1 < text.length() && text[i+1] == 'd'){
 
-                        timeDelay(0.65);
-                        i++;
-                    continue;}
-                std::cout << text[i];
-                timeDelay(delay);
-                    }
+                    timeDelay(0.65);
+                    i++;
+                    continue;                               // skips printing the 'd' and moves onto the next iteration
+                }
+            std::cout << text[i];
+            timeDelay(delay);
             }
 
-        else if (!text.empty()){
-            for (int i = 0; i < text.length(); i++)
-            {
-                if(text[i] == '\\'){
-                    if (text[i+1] == 'd' && i+1 < text.length()){
-                        timeDelay(txtDelay);
-                        i++;\
-                    continue;}}
-                std::cout << text[i];
-                timeDelay(delay);
+        } else if (!text.empty()){
+            for (int i = 0; i < text.length(); i++){
+                if(text[i] == '\\' && text[i+1] == 'd' && i+1 < text.length()){
+                    timeDelay(txtDelay);
+                    i++;
+                    continue;
+                }
             }
-        }
-        // if string is just text to be outputted
-        else {
-            text =textTitle;
+            std::cout << text[i];
+            timeDelay(delay);
+
+        } else {                                            // string::textTitle isn't form text file and should just be outputted
+            text = textTitle;
             std::cout<<col(forcolour);
             for (int i = 0; i < text.length(); i++){
                 std::cout<<text[i];
@@ -262,7 +290,7 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
 /* -----------------------DISPLAY GRAPHICS----------------------- */
 void showEntity(std::string faceType = "Default"){
     if(faceType == "Default"){
-        for (int lineNum = 1; lineNum<17;lineNum++){
+        for (int lineNum = 1; lineNum<17;lineNum++){                                // loops through all line numbers of the graphic and prints 
         std::string face = "face["+std::to_string(lineNum) +"]";
             std::string line = output(face, colours::red, colours::Default,true);
             std::cout << line << std::endl;
@@ -277,6 +305,7 @@ void showEntity(std::string faceType = "Default"){
 
     }
 }
+
 void showWinScreens(int ending){
     if(ending == 1){ //good ending
         for (int lineNum = 1; lineNum<31; lineNum++){
@@ -293,6 +322,7 @@ void showWinScreens(int ending){
         }
     }
 }
+
 void showKey(){
     for (int lineNum = 1; lineNum <= 9; lineNum++){
         std::string key = "key["+std::to_string(lineNum) +"]";
@@ -302,8 +332,6 @@ void showKey(){
 } 
 
 
-
-
 void entityInteraction(){
     /* covers the first interaction with the 'entity' in the cells room*/
 
@@ -311,7 +339,7 @@ void entityInteraction(){
     //  std::cout <<col(colours::blue)<< " do you want to \033[41;39mINSPECT\033[49;9m [yes]\033[0m/no]\n"<<col();
 
     std::cout << col(colours::cyan)<< " do you want to INSPECT "<< col() <<"[yes/no]\n\n" << col();
-    std::cout << "Enter command:\033[31m"<<col(colours::black);                            
+    std::cout << "Enter command:\033[31m";                            
     typeWrite("YES", colours::red, 0.1);
     std::cout <<"\033[?25l" << col(colours::black);                                             // ?25l: hides cursor
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -321,8 +349,8 @@ void entityInteraction(){
 
     showEntity();
 
-    for(int lineNum = 1; lineNum<= 5; lineNum++){
-        //loops through the first_interaction lines
+    for(int lineNum = 1; lineNum<= 5; lineNum++){                                               //loops through the first_interaction lines
+        
         std::string interactText = "first_interaction["+std::to_string(lineNum)+"]";
         std::cout << "\e[3m";                                                                   // 3: italics
         typeWrite(interactText, colours::red);
@@ -331,8 +359,8 @@ void entityInteraction(){
     std::cout << col(colours::cyan)<<"Do you choose to accept?"<<col(colours::RESET)<< std::endl;
 
     std::cout << "Enter command:" <<col(colours::cyan) << "[yes/no]"<<col(colours::RESET);                            // ?25l: hides cursor
-    std::cout << "\rEnter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);    // \r
-    timeDelay(2);
+    std::cout << "\rEnter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);    // \r returns the cursor to the start of the same line
+    timeDelay(1);
     std::string entAnswer ="";
 
     while(lowercase(entAnswer) !="no"){
@@ -350,7 +378,7 @@ void entityInteraction(){
     }
     
     if (lowercase(entAnswer) == "yes"){
-        isGood = false;
+        refusedEntity = false;
         clearScreen();
 
         showEntity();
@@ -359,7 +387,7 @@ void entityInteraction(){
         
 
     } else if(lowercase(entAnswer) == "no"){
-        isGood = true;
+        refusedEntity = true;
         clearScreen();
 
         showEntity("angry");
@@ -377,15 +405,15 @@ void entityInteraction(){
 
 void sentryInteraction(){
     std::string sentryAns = "";
-    if(!talkedSentry){
+    if(!talkedToSentry){
         typeWrite("sentry_greeting");
-            talkedSentry = true;
+            talkedToSentry = true;
     }
     /*  
     bad reputation (accepted entity) -----> easy question
     good reputation (denied entity)  -----> hard question     (requires finding book)
     */
-    switch (isGood){
+    switch (refusedEntity){
         case true:
             typeWrite("Your Question is as follows:\n\n",colours::magenta);
             typeWrite("sentry_hard_question");
@@ -409,7 +437,7 @@ void sentryInteraction(){
     // std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
-    if(isGood && lowercase(sentryAns) == sentryHardAns){   // hard answer [serpent]
+    if(refusedEntity && lowercase(sentryAns) == sentryHardAns){   // hard answer [serpent]
         
         for(int lineNum = 1; lineNum <= 4; lineNum++){
             std::string line = "sentry_hard_correct[" +std::to_string(lineNum)+ "]";
@@ -421,7 +449,7 @@ void sentryInteraction(){
         
         GAME_LOOP_WON = true;
         
-    } else if(!isGood && lowercase(sentryAns) == sentryEasyAns){  // easy answer [raven]
+    } else if(!refusedEntity && lowercase(sentryAns) == sentryEasyAns){  // easy answer [raven]
         
         
         for(int lineNum = 0; lineNum <= 4; lineNum++){
