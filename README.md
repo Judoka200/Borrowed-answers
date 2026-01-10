@@ -1,4 +1,4 @@
-## Term-1-Uni-project
+# Term-1-Uni-project
 
 A quick, terminal based, text adventure game about escaping a prison/dungeon
 
@@ -10,7 +10,7 @@ features:
 
 
 
-# Starting the game: 
+### Starting the game: 
  - ensure both myGame.exe and text.txt are in the same directory 
  - open myGame.exe and follow the instructions as follows 
  
