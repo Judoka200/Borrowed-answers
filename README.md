@@ -2,7 +2,7 @@
 
 A quick, terminal based, text adventure game about escaping a prison/dungeon
 
-features:
+### features:
 - 2 different endings
 - ASCII graphics for relevent sections
 - item and inventory system
