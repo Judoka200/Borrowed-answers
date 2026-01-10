@@ -271,11 +271,11 @@ void typeWrite(std::string textTitle, colours forcolour = colours::Default, doub
                     i++;
                     continue;
                 }
+                std::cout << text[i];
+                timeDelay(delay);
             }
-            std::cout << text[i];
-            timeDelay(delay);
 
-        } else {                                            // string::textTitle isn't form text file and should just be outputted
+        } else {                                            // string::textTitle isn't found in text file and should just be printed
             text = textTitle;
             std::cout<<col(forcolour);
             for (int i = 0; i < text.length(); i++){
@@ -332,7 +332,7 @@ void showKey(){
 } 
 
 
-void entityInteraction(){
+void entityInteraction(){ 
     /* covers the first interaction with the 'entity' in the cells room*/
 
     typeWrite("You notice a \033[33mglint\033[36m out of the corner of your eye\n", colours::cyan); timeDelay(.5);      // 33: yellow fg, 36: cyan fg
@@ -352,15 +352,15 @@ void entityInteraction(){
     for(int lineNum = 1; lineNum<= 5; lineNum++){                                               //loops through the first_interaction lines
         
         std::string interactText = "first_interaction["+std::to_string(lineNum)+"]";
-        std::cout << "\e[3m";                                                                   // 3: italics
+        std::cout << "\e[3m";                                                                   // 3: italics for dialogue
         typeWrite(interactText, colours::red);
     }
     std::cout << std::endl;
     std::cout << col(colours::cyan)<<"Do you choose to accept?"<<col(colours::RESET)<< std::endl;
 
-    std::cout << "Enter command:" <<col(colours::cyan) << "[yes/no]"<<col(colours::RESET);                            // ?25l: hides cursor
+    std::cout << "Enter command:" <<col(colours::cyan) << "[yes/no]"<<col(colours::RESET);                                          // ?25l: hides cursor
     std::cout << "\rEnter command:" <<col(colours::cyan) << "\033[7mREMEMBER WHAT YOU WERE TOLD \033[?25l"<<col(colours::RESET);    // \r returns the cursor to the start of the same line
-    timeDelay(1);
+    timeDelay(.75);
     std::string entAnswer ="";
 
     while(lowercase(entAnswer) !="no"){
@@ -424,6 +424,7 @@ void sentryInteraction(){
             std::cout<< "\033[4m"<<output("sentry_easy_warning", colours::Default, colours::magenta);
             typeWrite("sentry_easy_question");
             timeDelay(0.5);
+            //      entity helps:
             std::cout << col(colours::red) << "\n\n...you hear a whisper in your mind...\n\033[3m" << col(colours::red);
             std::cout << "\"My strength is limited here so i can only help you so much: \n " <<
                          "your answer can be found within the " << col(colours::black, colours::red) << "\"Hallway\"\n";
@@ -437,6 +438,9 @@ void sentryInteraction(){
     // std::cin.ignore(); //this one clears the '\n' thats left over from std::cin
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
+    
+    
+                                /* ----------------------------------- Correct guess----------------------------------- */
     if(refusedEntity && lowercase(sentryAns) == sentryHardAns){   // hard answer [serpent]
         
         for(int lineNum = 1; lineNum <= 4; lineNum++){
@@ -463,35 +467,34 @@ void sentryInteraction(){
 
         GAME_LOOP_WON = true;
 
-    } else if(lowercase(sentryAns) == "back" || lowercase(sentryAns) == "cancel"){
+    } else if(lowercase(sentryAns) == "back" || lowercase(sentryAns) == "cancel"){      // cancel the question 
         guessesRemaining +=4;           //removes guessesRemaing from the possible range of the switch case statement as no guess made
 
     } else {        
+
         std::cout <<col(colours::magenta); 
                                 /* ---------------------------------- Incorrect guess---------------------------------- */
         switch (guessesRemaining){
             case 3:
-            std::cout << "unfortunatley not, and seeing as i am in no place to be infinitley benevolent,\n this is the first of three chances i give to you.\n";
-            std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
-            guessesRemaining -= 1;
-            break;
-            case 2:
-            std::cout << "Wrong again. Your chances dwindle, this is your second strike,\n One opportunity remains.\nSome things can be revealed by Higlighting\n";        
-            std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
-            guessesRemaining -= 1;
+                std::cout << "unfortunatley not, and seeing as i am in no place to be infinitley benevolent,\n this is the first of three chances i give to you.\n";
+                std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
+                guessesRemaining -= 1;
                 break;
+
+            case 2:
+                std::cout << "Wrong again. Your chances dwindle, this is your second strike,\n One opportunity remains.\nSome things can be revealed by Higlighting\n";        
+                std::cout << col(colours::Default,colours::magenta) <<"Talk to me again when you know your next answer\n"<< col();
+                guessesRemaining -= 1;
+                break;
+
             case 1:
-            std::cout << "thrice you have failed, your chances are spent\n";
+                std::cout << "thrice you have failed, your chances are spent\n";
+                std::cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
             
-            std::cout<< "\033[38;5;245mPress Enter to continue...";                   // grey colour from table 
-            
-            GAME_LOOP_END = true; 
-            break;
+                GAME_LOOP_END = true; 
+                break;
         }
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
     guessesRemaining -= 4;              // Reverts guessesRemaing back to its value
 }
-
-
-

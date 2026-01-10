@@ -16,7 +16,6 @@ enum commandType {
     _UNLOCK_,    MOVE,    USE,     HELP,    INVALID, TALK
 };
 
-#pragma region functions 
 bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     // checks for doors and prevents specific room transitions
     string fromRoom = dungeonlayout[fromY][fromX];
@@ -35,7 +34,9 @@ bool isBlocked(int fromX,int fromY, int ToX, int ToY){
     }
     #endif
 
-    else {return false;}
+    else {
+        return false;
+    }
 }
 bool isValid(int X, int Y)
 {
@@ -179,7 +180,6 @@ void displayMap()
     #endif
     cout << "\e[38;5;62m" << "\n+=========================================================+\n" << col();
 }
-#pragma endregion
 
 /*    --------------------------------COMMAND--------------------------------    */
 commandType processCommand(const string input,string& argumentsOut) {  // return the commandype of the command 
@@ -348,11 +348,12 @@ void GAME_LOOP()
     revealAdjcent();
     
     typeWrite("Campfire_room_opening",colours::magenta,descDelay);
+    timeDelay(1);
 
    while(!GAME_LOOP_END)
    {  
         clearScreen();
-        #pragma region          /*    -----------------------------------DISPLAY UI---------------------------------   */
+                                /*    -----------------------------------DISPLAY UI---------------------------------   */
 
         displayPlrPos();
         displayMap();
@@ -366,9 +367,9 @@ void GAME_LOOP()
         showInventory = false;
         cout<<endl;
 
-#pragma endregion 
+                  
         
-#pragma region                  /*    -----------------------------------ROOM CHECKS------------------------------   */
+                                /*    -----------------------------------ROOM CHECKS------------------------------   */
         if(!observed[playerY][playerX]) // if room hasnt been enterd, provide the room's description 
         {
             cout<< col(colours::green)<<"You observe the room your in: \n"<< col();     // 1: bold , 22:  revert underline 
@@ -414,9 +415,9 @@ void GAME_LOOP()
             cout<<endl;
         }
         
-#pragma endregion 
+                  
 
-#pragma region                  /*    ----------------------------------DIPLAY MOVES--------------------------------   */
+                                /*    ----------------------------------DIPLAY MOVES--------------------------------   */
         cout<<col(colours::green)<<"possible moves: "<<col();
         vector<string> moves = getMoves();      // gets a vector of possible moves 
         for (int i = 0; i < moves.size(); i++){
@@ -426,7 +427,7 @@ void GAME_LOOP()
             }
         }
         cout << endl;
-#pragma endregion
+                  
 
         /*    ----------------------------------GET COMMAND---------------------------------    */
         cout << "Enter command: ";
@@ -520,6 +521,8 @@ int main(){
     auto timeTaken = duration_cast<std::chrono::seconds>(stopTime - startTime);
 
     clearScreen();
+    cout << col();
+    
     if(refusedEntity){
         showWinScreens(1);
     } else {
@@ -532,6 +535,3 @@ int main(){
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     
 }
-
-
-

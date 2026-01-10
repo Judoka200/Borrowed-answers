@@ -4,7 +4,7 @@ struct door{
     int toX;
     int toY;
     bool locked;
-    std::string key;
+    std::string key;            // ended up unused 
     std::string doorName;
 };
 #ifndef dev
@@ -13,7 +13,7 @@ struct door{
     door hallwayDoor =  {1,  1,  2,  1,  true, "", "hallway door"};
     door exitDoor =     {2,  1,  3,  1,  true, "", "exit"};
 #endif
-#ifdef dev // unlock all doors if in dev  
+#ifdef dev                                                                              // unlock all doors if in dev  
 //          door        fx   fy  tx  ty  lckd  key name  
     door tutorialDoor = {0,  1,  1,  1,  false, "", ""};
     door hallwayDoor =  {1,  1,  2,  1,  false, "", "hallway door"};
@@ -21,15 +21,17 @@ struct door{
 #endif
 
 bool checkLocked(  int fromX, int fromY, int toX, int toY){
-    if(exitDoor.fromX == fromX && exitDoor.fromY == fromY && exitDoor.toX == toX && exitDoor.toY == toY){
+    //checks from X,Y and To X,Y for each door, then returns if its locked or not
+
+    if(exitDoor.fromX == fromX && exitDoor.fromY == fromY    &&   exitDoor.toX == toX && exitDoor.toY == toY){
         return exitDoor.locked;
     }
 
-    if(hallwayDoor.fromX == fromX && hallwayDoor.fromY == fromY && hallwayDoor.toX == toX && hallwayDoor.toY == toY){
+    if(hallwayDoor.fromX == fromX && hallwayDoor.fromY == fromY     &&   hallwayDoor.toX == toX && hallwayDoor.toY == toY){
         return hallwayDoor.locked;
     }
    
-    if(tutorialDoor.fromX == fromX && tutorialDoor.fromY == fromY && tutorialDoor.toX == toX && tutorialDoor.toY == toY){
+    if(tutorialDoor.fromX == fromX && tutorialDoor.fromY == fromY   &&   tutorialDoor.toX == toX && tutorialDoor.toY == toY){
         return tutorialDoor.locked;
     }
     return false;    
@@ -41,5 +43,3 @@ void unlockDoor(door& gate, std::string key = ""){
         std::cout<<"you unlocked the " << gate.doorName<<std::endl;
     }
 }
-
-
