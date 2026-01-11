@@ -271,6 +271,7 @@ void executeCommand(commandType type,string arguments) {
     lowercase(arguments,true); // sets the argumetns to lowercase
     switch(type) {
         case commandType::QUIT:
+            exit(1);
             break;
 
         case commandType::OBSERVE:
@@ -430,7 +431,7 @@ void GAME_LOOP()
                   
 
         /*    ----------------------------------GET COMMAND---------------------------------    */
-        cout << "Enter command: ";
+        cout << "\033[38;5;104m" <<"Enter command: " << col();
         getline(cin, command);
         lowercase(command, true);   // sets the whole command to lowercase incase i forget to add lowercase() to if statements
 
@@ -473,7 +474,7 @@ void TUTORIAL_LOOP(){
         showInventory = false;
         cout<<endl;
         /*    ----------------------------------GET COMMAND---------------------------------    */
-        cout << "Enter command: ";
+        cout << "\033[38;5;104m" <<"Enter command: " << col();
         getline(cin, command);
         lowercase(command,true);
 
